@@ -1,0 +1,691 @@
+/*************** HelpText for Gutenber Settings******************/
+.kf-setting {
+    /*
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    */
+}
+
+.kf-help-icon {
+display: inline-block;
+width: 18px;
+height: 18px;
+line-height: 18px;
+text-align: center;
+border-radius: 50%;
+background-color: #f0f0f0;
+color: #555;
+font-weight: bold;
+cursor: pointer;
+}
+
+.kf-help-icon:hover {
+background-color: #ddd;
+color: #000;
+}
+
+/*************** HelpText for Gutenber Settings Ends Here******************/
+
+
+
+/********************* Settings Error **************/
+.kf-error-message {
+    color: red;
+    font-weight: bold;
+    margin: 0; /* To avoid extra spacing */
+    padding: 0;
+    display: block; /* Ensures the message is always on a new line */
+}
+
+
+
+.kf-block-type-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px; /* Smaller font size */
+    font-weight: bold; /* Make the text bold */
+    background-color: #fff; /* Optional: background for contrast */
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #333; /* Text color */
+}
+
+/* block-styles.css */
+
+.kf-step-preview{
+    border: 2px dashed #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.kf-expand-colapse-preview{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.kf-step-label{
+    font-weight: bold;
+}
+
+.kf-link{
+    color: #007cba;
+    text-decoration: none;
+    cursor: pointer
+}
+
+.kf-horizontal-radio .components-radio-control__option {
+    display: inline-flex; /* Arrange radio options in a row */
+    align-items: center; /* Align vertically */
+    margin-right: 16px; /* Add spacing between radio buttons */
+}
+
+.kf-horizontal-radio .components-radio-control__option:last-child {
+    margin-right: 0; /* Remove margin from the last option */
+}
+
+.kf-horizontal-radio .components-radio-control__label {
+    margin-left: 4px; /* Add spacing between the radio button and the label */
+}
+
+.kf-disclosure-label{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.kf-disclosure-check-label{
+    padding: 8px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.kf-disclosure-text{
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.6
+}
+.kf-disclosure-preview{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+}
+
+.kf-invalid-parent{
+    color: red;
+}
+
+
+/*-- Latest CSS---*/
+
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block {
+    margin-bottom: 18px;
+}
+
+.block-editor-block-list__layout .kf-block-wrap [class^=components-]{
+    border: 0px !important;
+}
+
+
+.wp-block-kf-step {
+    margin-bottom: 50px !important;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    padding: 22px 24px 24px;
+    border: 1px solid #e7edf3;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.wp-block-kf-step:first-child{
+    margin-top: 16px !important;
+}
+
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block .kf-block-wrap label {
+    display: block;
+    font-size: 16px;
+    font-weight:600;
+    line-height: 24px;
+    color: #1E1E1E;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+}
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block .kf-block-wrap > label {
+    margin-bottom: 4px;
+}
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block .components-text-control__input,
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block select.components-select-control__input,
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block textarea.components-textarea-control__input {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    padding: 10px 12px !important;
+    line-height:24 !important;
+    color: #1E1E1E !important;
+    border: hsl( from #1E1E1E h s l / 0.25) solid 1px !important;
+    border-radius: 6px !important;
+    background-color: hsl( from #1E1E1E h s l / 0.02) !important;
+    height: 44px !important;
+    outline: 0 !important;
+    margin: 6px 0 !important;
+}
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block .components-select-control{
+    border: 0px !important;
+}
+
+.kf-root-block-preview .block-editor-inner-blocks .block-editor-block-list__block textarea.components-textarea-control__input {
+    min-height: 120px !important;
+    resize: vertical !important;
+}
+
+.kf-block-wrap.kf-radio-common-wrap .components-radio-control__group-wrapper .components-radio-control__input[type=radio],
+.kf-block-wrap.kf-multiselect-common-wrap .components-checkbox-control__input[type=checkbox]{
+    border: 1px solid #1e1e1e !important;
+}
+
+/*-- Appender---*/
+
+.wp-block-kf-step .block-list-appender{
+    width: 100%;
+    position: relative;
+}
+.wp-block-kf-step .block-list-appender .block-editor-inserter{
+    margin-top: 24px !important;
+}
+
+.wp-block-kf-step .block-list-appender .block-editor-inserter .components-button{
+    margin-top: 0 !important;
+    box-shadow: none;
+    border: 1px dashed #c3c4c7;
+    border-radius: 10px;
+    padding: 16px !important;
+    background-color: #fcfcfd;
+    transition: .3s;
+    text-align: center;
+    width: 100%;
+    height: 64px;
+}
+
+.wp-block-kf-step .block-list-appender .block-editor-inserter .components-button svg {
+    width: 24px;
+    height: 24px;
+    background-color: #50575e;
+    border-radius: 100%;
+    transition: .3s;
+    fill: #fff;
+}
+
+.kf-setting .components-base-control{
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.post-type-koalaforms-forms.block-editor-page .components-tooltip{
+    max-width: 100px;
+}
+
+/*-- Editor Page Shell --*/
+
+body.post-type-koalaforms-forms .editor-styles-wrapper {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 220px);
+}
+
+body.post-type-koalaforms-forms .is-root-container,
+body.post-type-koalaforms-forms .block-editor-block-list__layout.is-root-container,
+body.post-type-koalaforms-forms .editor-styles-wrapper .block-editor-block-list__layout.is-root-container {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+body.post-type-koalaforms-forms .editor-visual-editor__post-title-wrapper,
+body.post-type-koalaforms-forms .edit-post-visual-editor__post-title-wrapper,
+body.post-type-koalaforms-forms .block-editor-writing-flow > .wp-block-post-title,
+body.post-type-koalaforms-forms .editor-styles-wrapper .wp-block-post-title {
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+body.post-type-koalaforms-forms .editor-visual-editor__post-title-wrapper,
+body.post-type-koalaforms-forms .edit-post-visual-editor__post-title-wrapper {
+    padding-top: 28px;
+    padding-bottom: 10px;
+}
+
+body.post-type-koalaforms-forms .editor-post-title,
+body.post-type-koalaforms-forms .wp-block-post-title {
+    margin-bottom: 0;
+}
+
+body.post-type-koalaforms-forms .editor-post-title__input,
+body.post-type-koalaforms-forms .wp-block-post-title {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+body.post-type-koalaforms-forms .editor-styles-wrapper .is-root-container > .wp-block-kf-step:first-child,
+body.post-type-koalaforms-forms .block-editor-block-list__layout.is-root-container > .wp-block-kf-step:first-child {
+    margin-top: 12px !important;
+    padding-bottom: 90px;
+}
+
+/*-- Editor Page Shell End --*/
+
+
+/*-- Form Setting---*/
+
+.kf-general-setting-panel .components-base-control__field{
+    margin-bottom: 2px;
+}
+
+.kf-settings-modal .components-modal__content {
+    padding: 20px;
+}
+
+.kf-settings-modal .components-modal__header {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.kf-modal-content {
+    display: grid;
+    gap: 14px;
+}
+
+.kf-modal-help-text {
+    margin: 0;
+    color: #50575e;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.kf-modal-section-header {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+
+.kf-modal-section-title {
+    margin: 0;
+    color: #1d2327;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+}
+
+.kf-modal-section-description {
+    margin: 0;
+    color: #6b7280;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.kf-modal-section {
+    margin: 0;
+}
+
+.kf-modal-section-nested {
+    display: grid;
+    gap: 12px;
+    padding-left: 12px;
+    border-left: 2px solid #e5e7eb;
+}
+
+.kf-modal-field-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #1d2327;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.kf-modal-editor-textarea {
+    width: 100%;
+    min-height: 140px;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    padding: 10px;
+    color: #1d2327;
+}
+
+.kf-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.kf-general-setting-panel .kf-field-help-text,
+.kf-setting .kf-field-help-text{
+    color: #a4afb7;
+    font-size: 11px;
+    font-style: italic;
+    margin: 0px 0px 6px;
+    display: inline-block;
+}
+
+.kf-general-setting-panel label{
+    color: #50575e;
+    font-size: 12px !important;
+    line-height: 1.4em !important;
+    margin-bottom: 4px;
+    text-transform: none !important;
+    font-weight: 400 !important;
+    display: inline-block;
+}
+
+.kf-settings-action-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.kf-settings-accordion-item .components-button {
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.kf-general-setting-panel-block{
+    display: block !important;
+    margin-bottom: 18px;
+}
+.kf-general-setting-panel-flex{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.kf-general-setting-panel-flex input {
+    width: 100%;
+}
+
+.wp-block-kf-step .block-editor-inner-blocks {
+    margin-top: 18px;
+}
+
+/*---Form Setting----*/
+
+
+
+/* Example CSS for custom styling of the toast */
+.custom-toast {
+    background-color: #0073aa;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.custom-error-toast {
+    background-color: #dc3232; /* Red for error */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+
+.kf-step-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.kf-step-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.kf-step-card-title {
+    margin: 0;
+    color: #111827;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.kf-step-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.kf-add-step-button.components-button,
+.kf-expand-collapse-button.components-button {
+    min-height: 32px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #646970;
+    background: transparent;
+    box-shadow: none !important;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.kf-expand-collapse-button.components-button {
+    border-color: #dcdcde;
+    color: #2271b1;
+    background: #fff;
+}
+
+.kf-step-card-summary {
+    margin: 12px 0 0;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.kf-step-btn-preview {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+    max-width: 680px;
+}
+
+.kf-step-btn-preview--single {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: end;
+}
+
+.kf-step-btn-preview--dual {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+}
+
+.kf-step-btn-preview--dual .kf-step-btn-preview-button-secondary {
+    justify-self: start;
+}
+
+.kf-step-btn-preview--dual .kf-step-btn-preview-button-primary {
+    justify-self: end;
+}
+
+.kf-step-btn-preview-button.components-button {
+    min-height: 40px;
+    width: auto;
+    padding: 0 16px;
+    border-radius: 6px;
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.kf-step-btn-preview--single .kf-step-btn-preview-button-primary {
+    justify-self: end;
+}
+
+.kf-step-btn-preview-button-secondary.components-button {
+    border-color: #dcdcde;
+    background: #fff;
+    color: #2271b1;
+    min-width: 132px;
+}
+
+.kf-step-btn-preview-button-secondary.components-button:hover {
+    border-color: #c3c4c7;
+    background: #fff;
+}
+
+.kf-step-btn-preview-button-primary.components-button {
+
+    min-width: 148px;
+}
+
+.kf-step-btn-preview-button-primary.components-button:hover {
+
+}
+
+.kf-step-flow {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: start;
+    margin-top: 2px;
+    padding-top: 4px;
+}
+
+.kf-step-flow::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 14px;
+    right: 14px;
+    height: 3px;
+    border-radius: 999px;
+    background: #dcdcde;
+}
+
+.kf-step-flow-item {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    gap: 6px;
+    padding: 0;
+    color: #50575e;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.kf-step-flow-item:first-child {
+    align-items: flex-start;
+}
+
+.kf-step-flow-item:last-child {
+    align-items: flex-end;
+}
+
+.kf-step-flow-item-complete,
+.kf-step-flow-item-active {
+    color: #1d2327;
+}
+
+.kf-step-flow-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 3px solid #c3c4c7;
+    background: #fff;
+    font-weight: 700;
+    font-size: 0;
+}
+
+.kf-step-flow-item-complete .kf-step-flow-index,
+.kf-step-flow-item-active .kf-step-flow-index {
+    border-color: #2271b1;
+}
+
+.kf-step-flow-item-complete .kf-step-flow-index {
+    background: #f0f6fc;
+}
+
+.kf-step-flow-item-active .kf-step-flow-index {
+    background: #fff;
+}
+
+.kf-step-flow-label {
+    max-width: 140px;
+    font-size: 12px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.kf-step-flow-item-complete .kf-step-flow-label,
+.kf-step-flow-item-active .kf-step-flow-label {
+    color: #1d2327;
+}
+
+@media (max-width: 782px) {
+    .kf-step-card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .kf-step-card-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .kf-step-btn-preview--dual {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Address block — full dashed border wrapping the container */
+.kf-address-container {
+    border: 2px dashed #c3c4c7;
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.kf-address-container:hover,
+.kf-address-container.is-selected {
+    border-color: #007cba;
+}

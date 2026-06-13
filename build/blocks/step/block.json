@@ -1,0 +1,47 @@
+{
+  "apiVersion": 3,
+  "name": "Step",
+  "version": "0.1.0",
+  "title": "Step",
+  "icon": "edit",
+  "description": "Use this to render a single step of your form.",
+  "attributes": {
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "nextBtnLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "prevBtnLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "nextWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "previousWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "save": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "inserter": true,
+    "customClassName": true,
+    "align": true,
+    "multiple": true
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

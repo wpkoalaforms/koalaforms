@@ -1,0 +1,55 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+/**
+ * Romania states
+ *
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$states['RO'] = array(
+	'AB' => __( 'Alba', 'koalaforms'),
+	'AR' => __( 'Arad', 'koalaforms'),
+	'AG' => __( 'Arge&#537;', 'koalaforms'),
+	'BC' => __( 'Bac&#259;u', 'koalaforms'),
+	'BH' => __( 'Bihor', 'koalaforms'),
+	'BN' => __( 'Bistri&#539;a-N&#259;s&#259;ud', 'koalaforms'),
+	'BT' => __( 'Boto&#537;ani', 'koalaforms'),
+	'BR' => __( 'Br&#259;ila', 'koalaforms'),
+	'BV' => __( 'Bra&#537;ov', 'koalaforms'),
+	'B'  => __( 'Bucure&#537;ti', 'koalaforms'),
+	'BZ' => __( 'Buz&#259;u', 'koalaforms'),
+	'CL' => __( 'C&#259;l&#259;ra&#537;i', 'koalaforms'),
+	'CS' => __( 'Cara&#537;-Severin', 'koalaforms'),
+	'CJ' => __( 'Cluj', 'koalaforms'),
+	'CT' => __( 'Constan&#539;a', 'koalaforms'),
+	'CV' => __( 'Covasna', 'koalaforms'),
+	'DB' => __( 'D&acirc;mbovi&#539;a', 'koalaforms'),
+	'DJ' => __( 'Dolj', 'koalaforms'),
+	'GL' => __( 'Gala&#539;i', 'koalaforms'),
+	'GR' => __( 'Giurgiu', 'koalaforms'),
+	'GJ' => __( 'Gorj', 'koalaforms'),
+	'HR' => __( 'Harghita', 'koalaforms'),
+	'HD' => __( 'Hunedoara', 'koalaforms'),
+	'IL' => __( 'Ialomi&#539;a', 'koalaforms'),
+	'IS' => __( 'Ia&#537;i', 'koalaforms'),
+	'IF' => __( 'Ilfov', 'koalaforms'),
+	'MM' => __( 'Maramure&#537;', 'koalaforms'),
+	'MH' => __( 'Mehedin&#539;i', 'koalaforms'),
+	'MS' => __( 'Mure&#537;', 'koalaforms'),
+	'NT' => __( 'Neam&#539;', 'koalaforms'),
+	'OT' => __( 'Olt', 'koalaforms'),
+	'PH' => __( 'Prahova', 'koalaforms'),
+	'SJ' => __( 'S&#259;laj', 'koalaforms'),
+	'SM' => __( 'Satu Mare', 'koalaforms'),
+	'SB' => __( 'Sibiu', 'koalaforms'),
+	'SV' => __( 'Suceava', 'koalaforms'),
+	'TR' => __( 'Teleorman', 'koalaforms'),
+	'TM' => __( 'Timi&#537;', 'koalaforms'),
+	'TL' => __( 'Tulcea', 'koalaforms'),
+	'VL' => __( 'V&acirc;lcea', 'koalaforms'),
+	'VS' => __( 'Vaslui', 'koalaforms'),
+	'VN' => __( 'Vrancea', 'koalaforms'),
+);

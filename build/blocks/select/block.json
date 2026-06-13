@@ -1,0 +1,57 @@
+{
+  "apiVersion": 3,
+  "name": "Select",
+  "version": "0.1.0",
+  "title": "Dropdown",
+  "icon": "edit",
+  "description": "Display a dropdown menu of values.",
+  "attributes": {
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "requiredError": {
+      "type": "string",
+      "default": null
+    },
+    "options": {
+      "type": "array",
+      "default": null
+    },
+    "subtype": {
+      "type": "string",
+      "default": ""
+    },
+    "hidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "parent": {
+      "type": "string",
+      "default": ""
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -1,0 +1,25 @@
+import { registerBlockType } from '@wordpress/blocks';
+import metadata from './block.json';
+import { commonMetaProcessing } from '../../blockHelper';
+
+/**
+ * Internal dependencies
+ */
+import Edit from './edit';
+import Save from './save';
+
+
+const disclosureFieldBlockIcon = (
+	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m480-240 160-160-57-57-103 103-103-103-57 57 160 160ZM377-503l103-103 103 103 57-57-160-160-160 160 57 57ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+);
+
+/**
+ * Block Registration
+ */
+registerBlockType(commonMetaProcessing({
+	...metadata,
+	icon:disclosureFieldBlockIcon
+}), {
+	edit: Edit,
+	save: Save,
+});

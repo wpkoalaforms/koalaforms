@@ -1,0 +1,122 @@
+{
+  "title": "Job Application",
+  "settings": {
+    "is_active": true,
+    "success_message": "Thank you for applying! We will review your application and be in touch within 5 business days.",
+    "admin_notification": true,
+    "primary_email_field": "email"
+  },
+  "steps": [
+    {
+      "label": "Personal Information",
+      "next_label": "Next: Experience",
+      "columns": [
+        [
+          { "type": "text",  "label": "First Name", "placeholder": "John",  "required": true },
+          { "type": "text",  "label": "Last Name",  "placeholder": "Smith", "required": true }
+        ],
+        [
+          { "type": "email", "label": "Email Address", "required": true },
+          { "type": "text",  "label": "Phone Number", "placeholder": "+1 234 567 8900", "required": true }
+        ],
+        [
+          { "type": "date", "label": "Date of Birth", "required": true },
+          { "type": "text", "label": "Nationality",   "placeholder": "e.g. American", "required": false }
+        ]
+      ],
+      "fields": [
+        { "type": "address", "label": "Home Address", "required": false },
+        { "type": "url",     "label": "LinkedIn Profile", "placeholder": "https://linkedin.com/in/yourname", "required": false },
+        { "type": "url",     "label": "Portfolio / Website", "placeholder": "https://", "required": false }
+      ]
+    },
+    {
+      "label": "Experience & Qualifications",
+      "next_label": "Next: Cover Letter",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "text", "label": "Position Applied For", "placeholder": "e.g. Senior Developer", "required": true },
+        {
+          "type": "select",
+          "label": "Department",
+          "required": true,
+          "options": ["Engineering", "Design", "Marketing", "Sales", "Operations", "Finance", "HR", "Other"]
+        },
+        {
+          "type": "select",
+          "label": "Years of Experience",
+          "required": true,
+          "options": ["Less than 1 year", "1 - 2 years", "3 - 5 years", "5 - 10 years", "10+ years"]
+        },
+        {
+          "type": "select",
+          "label": "Highest Education Level",
+          "required": true,
+          "options": ["High School", "Associate Degree", "Bachelor's Degree", "Master's Degree", "PhD", "Other"]
+        },
+        {
+          "type": "multiselect",
+          "label": "Core Skills",
+          "required": true,
+          "options": ["JavaScript", "PHP", "Python", "React", "Node.js", "SQL", "DevOps", "UI/UX", "Project Management"]
+        },
+        { "type": "number",   "label": "Expected Salary (USD/year)", "placeholder": "75000", "required": false, "min": 0 },
+        {
+          "type": "radio",
+          "label": "Employment Type",
+          "required": true,
+          "options": ["Full-time", "Part-time", "Contract", "Internship"]
+        },
+        {
+          "type": "radio",
+          "label": "Work Preference",
+          "required": true,
+          "options": ["On-site", "Remote", "Hybrid"]
+        },
+        { "type": "date", "label": "Available Start Date", "required": true },
+        {
+          "type": "select",
+          "label": "How did you hear about us?",
+          "required": false,
+          "options": ["Job Board", "Company Website", "LinkedIn", "Referral", "Social Media", "Other"]
+        }
+      ]
+    },
+    {
+      "label": "Cover Letter",
+      "next_label": "Next: Legal",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "textarea", "label": "Why are you a great fit for this role?", "required": true,  "placeholder": "Tell us about yourself and your motivation...", "rows": 6 },
+        { "type": "textarea", "label": "Describe a challenging project you led.", "required": true,  "placeholder": "Situation, your actions, and the outcome...", "rows": 6 },
+        { "type": "textarea", "label": "Any additional information?",            "required": false, "placeholder": "Anything else you'd like us to know...", "rows": 4 }
+      ]
+    },
+    {
+      "label": "Legal & Consent",
+      "next_label": "Submit Application",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "checkbox", "label": "I confirm all information provided is accurate and complete.", "required": false },
+        {
+          "type": "disclosure",
+          "label": "Background Check Consent",
+          "name": "background_check",
+          "required": true,
+          "required_error": "You must consent to a background check to proceed.",
+          "check_label": "I consent to a background check as part of the hiring process.",
+          "content": "As part of our hiring process, we may conduct a background verification check. This may include employment history, education credentials, and criminal record checks where permitted by law.<br><br>All checks are conducted by an authorised third-party provider and handled in accordance with applicable privacy laws."
+        },
+        {
+          "type": "disclosure",
+          "label": "Privacy & Data Use",
+          "name": "privacy_consent",
+          "required": true,
+          "required_error": "You must accept the Privacy Policy to submit your application.",
+          "check_label": "I agree to the collection and use of my data as described.",
+          "content": "Your application data will be stored securely and used solely for recruitment purposes. We retain applicant data for up to 12 months.<br><br>You may withdraw consent or request deletion of your data at any time by contacting hr@example.com."
+        }
+      ]
+    }
+  ]
+}

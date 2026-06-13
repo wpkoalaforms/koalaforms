@@ -1,0 +1,91 @@
+{
+  "title": "Contact Us",
+  "settings": {
+    "is_active": true,
+    "success_message": "Thank you! We will get back to you shortly.",
+    "admin_notification": true,
+    "primary_email_field": "email"
+  },
+  "steps": [
+    {
+      "label": "Personal Info",
+      "next_label": "Next",
+      "columns": [
+        [
+          { "type": "text", "label": "First Name", "placeholder": "John",  "required": true },
+          { "type": "text", "label": "Last Name",  "placeholder": "Smith", "required": true }
+        ],
+        [
+          { "type": "date", "label": "Date of Birth", "required": false },
+          { "type": "number", "label": "Age", "placeholder": "25", "required": false, "min": 18, "max": 120 }
+        ]
+      ],
+      "fields": [
+        { "type": "email",    "label": "Email Address", "required": true },
+        { "type": "password", "label": "Password",      "required": true },
+        { "type": "url",      "label": "Website",       "required": false, "placeholder": "https://example.com" },
+        { "type": "textarea", "label": "Bio",           "required": false, "placeholder": "Tell us about yourself...", "rows": 4 }
+      ]
+    },
+    {
+      "label": "Preferences",
+      "next_label": "Next",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "select",
+          "label": "Country",
+          "required": true,
+          "options": ["United States", "Canada", "United Kingdom", "Australia"]
+        },
+        {
+          "type": "radio",
+          "label": "Preferred Contact Method",
+          "required": true,
+          "options": ["Email", "Phone", "SMS"]
+        },
+        {
+          "type": "multiselect",
+          "label": "Areas of Interest",
+          "required": false,
+          "options": ["Technology", "Design", "Marketing", "Sales"]
+        },
+        {
+          "type": "checkbox",
+          "label": "Subscribe to newsletter",
+          "required": false
+        },
+        {
+          "type": "address",
+          "label": "Home Address",
+          "required": false
+        }
+      ]
+    },
+    {
+      "label": "Legal",
+      "next_label": "Submit",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "disclosure",
+          "label": "Terms of Service",
+          "name": "terms_acceptance",
+          "required": true,
+          "required_error": "You must accept the Terms of Service to continue.",
+          "check_label": "I have read and agree to the Terms of Service.",
+          "content": "By submitting this form you agree to our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.<br><br>We will never share your data with third parties."
+        },
+        {
+          "type": "disclosure",
+          "label": "Privacy Policy",
+          "name": "privacy_acceptance",
+          "required": true,
+          "required_error": "You must accept the Privacy Policy to continue.",
+          "check_label": "I have read and agree to the Privacy Policy.",
+          "content": "We collect only the information necessary to respond to your enquiry.<br><br>You may request deletion of your data at any time by contacting us."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "title": "Vendor Onboarding",
+  "settings": {
+    "is_active": true,
+    "success_message": "Thank you for submitting your vendor application. Our procurement team will review it and contact you within 5 business days.",
+    "admin_notification": true,
+    "primary_email_field": "business_email"
+  },
+  "steps": [
+    {
+      "label": "Company Information",
+      "next_label": "Next: Products & Services",
+      "columns": [
+        [
+          { "type": "text",   "label": "Company Name",         "placeholder": "Acme Supplies Ltd", "required": true },
+          { "type": "text",   "label": "Trading Name (if different)", "placeholder": "Optional",  "required": false }
+        ],
+        [
+          { "type": "text",   "label": "ABN / Tax ID",         "placeholder": "e.g. 12 345 678 901", "required": true },
+          { "type": "date",   "label": "Date Established",                                            "required": false }
+        ],
+        [
+          { "type": "email",  "label": "Business Email",        "name": "business_email", "required": true },
+          { "type": "text",   "label": "Business Phone",        "placeholder": "+1 234 567 8900",    "required": true }
+        ]
+      ],
+      "fields": [
+        { "type": "url",      "label": "Company Website",       "placeholder": "https://", "required": false },
+        { "type": "address",  "label": "Registered Business Address", "required": true },
+        {
+          "type": "select",
+          "label": "Business Structure",
+          "required": true,
+          "options": ["Sole Trader", "Partnership", "Private Company (Pty Ltd)", "Public Company", "Trust", "Non-profit", "Government Entity"]
+        },
+        {
+          "type": "select",
+          "label": "Number of Employees",
+          "required": false,
+          "options": ["1 - 10", "11 - 50", "51 - 200", "201 - 1000", "1000+"]
+        },
+        {
+          "type": "select",
+          "label": "Annual Revenue (USD)",
+          "required": false,
+          "options": ["Under $500k", "$500k - $1M", "$1M - $5M", "$5M - $20M", "$20M+", "Prefer not to say"]
+        }
+      ]
+    },
+    {
+      "label": "Products & Services",
+      "next_label": "Next: Compliance",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "multiselect",
+          "label": "Product / Service Categories",
+          "required": true,
+          "options": ["Raw Materials", "Finished Goods", "IT & Software", "Professional Services", "Logistics & Freight", "Facilities & Maintenance", "Marketing & Creative", "HR & Recruitment", "Legal & Compliance", "Other"]
+        },
+        { "type": "textarea", "label": "Describe your core products and services", "required": true,  "placeholder": "Include key products, industries served, and any specialisations...", "rows": 5 },
+        { "type": "textarea", "label": "List your top 3 clients (optional)",        "required": false, "placeholder": "Name, industry, and approximate contract value...", "rows": 4 },
+        {
+          "type": "number",
+          "label": "Minimum Order Value (USD)",
+          "placeholder": "500",
+          "required": false,
+          "min": 0
+        },
+        {
+          "type": "select",
+          "label": "Typical Lead Time",
+          "required": true,
+          "options": ["Same day", "1 - 3 days", "4 - 7 days", "1 - 2 weeks", "2 - 4 weeks", "4+ weeks"]
+        },
+        {
+          "type": "multiselect",
+          "label": "Delivery Regions",
+          "required": true,
+          "options": ["Local / Metro", "Nationwide", "North America", "Europe", "Asia Pacific", "Global"]
+        },
+        {
+          "type": "radio",
+          "label": "Do you offer volume discounts?",
+          "required": true,
+          "options": ["Yes", "No", "Case by case"]
+        }
+      ]
+    },
+    {
+      "label": "Compliance & Certifications",
+      "next_label": "Next: Banking Details",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "multiselect",
+          "label": "Certifications Held",
+          "required": false,
+          "options": ["ISO 9001", "ISO 14001", "ISO 27001", "SOC 2", "PCI DSS", "GDPR Compliant", "B Corp", "Fair Trade", "None"]
+        },
+        {
+          "type": "radio",
+          "label": "Do you hold public liability insurance?",
+          "required": true,
+          "options": ["Yes", "No", "In progress"]
+        },
+        { "type": "number",   "label": "Public Liability Cover Amount (USD)", "placeholder": "1000000", "required": false, "min": 0 },
+        {
+          "type": "radio",
+          "label": "Have you been subject to legal proceedings in the last 5 years?",
+          "required": true,
+          "options": ["Yes", "No"]
+        },
+        { "type": "textarea", "label": "If yes, provide details", "required": false, "placeholder": "Brief description of proceedings and outcome...", "rows": 4 },
+        {
+          "type": "radio",
+          "label": "Do you have an environmental / sustainability policy?",
+          "required": true,
+          "options": ["Yes", "No", "In development"]
+        },
+        { "type": "url",      "label": "Link to Sustainability Policy (if available)", "placeholder": "https://", "required": false }
+      ]
+    },
+    {
+      "label": "Banking & Payment",
+      "next_label": "Next: Declaration",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "text",   "label": "Bank Name",           "placeholder": "e.g. Chase Bank",     "required": true },
+        { "type": "text",   "label": "Account Name",        "placeholder": "Acme Supplies Ltd",   "required": true },
+        { "type": "text",   "label": "BSB / Routing Number","placeholder": "e.g. 063-000",        "required": true },
+        { "type": "text",   "label": "Account Number",      "placeholder": "e.g. 1234 5678",      "required": true },
+        {
+          "type": "select",
+          "label": "Preferred Payment Currency",
+          "required": true,
+          "options": ["USD", "EUR", "GBP", "AUD", "CAD", "SGD", "Other"]
+        },
+        {
+          "type": "select",
+          "label": "Preferred Payment Terms",
+          "required": true,
+          "options": ["Net 7", "Net 14", "Net 30", "Net 60", "On delivery", "Prepayment required"]
+        },
+        {
+          "type": "multiselect",
+          "label": "Accepted Payment Methods",
+          "required": true,
+          "options": ["Bank Transfer (EFT)", "Credit Card", "Cheque", "PayPal", "Stripe"]
+        }
+      ]
+    },
+    {
+      "label": "Declaration & Consent",
+      "next_label": "Submit Application",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "text", "label": "Authorised Representative Name", "placeholder": "Full legal name", "required": true },
+        { "type": "text", "label": "Position / Title",              "placeholder": "e.g. Director",   "required": true },
+        { "type": "date", "label": "Date",                          "required": true },
+        {
+          "type": "disclosure",
+          "label": "Vendor Code of Conduct",
+          "name": "code_of_conduct",
+          "required": true,
+          "required_error": "You must agree to our Vendor Code of Conduct to proceed.",
+          "check_label": "I have read and agree to the Vendor Code of Conduct.",
+          "content": "All vendors are required to comply with our Vendor Code of Conduct, which includes commitments to ethical business practices, anti-bribery, anti-corruption, fair labour standards, and environmental responsibility.<br><br>Non-compliance may result in termination of the vendor relationship."
+        },
+        {
+          "type": "disclosure",
+          "label": "Data Processing Agreement",
+          "name": "data_processing",
+          "required": true,
+          "required_error": "You must agree to the Data Processing Agreement to proceed.",
+          "check_label": "I agree to the terms of the Data Processing Agreement.",
+          "content": "In the course of our business relationship, you may have access to or process personal data on our behalf. You agree to handle such data in accordance with applicable privacy laws including GDPR and CCPA.<br><br>You must not transfer, sell, or disclose personal data to any third party without prior written consent."
+        },
+        {
+          "type": "disclosure",
+          "label": "Accuracy Declaration",
+          "name": "accuracy_declaration",
+          "required": true,
+          "required_error": "You must confirm the accuracy of the information provided.",
+          "check_label": "I declare that all information provided in this application is true and accurate.",
+          "content": "I understand that providing false or misleading information may result in rejection of this application, termination of any existing agreements, and potential legal action.<br><br>I agree to notify the procurement team promptly of any changes to the information provided."
+        }
+      ]
+    }
+  ]
+}

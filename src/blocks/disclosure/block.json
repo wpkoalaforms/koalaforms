@@ -1,0 +1,42 @@
+{
+	"apiVersion": 3,
+	"name": "Disclosure",
+	"version": "0.1.0",
+	"title": "Disclosure",
+	"icon": "edit",
+	"description": "Allows users to agree to a disclosure statement by checking a checkbox.",
+	"attributes": {
+		"inputLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"checkLabel": {
+			"type": "string",
+			"default": null
+		},
+		"content": {
+			"type": "string",
+			"default": null
+		},
+		"requiredError": {
+			"type": "string",
+			"default": null
+		},
+		"defaultCBValue": {
+			"type": "boolean",
+			"default": false
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"textdomain": "koalaforms",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

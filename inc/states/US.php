@@ -1,0 +1,67 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+/**
+ * United States
+ *
+ */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$states['US'] = array(
+	'AL' => __( 'Alabama', 'koalaforms'),
+	'AK' => __( 'Alaska', 'koalaforms'),
+	'AZ' => __( 'Arizona', 'koalaforms'),
+	'AR' => __( 'Arkansas', 'koalaforms'),
+	'CA' => __( 'California', 'koalaforms'),
+	'CO' => __( 'Colorado', 'koalaforms'),
+	'CT' => __( 'Connecticut', 'koalaforms'),
+	'DE' => __( 'Delaware', 'koalaforms'),
+	'DC' => __( 'District Of Columbia', 'koalaforms'),
+	'FL' => __( 'Florida', 'koalaforms'),
+	'GA' => _x( 'Georgia', 'US state of Georgia', 'koalaforms'),
+	'HI' => __( 'Hawaii', 'koalaforms'),
+	'ID' => __( 'Idaho', 'koalaforms'),
+	'IL' => __( 'Illinois', 'koalaforms'),
+	'IN' => __( 'Indiana', 'koalaforms'),
+	'IA' => __( 'Iowa', 'koalaforms'),
+	'KS' => __( 'Kansas', 'koalaforms'),
+	'KY' => __( 'Kentucky', 'koalaforms'),
+	'LA' => __( 'Louisiana', 'koalaforms'),
+	'ME' => __( 'Maine', 'koalaforms'),
+	'MD' => __( 'Maryland', 'koalaforms'),
+	'MA' => __( 'Massachusetts', 'koalaforms'),
+	'MI' => __( 'Michigan', 'koalaforms'),
+	'MN' => __( 'Minnesota', 'koalaforms'),
+	'MS' => __( 'Mississippi', 'koalaforms'),
+	'MO' => __( 'Missouri', 'koalaforms'),
+	'MT' => __( 'Montana', 'koalaforms'),
+	'NE' => __( 'Nebraska', 'koalaforms'),
+	'NV' => __( 'Nevada', 'koalaforms'),
+	'NH' => __( 'New Hampshire', 'koalaforms'),
+	'NJ' => __( 'New Jersey', 'koalaforms'),
+	'NM' => __( 'New Mexico', 'koalaforms'),
+	'NY' => __( 'New York', 'koalaforms'),
+	'NC' => __( 'North Carolina', 'koalaforms'),
+	'ND' => __( 'North Dakota', 'koalaforms'),
+	'OH' => __( 'Ohio', 'koalaforms'),
+	'OK' => __( 'Oklahoma', 'koalaforms'),
+	'OR' => __( 'Oregon', 'koalaforms'),
+	'PA' => __( 'Pennsylvania', 'koalaforms'),
+	'RI' => __( 'Rhode Island', 'koalaforms'),
+	'SC' => __( 'South Carolina', 'koalaforms'),
+	'SD' => __( 'South Dakota', 'koalaforms'),
+	'TN' => __( 'Tennessee', 'koalaforms'),
+	'TX' => __( 'Texas', 'koalaforms'),
+	'UT' => __( 'Utah', 'koalaforms'),
+	'VT' => __( 'Vermont', 'koalaforms'),
+	'VA' => __( 'Virginia', 'koalaforms'),
+	'WA' => __( 'Washington', 'koalaforms'),
+	'WV' => __( 'West Virginia', 'koalaforms'),
+	'WI' => __( 'Wisconsin', 'koalaforms'),
+	'WY' => __( 'Wyoming', 'koalaforms'),
+	'AA' => __( 'Armed Forces (AA)', 'koalaforms'),
+	'AE' => __( 'Armed Forces (AE)', 'koalaforms'),
+	'AP' => __( 'Armed Forces (AP)', 'koalaforms'),
+);

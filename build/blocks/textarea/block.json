@@ -1,0 +1,53 @@
+{
+  "apiVersion": 3,
+  "name": "Textarea",
+  "version": "0.1.0",
+  "title": "Long Text",
+  "icon": "edit",
+  "description": "An input elements to enter multiple lines of text.",
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "requiredError": {
+      "type": "string",
+      "default": null
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": "false"
+    },
+    "rows": {
+      "type": "number",
+      "default": null
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

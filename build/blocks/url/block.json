@@ -1,0 +1,65 @@
+{
+  "apiVersion": 3,
+  "name": "URL",
+  "version": "0.1.0",
+  "title": "URL",
+  "icon": "edit",
+  "description": "An input field for entering a URL.",
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "minLength": {
+      "type": "number",
+      "default": null
+    },
+    "maxLength": {
+      "type": "number",
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "pattern": {
+      "type": "string",
+      "default": ""
+    },
+    "patternError": {
+      "type": "string",
+      "default": ""
+    },
+    "requiredError": {
+      "type": "string",
+      "default": "This field is required."
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

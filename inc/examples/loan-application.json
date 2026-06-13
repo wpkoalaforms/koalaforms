@@ -1,0 +1,141 @@
+{
+  "title": "Loan Application",
+  "settings": {
+    "is_active": true,
+    "success_message": "Your application has been submitted. A loan officer will contact you within 2 business days.",
+    "admin_notification": true,
+    "primary_email_field": "email"
+  },
+  "steps": [
+    {
+      "label": "Personal Information",
+      "next_label": "Next: Employment",
+      "columns": [
+        [
+          { "type": "text",  "label": "First Name",   "placeholder": "John",  "required": true },
+          { "type": "text",  "label": "Last Name",    "placeholder": "Smith", "required": true }
+        ],
+        [
+          { "type": "date",  "label": "Date of Birth", "required": true },
+          { "type": "text",  "label": "National ID / SSN (last 4 digits)", "placeholder": "XXXX", "required": true }
+        ],
+        [
+          { "type": "email", "label": "Email Address", "required": true },
+          { "type": "text",  "label": "Phone Number",  "placeholder": "+1 234 567 8900", "required": true }
+        ]
+      ],
+      "fields": [
+        {
+          "type": "radio",
+          "label": "Marital Status",
+          "required": true,
+          "options": ["Single", "Married", "Divorced", "Widowed"]
+        },
+        { "type": "number", "label": "Number of Dependants", "required": true, "min": 0, "max": 20, "placeholder": "0" },
+        { "type": "address", "label": "Current Residential Address", "required": true },
+        {
+          "type": "select",
+          "label": "Residential Status",
+          "required": true,
+          "options": ["Owner", "Renting", "Living with family", "Other"]
+        },
+        { "type": "number", "label": "Years at Current Address", "required": true, "min": 0, "placeholder": "3" }
+      ]
+    },
+    {
+      "label": "Employment & Income",
+      "next_label": "Next: Loan Details",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "radio",
+          "label": "Employment Status",
+          "required": true,
+          "options": ["Full-time employed", "Part-time employed", "Self-employed", "Retired", "Unemployed"]
+        },
+        { "type": "text",    "label": "Employer Name",         "placeholder": "Acme Corp", "required": false },
+        { "type": "text",    "label": "Job Title",             "placeholder": "e.g. Software Engineer", "required": false },
+        { "type": "number",  "label": "Years with Employer",   "placeholder": "3", "required": false, "min": 0 },
+        { "type": "number",  "label": "Annual Gross Income (USD)", "placeholder": "75000", "required": true, "min": 0 },
+        { "type": "number",  "label": "Other Annual Income (USD)", "placeholder": "0",     "required": false, "min": 0 },
+        { "type": "textarea","label": "Source of Other Income", "placeholder": "e.g. rental income, investments...", "required": false, "rows": 3 },
+        {
+          "type": "multiselect",
+          "label": "Existing Financial Commitments",
+          "required": false,
+          "options": ["Mortgage", "Car loan", "Credit card debt", "Student loan", "Personal loan", "None"]
+        },
+        { "type": "number", "label": "Total Monthly Debt Payments (USD)", "placeholder": "500", "required": true, "min": 0 }
+      ]
+    },
+    {
+      "label": "Loan Details",
+      "next_label": "Next: Declaration",
+      "prev_label": "Back",
+      "columns": [
+        [
+          { "type": "number", "label": "Loan Amount Requested (USD)", "placeholder": "10000", "required": true, "min": 1000 },
+          { "type": "number", "label": "Preferred Repayment Term (months)", "placeholder": "36", "required": true, "min": 6, "max": 360 }
+        ]
+      ],
+      "fields": [
+        {
+          "type": "select",
+          "label": "Loan Purpose",
+          "required": true,
+          "options": ["Home improvement", "Debt consolidation", "Vehicle purchase", "Medical expenses", "Education", "Business", "Holiday / Travel", "Other"]
+        },
+        { "type": "textarea", "label": "Describe the purpose of the loan", "required": true, "placeholder": "Please provide more detail about how you intend to use the funds...", "rows": 4 },
+        {
+          "type": "radio",
+          "label": "Do you have collateral to offer?",
+          "required": true,
+          "options": ["Yes", "No"]
+        },
+        { "type": "textarea", "label": "Describe collateral (if applicable)", "required": false, "placeholder": "e.g. vehicle, property, savings account...", "rows": 3 },
+        {
+          "type": "select",
+          "label": "Credit Score Range (self-reported)",
+          "required": false,
+          "options": ["Excellent (750+)", "Good (700 - 749)", "Fair (650 - 699)", "Poor (below 650)", "Unknown"]
+        }
+      ]
+    },
+    {
+      "label": "Declaration & Consent",
+      "next_label": "Submit Application",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "text", "label": "Full Legal Name (as signature)", "placeholder": "John Michael Smith", "required": true },
+        { "type": "date", "label": "Today's Date", "required": true },
+        {
+          "type": "disclosure",
+          "label": "Credit Check Authorisation",
+          "name": "credit_check",
+          "required": true,
+          "required_error": "You must authorise a credit check to proceed.",
+          "check_label": "I authorise the lender to obtain a credit report on my behalf.",
+          "content": "By proceeding, you authorise us to obtain a consumer credit report from one or more credit reporting agencies. This may appear as a hard inquiry on your credit file.<br><br>This check is required to assess your eligibility for the requested loan."
+        },
+        {
+          "type": "disclosure",
+          "label": "Applicant Declaration",
+          "name": "applicant_declaration",
+          "required": true,
+          "required_error": "You must agree to the declaration to submit your application.",
+          "check_label": "I declare that all information provided is true, complete, and accurate.",
+          "content": "I understand that providing false or misleading information in connection with a loan application is a serious offence and may result in immediate rejection, cancellation of any loan approved, and/or legal action.<br><br>I agree to notify the lender immediately of any changes to my financial circumstances during the assessment period."
+        },
+        {
+          "type": "disclosure",
+          "label": "Privacy Notice",
+          "name": "privacy_notice",
+          "required": true,
+          "required_error": "You must acknowledge the privacy notice to proceed.",
+          "check_label": "I acknowledge the collection and use of my personal and financial information as described.",
+          "content": "Your personal and financial information is collected to assess your loan application and manage your account. It may be shared with credit bureaus, fraud prevention agencies, and regulatory bodies as required by law.<br><br>You may access your information by contacting our privacy officer."
+        }
+      ]
+    }
+  ]
+}

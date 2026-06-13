@@ -1,0 +1,66 @@
+{
+	"apiVersion": 3,
+	"name": "Email",
+	"version": "0.1.0",
+	"title": "Email",
+	"icon": "edit",
+	"description": "An input to allow selection of multiple items.",
+	"attributes": {
+		"value": {
+			"type": "string",
+			"default": ""
+		},
+		"inputLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"minLength": {
+			"type": "number",
+			"default": null
+		},
+		"maxLength": {
+			"type": "number",
+			"default": null
+		},
+		"placeholder":{
+			"type": "string",
+			"default": ""
+		},
+		"pattern":{
+			"type": "string",
+			"default": ""
+		},
+		"patternError":{
+			"type": "string",
+			"default": ""
+		},
+		"requiredError": {
+			"type": "string",
+			"default": null
+		},
+		"defaultValue": {
+			"type": "string",
+			"default": ""
+		},
+		"readOnly": {
+			"type": "boolean",
+			"default": false
+		},
+		"usermeta": {
+			"type": "string",
+			"default": null
+		}
+	},
+	"textdomain": "koalaforms",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

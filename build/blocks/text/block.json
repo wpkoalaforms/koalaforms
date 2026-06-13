@@ -1,0 +1,89 @@
+{
+  "apiVersion": 3,
+  "name": "Text",
+  "version": "0.1.0",
+  "title": "Text",
+  "icon": "edit",
+  "description": "The Text element is a one-line text input field.",
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "minLength": {
+      "type": "number",
+      "default": null
+    },
+    "maxLength": {
+      "type": "number",
+      "default": null
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "pattern": {
+      "type": "string",
+      "default": ""
+    },
+    "patternError": {
+      "type": "string",
+      "default": ""
+    },
+    "requiredError": {
+      "type": "string",
+      "default": null
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "mask": {
+      "type": "string",
+      "default": ""
+    },
+    "previewHTML": {
+      "type": "string",
+      "default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black'><circle cx='50' cy='50' r='40' stroke-width='3' /></svg>"
+    },
+    "subtype": {
+      "type": "string",
+      "default": ""
+    },
+    "hidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "unique": {
+      "type": "boolean",
+      "default": false
+    },
+    "uniqueErr": {
+      "type": "string",
+      "default": null
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

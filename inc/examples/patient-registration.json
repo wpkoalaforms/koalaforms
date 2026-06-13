@@ -1,0 +1,141 @@
+{
+  "title": "Patient Registration",
+  "settings": {
+    "is_active": true,
+    "success_message": "Your registration has been received. Our team will contact you to confirm your appointment.",
+    "admin_notification": true,
+    "primary_email_field": "email"
+  },
+  "steps": [
+    {
+      "label": "Personal Details",
+      "next_label": "Next: Medical History",
+      "columns": [
+        [
+          { "type": "text",  "label": "First Name",   "placeholder": "Jane",  "required": true },
+          { "type": "text",  "label": "Last Name",    "placeholder": "Smith", "required": true }
+        ],
+        [
+          { "type": "date",  "label": "Date of Birth", "required": true },
+          { "type": "text",  "label": "Medicare / Insurance Number", "placeholder": "e.g. 1234-56789-0", "required": false }
+        ],
+        [
+          { "type": "email", "label": "Email Address", "required": true },
+          { "type": "text",  "label": "Phone Number",  "placeholder": "+1 234 567 8900", "required": true }
+        ]
+      ],
+      "fields": [
+        {
+          "type": "radio",
+          "label": "Gender",
+          "required": true,
+          "options": ["Male", "Female", "Non-binary", "Prefer not to say"]
+        },
+        {
+          "type": "select",
+          "label": "Marital Status",
+          "required": false,
+          "options": ["Single", "Married", "Divorced", "Widowed", "Prefer not to say"]
+        },
+        { "type": "address", "label": "Home Address", "required": true },
+        { "type": "text",    "label": "Emergency Contact Name",   "placeholder": "Full name",         "required": true },
+        { "type": "text",    "label": "Emergency Contact Number", "placeholder": "+1 234 567 8900",   "required": true },
+        {
+          "type": "select",
+          "label": "Relationship to Emergency Contact",
+          "required": true,
+          "options": ["Spouse", "Parent", "Sibling", "Child", "Friend", "Other"]
+        }
+      ]
+    },
+    {
+      "label": "Medical History",
+      "next_label": "Next: Current Visit",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "multiselect",
+          "label": "Existing Conditions",
+          "required": false,
+          "options": ["Diabetes", "Hypertension", "Heart Disease", "Asthma", "Arthritis", "Depression / Anxiety", "Cancer", "None"]
+        },
+        { "type": "textarea", "label": "Current Medications",  "required": false, "placeholder": "List any medications you are currently taking...", "rows": 4 },
+        { "type": "textarea", "label": "Known Allergies",      "required": false, "placeholder": "e.g. Penicillin, peanuts, latex...", "rows": 3 },
+        { "type": "textarea", "label": "Previous Surgeries",   "required": false, "placeholder": "List any previous surgeries and approximate dates...", "rows": 3 },
+        {
+          "type": "radio",
+          "label": "Do you smoke?",
+          "required": true,
+          "options": ["Never", "Former smoker", "Current smoker"]
+        },
+        {
+          "type": "radio",
+          "label": "Alcohol consumption",
+          "required": true,
+          "options": ["None", "Occasional", "Moderate", "Heavy"]
+        },
+        {
+          "type": "select",
+          "label": "Primary Care Physician",
+          "required": false,
+          "options": ["Dr. Adams", "Dr. Brown", "Dr. Chen", "Dr. Patel", "No preference"]
+        }
+      ]
+    },
+    {
+      "label": "Current Visit",
+      "next_label": "Next: Consent",
+      "prev_label": "Back",
+      "fields": [
+        { "type": "textarea", "label": "Reason for Visit",          "required": true,  "placeholder": "Describe your main symptoms or reason for visiting...", "rows": 5 },
+        { "type": "number",   "label": "Pain Level (0 = none, 10 = severe)", "required": false, "min": 0, "max": 10 },
+        { "type": "date",     "label": "Symptom Onset Date",        "required": false },
+        {
+          "type": "select",
+          "label": "Appointment Type",
+          "required": true,
+          "options": ["General Check-up", "Follow-up", "Specialist Referral", "Urgent Care", "Telehealth"]
+        },
+        {
+          "type": "radio",
+          "label": "Preferred Appointment Time",
+          "required": true,
+          "options": ["Morning (8am - 12pm)", "Afternoon (12pm - 5pm)", "Evening (5pm - 8pm)"]
+        },
+        {
+          "type": "multiselect",
+          "label": "Preferred Days",
+          "required": false,
+          "options": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        },
+        { "type": "textarea", "label": "Additional Notes for the Doctor", "required": false, "placeholder": "Any other information you'd like us to know...", "rows": 4 }
+      ]
+    },
+    {
+      "label": "Consent & Privacy",
+      "next_label": "Complete Registration",
+      "prev_label": "Back",
+      "fields": [
+        {
+          "type": "disclosure",
+          "label": "Treatment Consent",
+          "name": "treatment_consent",
+          "required": true,
+          "required_error": "You must consent to treatment to complete registration.",
+          "check_label": "I consent to examination and treatment by the medical team.",
+          "content": "I authorise the medical staff of this practice to perform necessary examinations, tests, and treatment procedures as deemed appropriate by the attending physician.<br><br>I understand that no guarantee has been made as to the result of any treatment."
+        },
+        {
+          "type": "disclosure",
+          "label": "Medical Records & Privacy",
+          "name": "records_consent",
+          "required": true,
+          "required_error": "You must accept the privacy policy to proceed.",
+          "check_label": "I consent to the collection and use of my medical information as described.",
+          "content": "Your medical information is protected under applicable privacy laws. It will only be shared with treating physicians, specialists involved in your care, or as required by law.<br><br>You have the right to access your records at any time. Contact our privacy officer for requests."
+        },
+        { "type": "checkbox", "label": "I confirm all information provided is accurate to the best of my knowledge.", "required": false }
+      ]
+    }
+  ]
+}

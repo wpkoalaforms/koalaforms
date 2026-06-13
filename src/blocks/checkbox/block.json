@@ -1,0 +1,37 @@
+{
+	"apiVersion": 3,
+	"name": "Checkbox",
+	"version": "0.1.0",
+	"title": "Checkbox",
+	"icon": "edit",
+	"description": "An input field for a boolean true or false checkbox.",
+	"attributes": {
+		"inputLabel": {
+			"type": "string",
+			"default": null
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"defaultCBValue": {
+			"type": "boolean",
+			"default": false
+		},
+		"readOnly": {
+			"type": "boolean",
+			"default": false
+		},
+		"conditions": {
+			"type": "array",
+			"default": []
+		},
+		"usermeta": {
+			"type": "string",
+			"default": null
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

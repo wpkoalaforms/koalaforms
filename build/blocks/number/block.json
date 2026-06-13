@@ -1,0 +1,61 @@
+{
+  "apiVersion": 3,
+  "name": "Number",
+  "version": "0.1.0",
+  "title": "Number",
+  "icon": "edit",
+  "description": "A numeric input field.",
+  "attributes": {
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "pattern": {
+      "type": "string",
+      "default": ""
+    },
+    "patternError": {
+      "type": "string",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "requiredError": {
+      "type": "string",
+      "default": null
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": "false"
+    },
+    "min": {
+      "type": "number",
+      "default": null
+    },
+    "max": {
+      "type": "number",
+      "default": null
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

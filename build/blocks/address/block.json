@@ -1,0 +1,29 @@
+{
+  "apiVersion": 3,
+  "name": "Address",
+  "version": "0.1.0",
+  "title": "Address",
+  "icon": "edit",
+  "description": "Group of fields to gather address details.",
+  "attributes": {
+    "inputLabel": {
+      "type": "string",
+      "default": null
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "previewHTML": {
+      "type": "string",
+      "default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black'><circle cx='50' cy='50' r='40' stroke-width='3' /></svg>"
+    },
+    "hiddenAddressFields": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -1,0 +1,66 @@
+{
+  "apiVersion": 3,
+  "name": "Radio",
+  "version": "0.1.0",
+  "title": "Radio",
+  "icon": "edit",
+  "description": "An input field to let a user select one of many items.",
+  "attributes": {
+    "inputLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "name": {
+      "type": "string",
+      "default": ""
+    },
+    "value": {
+      "type": "string",
+      "default": ""
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "requiredError": {
+      "type": "string",
+      "default": null
+    },
+    "options": {
+      "type": "array",
+      "default": null
+    },
+    "displayMode": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "displayOptions": {
+      "type": "array",
+      "default": [
+        {
+          "label": "Vertical",
+          "value": "vertical"
+        },
+        {
+          "label": "Horizontal",
+          "value": "horizontal"
+        }
+      ]
+    },
+    "usermeta": {
+      "type": "string",
+      "default": null
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

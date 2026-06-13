@@ -1,0 +1,74 @@
+{
+	"apiVersion": 3,
+	"name": "Date",
+	"version": "0.1.0",
+	"title": "Date",
+	"icon": "edit",
+	"description": "An input field for a date.",
+	"attributes": {
+		"value": {
+			"type": "string",
+			"default": ""
+		},
+		"inputLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"minDate": {
+			"type": "string",
+			"default": null
+		},
+		"maxDate": {
+			"type": "string",
+			"default": null
+		},
+		"placeholder":{
+			"type": "string",
+			"default": ""
+		},
+		"readOnly":{
+			"type": "boolean",
+			"default": false
+		},
+		"requiredError": {
+			"type": "string",
+			"default": null
+		},
+		"dateFormat": {
+			"type": "string",
+			"default": "MM-dd-YYYY"
+		},
+		"isAge": {
+			"type": "boolean",
+			"default": false
+		},
+		"minAge": {
+			"type": "number",
+			"default": null
+		},
+		"maxAge": {
+			"type": "number",
+			"default": null
+		},
+		"ageValidationMessage": {
+			"type": "string",
+			"default" : ""
+		},
+		"usermeta": {
+			"type": "string",
+			"default": null
+		}
+	},
+	"textdomain": "koalaforms",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

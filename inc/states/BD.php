@@ -1,0 +1,78 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+/**
+ * Bangladeshi states (districts)
+ *
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$states['BD'] = array(
+	'BAG'  => __( 'Bagerhat', 'koalaforms'),
+	'BAN'  => __( 'Bandarban', 'koalaforms'),
+	'BAR'  => __( 'Barguna', 'koalaforms'),
+	'BARI' => __( 'Barisal', 'koalaforms'),
+	'BHO'  => __( 'Bhola', 'koalaforms'),
+	'BOG'  => __( 'Bogra', 'koalaforms'),
+	'BRA'  => __( 'Brahmanbaria', 'koalaforms'),
+	'CHA'  => __( 'Chandpur', 'koalaforms'),
+	'CHI'  => __( 'Chittagong', 'koalaforms'),
+	'CHU'  => __( 'Chuadanga', 'koalaforms'),
+	'COM'  => __( 'Comilla', 'koalaforms'),
+	'COX'  => __( "Cox's Bazar", 'koalaforms'),
+	'DHA'  => __( 'Dhaka', 'koalaforms'),
+	'DIN'  => __( 'Dinajpur', 'koalaforms'),
+	'FAR'  => __( 'Faridpur ', 'koalaforms'),
+	'FEN'  => __( 'Feni', 'koalaforms'),
+	'GAI'  => __( 'Gaibandha', 'koalaforms'),
+	'GAZI' => __( 'Gazipur', 'koalaforms'),
+	'GOP'  => __( 'Gopalganj', 'koalaforms'),
+	'HAB'  => __( 'Habiganj', 'koalaforms'),
+	'JAM'  => __( 'Jamalpur', 'koalaforms'),
+	'JES'  => __( 'Jessore', 'koalaforms'),
+	'JHA'  => __( 'Jhalokati', 'koalaforms'),
+	'JHE'  => __( 'Jhenaidah', 'koalaforms'),
+	'JOY'  => __( 'Joypurhat', 'koalaforms'),
+	'KHA'  => __( 'Khagrachhari', 'koalaforms'),
+	'KHU'  => __( 'Khulna', 'koalaforms'),
+	'KIS'  => __( 'Kishoreganj', 'koalaforms'),
+	'KUR'  => __( 'Kurigram', 'koalaforms'),
+	'KUS'  => __( 'Kushtia', 'koalaforms'),
+	'LAK'  => __( 'Lakshmipur', 'koalaforms'),
+	'LAL'  => __( 'Lalmonirhat', 'koalaforms'),
+	'MAD'  => __( 'Madaripur', 'koalaforms'),
+	'MAG'  => __( 'Magura', 'koalaforms'),
+	'MAN'  => __( 'Manikganj ', 'koalaforms'),
+	'MEH'  => __( 'Meherpur', 'koalaforms'),
+	'MOU'  => __( 'Moulvibazar', 'koalaforms'),
+	'MUN'  => __( 'Munshiganj', 'koalaforms'),
+	'MYM'  => __( 'Mymensingh', 'koalaforms'),
+	'NAO'  => __( 'Naogaon', 'koalaforms'),
+	'NAR'  => __( 'Narail', 'koalaforms'),
+	'NARG' => __( 'Narayanganj', 'koalaforms'),
+	'NARD' => __( 'Narsingdi', 'koalaforms'),
+	'NAT'  => __( 'Natore', 'koalaforms'),
+	'NAW'  => __( 'Nawabganj', 'koalaforms'),
+	'NET'  => __( 'Netrakona', 'koalaforms'),
+	'NIL'  => __( 'Nilphamari', 'koalaforms'),
+	'NOA'  => __( 'Noakhali', 'koalaforms'),
+	'PAB'  => __( 'Pabna', 'koalaforms'),
+	'PAN'  => __( 'Panchagarh', 'koalaforms'),
+	'PAT'  => __( 'Patuakhali', 'koalaforms'),
+	'PIR'  => __( 'Pirojpur', 'koalaforms'),
+	'RAJB' => __( 'Rajbari', 'koalaforms'),
+	'RAJ'  => __( 'Rajshahi', 'koalaforms'),
+	'RAN'  => __( 'Rangamati', 'koalaforms'),
+	'RANP' => __( 'Rangpur', 'koalaforms'),
+	'SAT'  => __( 'Satkhira', 'koalaforms'),
+	'SHA'  => __( 'Shariatpur', 'koalaforms'),
+	'SHE'  => __( 'Sherpur', 'koalaforms'),
+	'SIR'  => __( 'Sirajganj', 'koalaforms'),
+	'SUN'  => __( 'Sunamganj', 'koalaforms'),
+	'SYL'  => __( 'Sylhet', 'koalaforms'),
+	'TAN'  => __( 'Tangail', 'koalaforms'),
+	'THA'  => __( 'Thakurgaon', 'koalaforms'),
+);
