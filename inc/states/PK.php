@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Pakistan's states
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['PK'] = array(
 	'JK' => __( 'Azad Kashmir', 'koalaforms'),
 	'BA' => __( 'Balochistan', 'koalaforms'),

@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Hungary states
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['HU'] = array(
 	'BK' => __( 'Bács-Kiskun', 'koalaforms'),
 	'BE' => __( 'Békés', 'koalaforms'),

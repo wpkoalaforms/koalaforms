@@ -29,8 +29,8 @@ foreach ($submissions as $submission) {
         $haystack = array(
             (string) (!empty($submission['ID']) ? $submission['ID'] : ''),
             (string) (!empty($submission['form_name']) ? $submission['form_name'] : ''),
-            (string) (!empty($submission[AppUtility::meta_key('browser')]) ? $submission[AppUtility::meta_key('browser')] : ''),
-            (string) (!empty($submission[AppUtility::meta_key('device')]) ? $submission[AppUtility::meta_key('device')] : ''),
+            (string) (!empty($submission['browser']) ? $submission['browser'] : ''),
+            (string) (!empty($submission['device']) ? $submission['device'] : ''),
             (string) (!empty($submission['unique_id']) ? $submission['unique_id'] : ''),
             (string) (!empty($submission['submission_date']) ? $submission['submission_date'] : ''),
         );
@@ -245,7 +245,8 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                 <?php if (!empty($filtered_submissions)) : ?>
                     <?php foreach ($filtered_submissions as $submission) : ?>
                         <?php
-                        $status_label = 'read' === $status ? __('Read', 'koalaforms') : __('Unread', 'koalaforms');
+                        $row_status   = !empty($submission['submission_status']) ? sanitize_key($submission['submission_status']) : 'unread';
+                        $status_label = 'read' === $row_status ? __('Read', 'koalaforms') : __('Unread', 'koalaforms');
                         $first_field_label = '';
                         $first_field_value = '';
                         if (!empty($submission['form_fields']) && is_array($submission['form_fields'])) {
@@ -277,7 +278,7 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                                 </a>
                             </td>
                             <td data-colname="<?php echo esc_attr__('Status', 'koalaforms'); ?>">
-                                <span class="kf-submission-status-badge kf-submission-status-<?php echo esc_attr($status); ?>">
+                                <span class="kf-submission-status-badge kf-submission-status-<?php echo esc_attr($row_status); ?>">
                                     <?php echo esc_html($status_label); ?>
                                 </span>
                             </td>
@@ -301,19 +302,6 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
             </tbody>
         </table>
 
-        <div class="tablenav bottom">
-            <div class="alignleft actions">
-                <label for="filter-by-form-bottom" class="screen-reader-text"><?php echo esc_html__('Filter by form', 'koalaforms'); ?></label>
-                <select name="form_filter" id="filter-by-form-bottom">
-                    <option value=""><?php echo esc_html__('All Form Entries', 'koalaforms'); ?></option>
-                    <?php foreach ($forms as $form) : ?>
-                        <option value="<?php echo esc_attr($form->ID); ?>" <?php selected($form_filter, $form->ID); ?>>
-                            <?php echo esc_html($form->post_title ? $form->post_title : __('Untitled form', 'koalaforms')); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <?php submit_button(__('Filter', 'koalaforms'), 'secondary', '', false); ?>
-            </div>
-        </div>
+        
     </form>
 </div>

@@ -178,7 +178,7 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                 {"displayMode" in attributes && (
                     <div className={`${PREFIX}-setting`}>
                         <SelectControl
-                            label={__('Display Mode', PREFIX)} // Label for the dropdown
+                            label={__('Display Mode', 'koalaforms')}
                             value={displayMode} // Current value of the dropdown
                             options={displayOptions} // Array of options
                             onChange={(newValue) => setAttributes({ displayMode: newValue })}

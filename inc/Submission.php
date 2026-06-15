@@ -143,12 +143,15 @@ class Submission extends Post{
                     'value' => $all_meta[$key][0],
                 );
             } else {
-                $submission_data[$key] = $all_meta[$key][0];
+                $unprefixed_key = strpos($key, AppUtility::PLUGIN_PREFIX) === 0
+                    ? substr($key, strlen(AppUtility::PLUGIN_PREFIX))
+                    : $key;
+                $submission_data[$unprefixed_key] = $all_meta[$key][0];
             }
         }
     
         $submission_data['form_name']        = $form ? $form->post_title : '';
-        $submissions_data['form_id']         = $form_id;
+        $submission_data['form_id']          = $form_id;
         $submission_data['ID']               = $post_id;
         $submission_data['form_fields']      = $fields_data;
         $submission_data['submission_date']  = get_the_date('', $this->get($post_id));
@@ -234,7 +237,7 @@ class Submission extends Post{
             return;
         }
 
-        if(!isset($_GET['submission_filter_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['submission_filter_nonce'])), 'filter_submission_action')){
+        if(!isset($_GET['submission_filter_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['submission_filter_nonce'])), 'koalaforms_filter_submission_action')){
             return;
         }
         
@@ -267,6 +270,10 @@ class Submission extends Post{
         global $wpdb;
 
         if ( ! is_search() || ! $wp_query->is_main_query() ) {
+            return $search;
+        }
+
+        if ( $wp_query->get( 'post_type' ) !== AppUtility::SUBMISSION_POST_TYPE ) {
             return $search;
         }
     

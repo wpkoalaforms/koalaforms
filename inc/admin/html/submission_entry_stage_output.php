@@ -45,7 +45,7 @@ $stage_is_removed = !empty($current_stage) && $current_index === false;
         <div class="<?php echo esc_attr($classes); ?>"
              data-stage="<?php echo esc_attr($label); ?>"
              title="<?php echo esc_attr($label); ?>"
-             onclick="kfSelectStage(this)">
+             onclick="koalaformsSelectStage(this)">
             <span class="kf-step-label"><?php echo esc_html($label); ?></span>
         </div>
     <?php endforeach; ?>
@@ -60,7 +60,7 @@ $stage_is_removed = !empty($current_stage) && $current_index === false;
         <div class="kf-modal-body kf-p-4">
             <div>
                 <h3 class="kf-modal-title kf-m-0 kf-pb-2">
-                    <?php esc_html_e("Moving to Stage", 'koalaforms'); ?>
+                    <?php esc_html_e('Moving to Stage', 'koalaforms'); ?>
                 </h3>
                 <span class="kf-modal-close kf-position-absolute kf-cursor"
                       id="kf-stage-modal-close">&times;</span>
@@ -68,21 +68,21 @@ $stage_is_removed = !empty($current_stage) && $current_index === false;
             <div class="kf-modal-content-wrap kf-mt-4">
                 <label for="koalaforms_stage_note_input"
                        style="display:block;font-size:12px;font-weight:600;margin-bottom:6px;">
-                    <?php esc_html_e("Note", 'koalaforms'); ?>
+                    <?php esc_html_e('Note', 'koalaforms'); ?>
                     <span style="font-weight:400;color:#888;">
-                        <?php esc_html_e("(optional)", 'koalaforms'); ?>
+                        <?php esc_html_e('(optional)', 'koalaforms'); ?>
                     </span>
                 </label>
                 <textarea id="koalaforms_stage_note_input"
                           rows="3"
                           style="width:100%;font-size:12px;resize:vertical;box-sizing:border-box;"
-                          placeholder="<?php echo esc_attr(__("Why is this stage changing?", 'koalaforms')); ?>"></textarea>
+                          placeholder="<?php echo esc_attr__('Why is this stage changing?', 'koalaforms'); ?>"></textarea>
                 <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;">
                     <button type="button" class="button" id="kf-stage-modal-cancel">
-                        <?php esc_html_e("Cancel", 'koalaforms'); ?>
+                        <?php esc_html_e('Cancel', 'koalaforms'); ?>
                     </button>
                     <button type="button" class="button button-primary" id="kf-stage-modal-apply">
-                        &#10003; <?php esc_html_e("Apply Changes", 'koalaforms'); ?>
+                        &#10003; <?php esc_html_e('Apply Changes', 'koalaforms'); ?>
                     </button>
                 </div>
             </div>

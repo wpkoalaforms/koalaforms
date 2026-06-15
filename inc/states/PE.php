@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Peru states
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['PE'] = array(
 	'CAL' => __( 'El Callao', 'koalaforms'),
 	'LMA' => __( 'Municipalidad Metropolitana de Lima', 'koalaforms'),

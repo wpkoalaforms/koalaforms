@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Turkey States
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['TR'] = array(
 	'TR01' => __( 'Adana', 'koalaforms'),
 	'TR02' => __( 'Ad&#305;yaman', 'koalaforms'),

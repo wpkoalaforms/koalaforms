@@ -1,4 +1,8 @@
 <?php
+namespace KoalaForms;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Class AppUtility
  *
@@ -14,7 +18,6 @@
  * Usage of constants helps maintain consistency across the codebase and simplifies
  * future updates to configuration values, as changes need to be made in only one place.
  */
-namespace KoalaForms;
 use DateTime;
 use Exception;
 

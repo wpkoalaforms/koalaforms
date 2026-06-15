@@ -5,9 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * South African states
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
 $states['ZA'] = array(
 	'EC'  => __( 'Eastern Cape', 'koalaforms'),
 	'FS'  => __( 'Free State', 'koalaforms'),

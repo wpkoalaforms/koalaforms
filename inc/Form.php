@@ -84,7 +84,7 @@ class Form extends Post{
 
         $entries_url = wp_nonce_url(
             admin_url('edit.php?post_type=' . AppUtility::SUBMISSION_POST_TYPE . '&form_filter=' . absint($post->ID)),
-            'filter_submission_action',
+            'koalaforms_filter_submission_action',
             'submission_filter_nonce'
         );
         $ordered_actions['entries'] = sprintf(
@@ -624,6 +624,6 @@ class Form extends Post{
         echo wp_kses_post( join( "\n", $options ) );
         echo '</select>';
 
-        wp_nonce_field('filter_submission_action', 'submission_filter_nonce');
+        wp_nonce_field('koalaforms_filter_submission_action', 'submission_filter_nonce');
     }
 }

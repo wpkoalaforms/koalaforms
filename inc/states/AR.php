@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Argentinian provinces
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['AR'] = array(
 	'C' => __( 'Ciudad Aut&oacute;noma de Buenos Aires', 'koalaforms'),
 	'B' => __( 'Buenos Aires', 'koalaforms'),

@@ -6,10 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['IE'] = array(
 	'CW' => __( 'Carlow', 'koalaforms'),
 	'CN' => __( 'Cavan', 'koalaforms'),

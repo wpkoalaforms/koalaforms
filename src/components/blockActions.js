@@ -39,10 +39,10 @@ const withMergeFieldInspectorControls = createHigherOrderComponent((BlockEdit) =
             <>
                 <BlockEdit {...props} />
                 <InspectorControls>
-                    <PanelBody title={__('Merge Fields', PREFIX)}>
+                    <PanelBody title={__('Merge Fields', 'koalaforms')}>
                         <SelectControl
-                            label={__('Insert Merge Field', PREFIX)}
-                            options={[{ label: __('Select...', PREFIX), value: '' }, ...mergeFields]}
+                            label={__('Insert Merge Field', 'koalaforms')}
+                            options={[{ label: __('Select...', 'koalaforms'), value: '' }, ...mergeFields]}
                             onChange={(value) => value && onInsertMergeField(value)}
                         />
                     </PanelBody>

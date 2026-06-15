@@ -137,7 +137,7 @@ function applyStepStyles(steps, activeIdx) {
     });
 }
 
-window.kfSelectStage = function (el) {
+window.koalaformsSelectStage = function (el) {
     if (el.classList.contains('is-active')) return;
 
     var steps = Array.from(document.querySelectorAll('#kf-stage-path .kf-step'));

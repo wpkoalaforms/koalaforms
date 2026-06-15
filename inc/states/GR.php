@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Greek Regions
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['GR'] = array(
 	'I' => __( 'Αττική', 'koalaforms'),
 	'A' => __( 'Ανατολική Μακεδονία και Θράκη', 'koalaforms'),

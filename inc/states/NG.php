@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Nigerian provinces
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['NG'] = array(
 	'AB' => __( 'Abia', 'koalaforms'),
 	'FC' => __( 'Abuja', 'koalaforms'),

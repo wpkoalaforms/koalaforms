@@ -90,7 +90,7 @@ class AdminPage{
         $payload = $this->prepare_dashboard_payload();
 
         wp_enqueue_script('koalaforms-admin-dashboard');
-        wp_localize_script('koalaforms-admin-dashboard', 'kfDashboardPageData', $payload);
+        wp_localize_script('koalaforms-admin-dashboard', 'koalaformsDashboardPageData', $payload);
     }
 
     private function prepare_dashboard_payload() {
@@ -178,8 +178,8 @@ class AdminPage{
                     'statusClass' => $status_class,
                     'date' => get_the_date('', $form),
                     'entries' => number_format_i18n($entries),
-                    /* translators: %d: form ID number */
-                    'shortcode' => sprintf(__('Shortcode: [KoalaForms form_id="%d"]', 'koalaforms'), absint($form->ID)),
+                    /* translators: %s: the shortcode tag, e.g. [KoalaForms form_id="3"] */
+                    'shortcode' => sprintf(__('Shortcode: %s', 'koalaforms'), '[KoalaForms form_id="' . absint($form->ID) . '"]'),
                 );
             }
         }
@@ -286,7 +286,7 @@ class AdminPage{
                     'id' => !empty($submission['ID']) ? absint($submission['ID']) : 0,
                     'formName' => !empty($submission['form_name']) ? $submission['form_name'] : __('Unknown form', 'koalaforms'),
                     'userName' => !empty($user) ? $user->display_name : __('Guest', 'koalaforms'),
-                    'browser' => !empty($submission[AppUtility::meta_key('browser')]) ? $submission[AppUtility::meta_key('browser')] : __('Unknown browser', 'koalaforms'),
+                    'browser' => !empty($submission['browser']) ? $submission['browser'] : __('Unknown browser', 'koalaforms'),
                     'date' => !empty($submission['submission_date']) ? $submission['submission_date'] : '',
                 );
             }

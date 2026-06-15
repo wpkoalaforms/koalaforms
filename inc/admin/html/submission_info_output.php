@@ -1,10 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-$browser = !empty($submission[KoalaForms\AppUtility::meta_key('browser')]) ? $submission[KoalaForms\AppUtility::meta_key('browser')] : 'Unknown';
-$device  = !empty($submission[KoalaForms\AppUtility::meta_key('device')])  ? $submission[KoalaForms\AppUtility::meta_key('device')]   : 'Unknown';
-$user    = empty($submission[KoalaForms\AppUtility::meta_key('user_id')])  ? (object) ['display_name' => 'Guest'] : get_userdata($submission[KoalaForms\AppUtility::meta_key('user_id')]);
-$unique_id = empty($submission[KoalaForms\AppUtility::meta_key('unique_id')]) ? null : $submission[KoalaForms\AppUtility::meta_key('unique_id')];
+$browser = !empty($submission['browser']) ? $submission['browser'] : 'Unknown';
+$device  = !empty($submission['device'])  ? $submission['device']  : 'Unknown';
+$user    = empty($submission['user_id'])  ? (object) ['display_name' => 'Guest'] : get_userdata($submission['user_id']);
+$unique_id = empty($submission['unique_id']) ? null : $submission['unique_id'];
 
 ?>
 <table class="widefat striped">
@@ -39,7 +39,7 @@ $unique_id = empty($submission[KoalaForms\AppUtility::meta_key('unique_id')]) ? 
 
             <?php if($user->display_name != 'Guest'): ?>
                 <td>
-                    <a target="_blank" href="<?php echo esc_attr(get_edit_user_link($submission[KoalaForms\AppUtility::meta_key('user_id')] ?? 0)); ?>"><?php echo esc_html($user->display_name); ?></a>
+                    <a target="_blank" href="<?php echo esc_attr(get_edit_user_link($submission['user_id'] ?? 0)); ?>"><?php echo esc_html($user->display_name); ?></a>
                 </td>
             <?php endif; ?>
         </tr>
@@ -53,12 +53,12 @@ $unique_id = empty($submission[KoalaForms\AppUtility::meta_key('unique_id')]) ? 
 
 <?php if (!empty($stage_history)): ?>
 <h4 style="margin:16px 0 8px;font-size:12px;text-transform:uppercase;color:#888;letter-spacing:.5px;">
-    <?php esc_html_e("Stage History", 'koalaforms'); ?>
+    <?php esc_html_e('Stage History', 'koalaforms'); ?>
 </h4>
 <ul style="margin:0;padding:0;list-style:none;">
     <?php foreach (array_reverse($stage_history) as $entry):
         $changed_by_user = !empty($entry['changed_by']) ? get_userdata($entry['changed_by']) : null;
-        $by_name         = $changed_by_user ? $changed_by_user->display_name : __("Unknown", 'koalaforms');
+        $by_name         = $changed_by_user ? $changed_by_user->display_name : __('Unknown', 'koalaforms');
         $by_link         = $changed_by_user ? get_edit_user_link($entry['changed_by']) : '';
         $date            = !empty($entry['changed_at'])
                             ? date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($entry['changed_at']))

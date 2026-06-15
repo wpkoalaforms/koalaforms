@@ -4,10 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Chinese states
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['CN'] = array(
 	'CN1'  => __( 'Yunnan / &#20113;&#21335;', 'koalaforms'),
 	'CN2'  => __( 'Beijing / &#21271;&#20140;', 'koalaforms'),

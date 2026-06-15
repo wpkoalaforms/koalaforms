@@ -4,10 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Angola states
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['AO'] = array(
 	'BGO' => __( 'Bengo', 'koalaforms'),
 	'BLU' => __( 'Benguela', 'koalaforms'),

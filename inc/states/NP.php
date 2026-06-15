@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Nepal states (Zones)
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['NP'] = array(
 	'BAG' => __( 'Bagmati', 'koalaforms'),
 	'BHE' => __( 'Bheri', 'koalaforms'),

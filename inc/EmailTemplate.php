@@ -1,6 +1,8 @@
 <?php
 namespace KoalaForms;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * @description: Class to support email template related operations throughout the plugin.
  */

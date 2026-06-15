@@ -1,6 +1,8 @@
 <?php
 namespace KoalaForms;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class Email
 {   
     private $from= null;

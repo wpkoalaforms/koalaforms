@@ -1,10 +1,12 @@
 <?php
+namespace KoalaForms;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
- * @description: The Blocks class provides functionality for managing Gutenberg block categories 
+ * @description: The Blocks class provides functionality for managing Gutenberg block categories
  * 				 and registering custom Gutenberg blocks.
  */
-
-namespace KoalaForms;
 
 class Blocks {
 	

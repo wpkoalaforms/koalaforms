@@ -1,6 +1,8 @@
 <?php
 namespace KoalaForms;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 abstract class Post
 {
     protected $post_type = 'post';

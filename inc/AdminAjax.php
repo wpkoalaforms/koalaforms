@@ -1,6 +1,7 @@
 <?php
-
 namespace KoalaForms;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class AdminAjax{
 
@@ -255,7 +256,7 @@ class AdminAjax{
             'CR' => __('Costa Rica', 'koalaforms'),
             'HR' => __('Croatia', 'koalaforms'),
             'CU' => __('Cuba', 'koalaforms'),
-            'CW' => __('Cura&ccedil;ao', 'koalaforms'),
+            'CW' => __('Curaçao', 'koalaforms'),
             'CY' => __('Cyprus', 'koalaforms'),
             'CZ' => __('Czech Republic', 'koalaforms'),
             'DK' => __('Denmark', 'koalaforms'),
@@ -460,10 +461,10 @@ class AdminAjax{
 
         $states= array();
         $code = isset( $_POST['country'] ) ? sanitize_text_field( wp_unslash( $_POST['country'] ) ) : '';
-        if(empty($code)){
-            return array();
+        if ( ! preg_match( '/^[A-Z]{2}$/', $code ) ) {
+            wp_send_json_error( array( 'error' => 'Invalid country code.' ) );
         }
-        
+
         $file_path = __DIR__."/states/".$code.".php";
         if (file_exists($file_path)){
             include $file_path;

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const payload = window.kfDashboardPageData || {};
+    const payload = window.koalaformsDashboardPageData || {};
 
     createApp(DashboardPage, { data: payload }).mount(mountPoint);
 });

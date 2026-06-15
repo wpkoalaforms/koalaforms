@@ -1,6 +1,7 @@
 <?php
-
 namespace KoalaForms;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class AdminLoader{
 
@@ -140,7 +141,7 @@ class AdminLoader{
     }
   
     public function filter_posts($query){
-        if(isset($_GET['submission_filter_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['submission_filter_nonce'], 'filter_submission_action')))){
+        if(isset($_GET['submission_filter_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['submission_filter_nonce'])), 'koalaforms_filter_submission_action')){
             // Make sure we're only modifying the query on the correct page
             if (is_admin() && $query->is_main_query() && $query->get('post_type') === AppUtility::SUBMISSION_POST_TYPE) {
                 $submission_model = Submission::create_instance();

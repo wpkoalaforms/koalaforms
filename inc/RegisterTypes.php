@@ -1,6 +1,8 @@
 <?php
 namespace KoalaForms;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class RegisterTypes{
 
     const DEFAULT_STAGES = array('Submitted', 'Under Review', 'Approved', 'Rejected');

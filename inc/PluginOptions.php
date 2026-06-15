@@ -1,6 +1,7 @@
 <?php
-
 namespace KoalaForms;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginOptions {
 

@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Malaysian states
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['MY'] = array(
 	'JHR' => __( 'Johor', 'koalaforms'),
 	'KDH' => __( 'Kedah', 'koalaforms'),

@@ -77,7 +77,7 @@ export const LABELS = {
 export const showErrorToast = (message, noticeType = 'info') => {
     dispatch('core/notices').createNotice(
         noticeType, // Type can be passed in for flexibility (e.g., 'error', 'warning', 'info')
-        __(message, PREFIX),
+        __(message, 'koalaforms'),
         {
             id: 'noticeId',
             type: 'snackbar',

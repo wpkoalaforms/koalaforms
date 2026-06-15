@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Bolivian states
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['BO'] = array(
 	'B' => __( 'Chuquisaca', 'koalaforms'),
 	'H' => __( 'Beni', 'koalaforms'),

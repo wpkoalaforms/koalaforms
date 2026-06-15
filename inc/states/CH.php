@@ -6,10 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['CH'] = array(
 	'AG' => __( 'Aargau', 'koalaforms'),
 	'AR' => __( 'Appenzell Ausserrhoden', 'koalaforms'),

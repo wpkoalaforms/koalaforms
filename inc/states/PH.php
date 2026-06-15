@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Philippines Provinces
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['PH'] = array(
 	'ABR' => __( 'Abra', 'koalaforms'),
 	'AGN' => __( 'Agusan del Norte', 'koalaforms'),

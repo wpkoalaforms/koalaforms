@@ -5,12 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Australian states
  *
  */
-global $states;
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['AU'] = array(
 	'ACT' => __( 'Australian Capital Territory', 'koalaforms'),
 	'NSW' => __( 'New South Wales', 'koalaforms'),

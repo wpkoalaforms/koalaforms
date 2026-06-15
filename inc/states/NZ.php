@@ -5,10 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * New Zealand States
  *
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 $states['NZ'] = array(
 	'NL' => __( 'Northland', 'koalaforms'),
 	'AK' => __( 'Auckland', 'koalaforms'),
