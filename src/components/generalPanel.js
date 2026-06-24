@@ -1,13 +1,24 @@
-import { PREFIX, TEXT_DOMAIN, LABELS } from '../utility';
-import { TextControl, PanelBody, BaseControl, SelectControl, ToggleControl, CheckboxControl } from '@wordpress/components';
+import { PREFIX, TEXT_DOMAIN, LABELS, sanitizeInputLabel } from '../utility';
+import { TextControl, PanelBody, BaseControl, SelectControl, ToggleControl, CheckboxControl, Tooltip } from '@wordpress/components';
 import OptionList from '../components/optionsList';
 import { useEntityProp } from '@wordpress/core-data';
 import { useState, useEffect, useRef } from '@wordpress/element';
 
 const { __ } = wp.i18n;
 
+const FieldLabel = ({ label, help }) => (
+    <div className={`${PREFIX}-field-header`}>
+        <span className="components-base-control__label">{label}</span>
+        {help && (
+            <Tooltip text={help} delay={300}>
+                <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+            </Tooltip>
+        )}
+    </div>
+);
+
 const GeneralPanel = ({ setAttributes, attributes, init }) => {
-    const { name, inputLabel, placeholder, defaultCBValue, checkLabel, defaultValue, additionalPadding,
+    const { name, inputLabel, displayLabel, placeholder, defaultCBValue, checkLabel, defaultValue, additionalPadding,
         displayMode, options, displayOptions, url, rows, description, readOnly, type, addressFieldTypes,
         hiddenAddressFields, save, hidden, usermeta
     } = attributes;
@@ -23,17 +34,17 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
     return (
         <>
             <PanelBody title={__('General', TEXT_DOMAIN)} initialOpen={true}>
-                 <div className={`${PREFIX}-setting`}>
-                    <TextControl
-                        readOnly={true}
-                        label={__('Name', TEXT_DOMAIN)}
-                        value={name}
-                        onChange={(value) => handleNameChange(value)}
-                    />
-                    <span className={`${PREFIX}-field-help-text`}>{__(LABELS.nameHelp, TEXT_DOMAIN)}</span>
-                </div> 
 
-                {emptyFound && (
+                <div className={`${PREFIX}-setting`}>
+                    <FieldLabel label={__('ID', TEXT_DOMAIN)} help={LABELS.nameHelp} />
+                    <TextControl
+                        label=""
+                        readOnly={true}
+                        value={name}
+                        className={`${PREFIX}-readonly-field`}
+                        onChange={() => {}}
+                    />
+                    {emptyFound && (
                         <div className={`${PREFIX}-error-message`}>
                             {LABELS.nameErr}
                         </div>
@@ -42,18 +53,21 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                         <div className={`${PREFIX}-error-message`}>
                             {LABELS.duplicateNameErr}
                         </div>
-                )}
+                    )}
+                </div>
 
                 <div className={`${PREFIX}-setting`}>
+                    <FieldLabel label={__('Unique Name', TEXT_DOMAIN)} help={LABELS.labelHelp} />
                     <TextControl
-                        label={__('Label', TEXT_DOMAIN)}
+                        label=""
                         value={localLabel}
                         onChange={(value) => {
-                            setLocalLabel(value);
+                            const filtered = sanitizeInputLabel(value);
+                            setLocalLabel(filtered);
                             clearTimeout(labelDebounceRef.current);
-                            if (value.trim() !== '') {
+                            if (filtered.trim() !== '') {
                                 labelDebounceRef.current = setTimeout(() => {
-                                    setAttributes({ inputLabel: value.trim() });
+                                    setAttributes({ inputLabel: filtered.trim() });
                                 }, 500);
                             }
                         }}
@@ -64,44 +78,35 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                             } else {
                                 setLocalLabel(inputLabel ?? '');
                             }
-                        }} />
+                        }}
+                    />
                     {localLabel.trim() === '' && (
                         <div className={`${PREFIX}-error-message`}>
                             {__('The label field cannot be empty. Please provide a valid label.', TEXT_DOMAIN)}
                         </div>
                     )}
-                    <span className={`${PREFIX}-field-help-text`}>{__(LABELS.labelHelp, TEXT_DOMAIN)}</span>
-                    {/** 
-                    <Tooltip text={__(LABELS.labelHelp, TEXT_DOMAIN)}>
-                        <span className={`${PREFIX}-help-icon`}>?</span>
-                    </Tooltip>
-                    */}
                 </div>
 
-                <div className={`${PREFIX}-setting`}>
-                    <TextControl
-                        label={__('Description', TEXT_DOMAIN)}
-                        value={description}
-                        onChange={(value) => setAttributes({ description: value })} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.descHelp, TEXT_DOMAIN)}</span>
-                    {/** <Tooltip text={__(LABELS.descHelp, TEXT_DOMAIN)}>
-                        <span className={`${PREFIX}-help-icon`}>?</span>
-                    </Tooltip>
-                    */}
-                </div>
+                {"displayLabel" in attributes && (
+                    <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Label', TEXT_DOMAIN)} help={LABELS.displayLabelHelp} />
+                        <TextControl
+                            label=""
+                            value={displayLabel ?? ''}
+                            placeholder={inputLabel ?? ''}
+                            onChange={(value) => setAttributes({ displayLabel: value })}
+                        />
+                    </div>
+                )}
 
                 {"placeholder" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Placeholder', TEXT_DOMAIN)} help={LABELS.placeholderHelp} />
                         <TextControl
-                            label={__('Placeholder', TEXT_DOMAIN)}
+                            label=""
                             value={placeholder}
-                            onChange={(value) => setAttributes({ placeholder: value })} />
-                             <span className={`${PREFIX}-field-help-text`}>{__(LABELS.placeholderHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.placeholderHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ placeholder: value })}
+                        />
                     </div>
                 )}
 
@@ -110,52 +115,50 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                         <ToggleControl
                             label={__('Default Value', TEXT_DOMAIN)}
                             checked={defaultCBValue}
-                            onChange={(isChecked) => setAttributes({ defaultCBValue: isChecked })} 
+                            onChange={(isChecked) => setAttributes({ defaultCBValue: isChecked })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.cbDefaultHelp, TEXT_DOMAIN)}</span>
+                        <Tooltip text={LABELS.cbDefaultHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+                        </Tooltip>
                     </div>
                 )}
 
-                {"defaultValue" in attributes && type =='Text' && (
+                {"defaultValue" in attributes && type == 'Text' && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Default Value', TEXT_DOMAIN)} help={LABELS.defaultValueHelp} />
                         <TextControl
-                            label={__('Default Value', TEXT_DOMAIN)}
+                            label=""
                             value={defaultValue}
-                            onChange={(value) => setAttributes({ defaultValue: value })} />
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.defaultValueHelp, TEXT_DOMAIN)}</span>
-                    
+                            onChange={(value) => setAttributes({ defaultValue: value })}
+                        />
                     </div>
                 )}
 
-                {"hidden" in attributes && type =='Text' && (
-                    <div className={`${PREFIX}-setting`}>
+                {"hidden" in attributes && type == 'Text' && (
+                    <div className={`${PREFIX}-setting ${PREFIX}-cb-setting`}>
                         <CheckboxControl
                             label={__('Hidden', TEXT_DOMAIN)}
                             checked={hidden}
                             onChange={(isChecked) => setAttributes({ hidden: isChecked })}
                         />
-                         <span className={`${PREFIX}-field-help-text`}>{__(LABELS.hiddenHelp, TEXT_DOMAIN)}</span>
+                        <Tooltip text={LABELS.hiddenHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+                        </Tooltip>
                     </div>
                 )}
-
 
                 {"checkLabel" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Check Label', TEXT_DOMAIN)} help={LABELS.checkLabelHelp} />
                         <TextControl
-                            label={__('Check Label', TEXT_DOMAIN)}
+                            label=""
                             value={checkLabel}
-                            onChange={(value) => setAttributes({ checkLabel: value })} />
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.checkLabelHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.checkLabelHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
-
+                            onChange={(value) => setAttributes({ checkLabel: value })}
+                        />
                     </div>
                 )}
 
-                {"options" in attributes && type!='Multiselect' && (
+                {"options" in attributes && type != 'Multiselect' && (
                     <div className={`${PREFIX}-setting`}>
                         <OptionList
                             options={options}
@@ -165,7 +168,7 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                     </div>
                 )}
 
-                {"options" in attributes && type=='Multiselect' && (
+                {"options" in attributes && type == 'Multiselect' && (
                     <div className={`${PREFIX}-setting`}>
                         <OptionList
                             options={options}
@@ -179,38 +182,26 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                     <div className={`${PREFIX}-setting`}>
                         <SelectControl
                             label={__('Display Mode', 'koalaforms')}
-                            value={displayMode} // Current value of the dropdown
-                            options={displayOptions} // Array of options
+                            value={displayMode}
+                            options={displayOptions}
                             onChange={(newValue) => setAttributes({ displayMode: newValue })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.paddingHelp, TEXT_DOMAIN)}</span>
-
-                        {/* Tooltip for Horizontal Display Mode */}
                         {displayMode == 'horizontal' && (
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.radioHDHelp, TEXT_DOMAIN)}</span>
+                            <span className={`${PREFIX}-field-help-text`}>{LABELS.radioHDHelp}</span>
                         )}
-
-                        {/* Tooltip for Vertical Display Mode */}
                         {displayMode == 'vertical' && (
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.radioHVHelp, TEXT_DOMAIN)}</span>
+                            <span className={`${PREFIX}-field-help-text`}>{LABELS.radioHVHelp}</span>
                         )}
                     </div>
                 )}
-
-
 
                 {"additionalPadding" in attributes && (
                     <div className={`${PREFIX}-setting`}>
                         <TextControl
                             label={__('Additional Padding (px)', TEXT_DOMAIN)}
                             value={additionalPadding}
-                            onChange={(value) => setAttributes({ additionalPadding: value })} />
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.paddingHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.paddingHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ additionalPadding: value })}
+                        />
                     </div>
                 )}
 
@@ -219,67 +210,54 @@ const GeneralPanel = ({ setAttributes, attributes, init }) => {
                         <TextControl
                             label={__('Page URL', TEXT_DOMAIN)}
                             value={url}
-                            onChange={(value) => setAttributes({ url: value })} />
+                            onChange={(value) => setAttributes({ url: value })}
+                        />
                     </div>
                 )}
 
                 {"rows" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Rows', TEXT_DOMAIN)} help={LABELS.logtextRowHelp} />
                         <TextControl
-                            label={__('Rows', TEXT_DOMAIN)}
+                            label=""
                             value={rows}
-                            onChange={(value) => setAttributes({ rows: value })} />
-                            <span className={`${PREFIX}-field-help-text`}>{__(LABELS.logtextRowHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.logtextRowHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ rows: value })}
+                        />
                     </div>
                 )}
-                {/* {"readOnly" in attributes && (
-                    <div className={`${PREFIX}-setting`}>
-                        <ToggleControl
-                            label={__('Read Only', TEXT_DOMAIN)}
-                            checked={readOnly}
-                            onChange={(isChecked) => setAttributes({ readOnly: isChecked })} 
-                        />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.readOnlyHelp, TEXT_DOMAIN)}</span>
-                    </div>
-                )} */}
 
-                {type=='Address' && (
+                {type == 'Address' && (
                     <div className={`${PREFIX}-setting`}>
-                        <BaseControl label="Hide Address Fields">
-                        {addressFieldTypes.map(field => (
-                            <CheckboxControl
-                                key={field.value}
-                                label={field.label}
-                                checked={hiddenAddressFields.includes(field.value)}
-                                onChange={() => {
-                                    const fieldValue = field.value;
-                                    const updatedFields = hiddenAddressFields.includes(fieldValue)
-                                        ? hiddenAddressFields.filter(item => item !== fieldValue)
-                                        : [...hiddenAddressFields, fieldValue];
-                                    setAttributes({ hiddenAddressFields: updatedFields })
-                                }} 
-                            />
-                        ))}
+                        <BaseControl label={__('Hide Address Fields', TEXT_DOMAIN)}>
+                            {addressFieldTypes.map(field => (
+                                <CheckboxControl
+                                    key={field.value}
+                                    label={field.label}
+                                    checked={hiddenAddressFields.includes(field.value)}
+                                    onChange={() => {
+                                        const fieldValue = field.value;
+                                        const updatedFields = hiddenAddressFields.includes(fieldValue)
+                                            ? hiddenAddressFields.filter(item => item !== fieldValue)
+                                            : [...hiddenAddressFields, fieldValue];
+                                        setAttributes({ hiddenAddressFields: updatedFields });
+                                    }}
+                                />
+                            ))}
                         </BaseControl>
-                        <span className={`${PREFIX}-field-help-text`}>Hide Individual Address Fields</span>
                     </div>
                 )}
 
                 {"usermeta" in attributes && formSettings.type == 'registration' && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('User Meta Key', TEXT_DOMAIN)} help={LABELS.usermetaHelp} />
                         <TextControl
-                            label={__('User Meta Key', TEXT_DOMAIN)}
+                            label=""
                             value={usermeta}
-                            onChange={(value) => setAttributes({ usermeta: value })} />
-
-                    <span className={`${PREFIX}-field-help-text`}>{__(LABELS.usermetaHelp, TEXT_DOMAIN)}</span>
+                            onChange={(value) => setAttributes({ usermeta: value })}
+                        />
                     </div>
-                )} 
+                )}
+
             </PanelBody>
         </>
     );

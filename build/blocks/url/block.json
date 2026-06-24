@@ -14,6 +14,10 @@
       "type": "string",
       "default": ""
     },
+    "displayLabel": {
+      "type": "string",
+      "default": ""
+    },
     "required": {
       "type": "boolean",
       "default": false
@@ -61,5 +65,12 @@
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "example": {
+    "attributes": {
+      "isPreview": true,
+      "inputLabel": "URL",
+      "previewHTML": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.07 0l1.42-1.42a5 5 0 1 0-7.07-7.07L10.5 4.43'/><path d='M14 11a5 5 0 0 0-7.07 0L5.5 12.43a5 5 0 1 0 7.07 7.07L13.5 19.57'/></svg></span>URL</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>https://example.com</div></div>"
+    }
+  }
 }

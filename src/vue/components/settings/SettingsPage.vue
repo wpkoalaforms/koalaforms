@@ -28,6 +28,13 @@
                             <path d="M12 3.5l6 2.5v5.5c0 4.1-2.6 7.5-6 9-3.4-1.5-6-4.9-6-9V6l6-2.5z" />
                             <path d="M9.5 12.2l1.9 1.9 3.8-4" />
                         </svg>
+                        <svg v-else-if="section.icon === 'logs'" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 6h16M4 10h10M4 14h12M4 18h8" />
+                        </svg>
+                        <svg v-else-if="section.icon === 'plugin'" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2v4M8 6h8l1 3H7L8 6zM7 9v4a5 5 0 0 0 10 0V9" />
+                            <path d="M9 18v3M15 18v3" />
+                        </svg>
                         <svg v-else viewBox="0 0 24 24" fill="none">
                             <path d="M12 3.5l6.8 2.9 2.2 6.9-2.2 6.8L12 22l-6.8-2.9-2.2-6.8 2.2-6.9L12 3.5z" />
                             <path d="M12 8v4M12 16h.01" />
@@ -48,7 +55,7 @@
             <header class="kf-settings-topbar">
                 <div class="kf-settings-topbar-copy">
                     <p class="kf-settings-topbar-tag">KoalaForms defaults</p>
-                    <h1 class="kf-settings-topbar-title">{{ pageTitle }}</h1>
+                    <div class="kf-settings-topbar-title">{{ pageTitle }}</div>
                     <p class="kf-settings-topbar-description">{{ pageDescription }}</p>
                 </div>
 
@@ -82,88 +89,23 @@
                 <input type="hidden" name="hcaptcha_threshold" :value="form.hcaptcha_threshold" />
                 <input type="hidden" name="cloudfare_site_key" :value="form.cloudfare_site_key" />
                 <input type="hidden" name="cloudfare_secret_key" :value="form.cloudfare_secret_key" />
+                <input type="hidden" name="logging_enabled" :value="form.logging_enabled ? 1 : 0" />
+                <input type="hidden" name="log_level" :value="form.log_level" />
+                <input type="hidden" name="log_retention_days" :value="form.log_retention_days" />
+                <template v-for="section in proSections" :key="section.id + '-fields'">
+                    <template v-for="card in section.cards" :key="card.title">
+                        <input
+                            v-for="field in card.fields"
+                            :key="field.key"
+                            type="hidden"
+                            :name="field.key"
+                            :value="proForm[field.key]"
+                        />
+                    </template>
+                </template>
             </div>
 
-            <div class="kf-settings-body"> 
-             
-                <SettingsSection
-                    id="general"
-                    ref="general"
-                    title="Branding & Emails" 
-                    description="Set the default look and email template used across the plugin."
-                >
-                    <div class="kf-settings-section-stack">
-                        <div class="kf-settings-card kf-settings-card--coming-soon" aria-disabled="true">
-                            <div class="kf-settings-card-head">
-                                <div>
-                                    <h3 class="kf-settings-card-title">Branding & Emails</h3>
-                                    <p class="kf-settings-card-description">
-                                        Set the default look and email template used across the plugin.
-                                    </p>
-                                </div>
-                                <span class="kf-settings-coming-soon-badge">Coming soon</span>
-                            </div>
-
-                            <div class="kf-settings-grid kf-settings-card-content" inert aria-hidden="true">
-                                <SettingsField
-                                    v-model="form.form_styling"
-                                    type="select"
-                                    label="Form style"
-                                    help="Choose how new forms should look by default."
-                                    :options="formStyleOptions"
-                                />
-
-                                <SettingsField
-                                    v-model="form.email_template"
-                                    type="select"
-                                    label="Email template"
-                                    help="Choose the default template style for plugin emails."
-                                    :options="emailTemplateOptions"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </SettingsSection>
-
-                <SettingsSection
-                    id="privacy"
-                    ref="privacy"
-                    title="Privacy & Logs"
-                    description="Control logging and consent defaults."
-                >
-                    <div class="kf-settings-section-stack">
-                        <div class="kf-settings-card kf-settings-card--coming-soon" aria-disabled="true">
-                            <div class="kf-settings-card-head">
-                                <div>
-                                    <h3 class="kf-settings-card-title">Privacy & Logs</h3>
-                                    <p class="kf-settings-card-description">
-                                        Control logging and consent defaults.
-                                    </p>
-                                </div>
-                                <span class="kf-settings-coming-soon-badge">Coming soon</span>
-                            </div>
-
-                            <div class="kf-settings-grid kf-settings-card-content" inert aria-hidden="true">
-                                <SettingsField
-                                    v-model="form.ip_logging"
-                                    type="toggle"
-                                    label="IP Logging"
-                                    help="Store the visitor IP alongside each submission."
-                                    toggle-label="Enable IP logging"
-                                />
-
-                                <SettingsField
-                                    v-model="form.enable_gdpr_consent"
-                                    type="toggle"
-                                    label="GDPR Consent"
-                                    help="Add a consent checkbox where forms need it."
-                                    toggle-label="Enable GDPR consent"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </SettingsSection>
-
+            <div class="kf-settings-body">
                 <SettingsSection
                     id="spam"
                     ref="spam"
@@ -210,78 +152,94 @@
                                 />
                             </div>
                         </div>
+                    </div>
+                </SettingsSection>
 
-                        <div class="kf-settings-card kf-settings-card--coming-soon" aria-disabled="true">
+                <SettingsSection
+                    v-for="section in proSections"
+                    :key="section.id"
+                    :id="section.id"
+                    :ref="(el) => setSectionRef(section.id, el)"
+                    :title="section.title"
+                    :description="section.description"
+                >
+                    <template v-if="section.connected" #header-action>
+                        <span class="kf-settings-chip kf-settings-chip--connected">Connected</span>
+                    </template>
+
+                    <div class="kf-settings-section-stack">
+                        <div v-for="(card, ci) in section.cards" :key="ci" class="kf-settings-card">
                             <div class="kf-settings-card-head">
                                 <div>
-                                    <h3 class="kf-settings-card-title">hCaptcha</h3>
-                                    <p class="kf-settings-card-description">
-                                        Use hCaptcha when you want a privacy-friendly verification option.
-                                    </p>
+                                    <h3 class="kf-settings-card-title">{{ card.title }}</h3>
+                                    <p class="kf-settings-card-description">{{ card.description }}</p>
                                 </div>
-                                <span class="kf-settings-coming-soon-badge">Coming soon</span>
                             </div>
-
-                            <div class="kf-settings-grid kf-settings-card-content" inert aria-hidden="true">
+                            <div class="kf-settings-grid">
                                 <SettingsField
-                                    v-model="form.hcaptcha_type"
-                                    type="radio"
-                                    name="hcaptcha_type"
-                                    label="Mode"
-                                    help="Select how hCaptcha should behave on the front end."
-                                    :options="captchaTypeOptions"
-                                />
-
-                                <SettingsField
-                                    v-model="form.hcaptcha_site_key"
-                                    type="text"
-                                    label="Site Key"
-                                    help="Paste the public site key for hCaptcha."
-                                />
-
-                                <SettingsField
-                                    v-model="form.hcaptcha_secret_key"
-                                    type="text"
-                                    label="Secret Key"
-                                    help="Paste the private secret key for hCaptcha."
-                                />
-
-                                <SettingsField
-                                    v-model="form.hcaptcha_threshold"
-                                    type="number"
-                                    label="Threshold"
-                                    help="Set the verification threshold value used by hCaptcha."
-                                    :min="0"
-                                    :max="1"
-                                    :step="0.1"
+                                    v-for="field in card.fields"
+                                    :key="field.key"
+                                    :type="field.type || 'text'"
+                                    :label="field.label"
+                                    :help="field.help"
+                                    :placeholder="field.placeholder || ''"
+                                    :modelValue="proForm[field.key]"
+                                    @update:modelValue="(val) => proForm[field.key] = val"
                                 />
                             </div>
                         </div>
+                    </div>
+                </SettingsSection>
 
-                        <div class="kf-settings-card kf-settings-card--coming-soon" aria-disabled="true">
+                <SettingsSection
+                    id="logs"
+                    ref="logs"
+                    title="Activity Logs"
+                    description="Track email notifications and integration activity for your forms. Control what gets recorded and how long logs are retained."
+                >
+                    <div class="kf-settings-section-stack">
+                        <div class="kf-settings-notice kf-settings-notice--warn">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            </svg>
+                            <p>Log entries are created each time a form notification is sent. Set a shorter retention period to keep your database lean.</p>
+                        </div>
+
+                        <div class="kf-settings-card">
                             <div class="kf-settings-card-head">
                                 <div>
-                                    <h3 class="kf-settings-card-title">Cloudflare Turnstile</h3>
+                                    <h3 class="kf-settings-card-title">Activity Logs</h3>
                                     <p class="kf-settings-card-description">
-                                        Add Turnstile support for a lightweight, low-friction captcha option.
+                                        Control what gets written to the integration logs and how long entries are kept.
                                     </p>
                                 </div>
-                                <span class="kf-settings-coming-soon-badge">Coming soon</span>
                             </div>
 
-                            <div class="kf-settings-grid kf-settings-card-content" inert aria-hidden="true">
+                            <div class="kf-settings-grid">
                                 <SettingsField
-                                    v-model="form.cloudfare_site_key"
-                                    type="text"
-                                    label="Site Key"
-                                    help="Paste the public site key for Turnstile."
+                                    v-model="form.logging_enabled"
+                                    type="toggle"
+                                    label="Enable Logging"
+                                    help="Write activity logs for all active external integrations."
+                                    toggle-label="Enable activity logging"
                                 />
 
                                 <SettingsField
-                                    v-model="form.cloudfare_secret_key"
-                                    type="text"
-                                    label="Secret Key"
-                                    help="Paste the private secret key for Turnstile."
+                                    v-model="form.log_level"
+                                    type="select"
+                                    label="Log Level"
+                                    help="Choose the minimum severity level to record."
+                                    :options="logLevelOptions"
+                                    :disabled="!form.logging_enabled"
+                                />
+
+                                <SettingsField
+                                    v-model="form.log_retention_days"
+                                    type="select"
+                                    label="Retention"
+                                    help="Entries older than this are deleted automatically. Choose carefully — logs fill fast on active sites."
+                                    :options="logRetentionOptions"
+                                    :disabled="!form.logging_enabled"
                                 />
                             </div>
                         </div>
@@ -289,8 +247,6 @@
                 </SettingsSection>
 
                 <SettingsSaveBar :label="saveLabel" />
-
-         
             </div>
         </main>
     </div>
@@ -329,39 +285,53 @@ export default {
             type: Array,
             default: () => [],
         },
+        proSections: {
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
         const normalizedSettings = this.normalizeSettings(this.settings);
+        const proForm = this.buildProForm(this.proSections);
 
         return {
             form: normalizedSettings,
             baselineForm: JSON.parse(JSON.stringify(normalizedSettings)),
-            formStyleOptions: [
-                { label: 'Classic', value: 'classic' },
-                { label: 'Match My Theme', value: 'match' },
-            ],
-            emailTemplateOptions: [
-                { label: 'Classic', value: 'classic' },
-                { label: 'Compact', value: 'compact' },
-            ],
+            proForm,
+            proSectionRefs: {},
             captchaTypeOptions: [
                 { label: 'Checkbox', value: 'checkbox' },
                 { label: 'Invisible', value: 'invisible' },
             ],
-            activeSection: 'general',
+            logLevelOptions: [
+                { label: 'Everything', value: 'all' },
+                { label: 'Errors only', value: 'error' },
+            ],
+            logRetentionOptions: [
+                { label: '7 days', value: '7' },
+                { label: '30 days', value: '30' },
+                { label: '90 days', value: '90' },
+                { label: 'Forever', value: '0' },
+            ],
+            activeSection: 'spam',
             isSaving: false,
             sectionObserver: null,
-            sections: [
-                { id: 'general', label: 'General', icon: 'branding' },
-                { id: 'privacy', label: 'Privacy', icon: 'privacy' },
-                { id: 'spam', label: 'Spam', icon: 'spam' },
-            ],
             formEl: null,
             submitHandler: null,
             beforeUnloadHandler: null,
         };
     },
     computed: {
+        sections() {
+            const result = [
+                { id: 'spam', label: 'Spam', icon: 'spam' },
+            ];
+            (this.proSections || []).forEach((section) => {
+                result.push({ id: section.id, label: section.label, icon: section.icon || 'plugin' });
+            });
+            result.push({ id: 'logs', label: 'Logs', icon: 'logs' });
+            return result;
+        },
         sectionIds() {
             return this.sections.map((section) => section.id);
         },
@@ -448,7 +418,28 @@ export default {
                 hcaptcha_threshold: settings.hcaptcha_threshold || '0.5',
                 cloudfare_site_key: settings.cloudfare_site_key || '',
                 cloudfare_secret_key: settings.cloudfare_secret_key || '',
+                logging_enabled: settings.logging_enabled !== undefined ? Boolean(settings.logging_enabled) : true,
+                log_level: settings.log_level || 'all',
+                log_retention_days: settings.log_retention_days || '30',
             };
+        },
+        buildProForm(proSections) {
+            const form = {};
+            (proSections || []).forEach((section) => {
+                (section.cards || []).forEach((card) => {
+                    (card.fields || []).forEach((field) => {
+                        form[field.key] = field.value || '';
+                    });
+                });
+            });
+            return form;
+        },
+        setSectionRef(id, el) {
+            if (el) {
+                this.proSectionRefs[id] = el;
+            } else {
+                delete this.proSectionRefs[id];
+            }
         },
         normalizeTemplateValue(value) {
             return String(value || 'classic').toLowerCase();
@@ -473,7 +464,7 @@ export default {
 
             this.$nextTick(() => {
                 this.sectionIds.forEach((id) => {
-                    const section = this.$refs[id];
+                    const section = this.$refs[id] || this.proSectionRefs[id];
 
                     if (section?.$el) {
                         this.sectionObserver.observe(section.$el);
@@ -483,7 +474,7 @@ export default {
         },
         scrollToSection(sectionId) {
             this.activeSection = sectionId;
-            const section = this.$refs[sectionId];
+            const section = this.$refs[sectionId] || this.proSectionRefs[sectionId];
 
             if (section?.$el) {
                 section.$el.scrollIntoView({
@@ -802,40 +793,8 @@ export default {
     margin: 0;
 }
 
-.kf-settings-card--coming-soon {
-    overflow: hidden;
-}
-
-.kf-settings-card--coming-soon .kf-settings-card-content {
-    filter: blur(1.5px);
-    opacity: 0.42;
-    pointer-events: none;
-    user-select: none;
-}
-
-.kf-settings-card--coming-soon .kf-settings-card-description {
-    max-width: 560px;
-}
-
 .kf-settings-card-content {
     min-width: 0;
-}
-
-.kf-settings-coming-soon-badge {
-    align-items: center;
-    background: rgba(107, 114, 128, 0.12);
-    border: 1px solid rgba(107, 114, 128, 0.18);
-    border-radius: 999px;
-    color: #4b5563;
-    display: inline-flex;
-    flex: 0 0 auto;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1;
-    padding: 6px 10px;
-    text-transform: uppercase;
-    white-space: nowrap;
 }
 
 .kf-settings-chip {
@@ -847,6 +806,11 @@ export default {
     font-size: 10px;
     font-weight: 600;
     padding: 5px 9px;
+}
+
+.kf-settings-chip--connected {
+    background: rgba(22, 163, 74, 0.1);
+    color: #16a34a;
 }
 
 .kf-settings-addon-banner {
@@ -916,6 +880,39 @@ export default {
     margin: 0;
     max-width: 220px;
     text-align: right;
+}
+
+.kf-settings-notice {
+    align-items: flex-start;
+    border-radius: 12px;
+    border: 1px solid;
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+}
+
+.kf-settings-notice svg {
+    flex: 0 0 16px;
+    height: 16px;
+    margin-top: 1px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    width: 16px;
+}
+
+.kf-settings-notice p {
+    color: inherit;
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.kf-settings-notice--warn {
+    background: rgba(234, 179, 8, 0.07);
+    border-color: rgba(234, 179, 8, 0.28);
+    color: #92400e;
 }
 
 @media (max-width: 1280px) {

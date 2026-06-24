@@ -4,8 +4,9 @@
  * Plugin Name:       Koala Forms
  * Description:       Build contact forms, multi-step forms, and registration forms using Gutenberg blocks.
  * Requires at least: 6.4
+ * Tested up to:      7.0
  * Requires PHP:      7.4
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Koala Forms
  * Text Domain:       koalaforms
  * License:           GPL-2.0-or-later
@@ -33,11 +34,14 @@ if (!class_exists('KoalaForms')) {
 
 				spl_autoload_register(array(self::$instance, 'classloader'));
 				add_action('init', array(self::$instance, 'set_common_objects'));
+				add_action( 'koalaforms_cleanup_logs', [ 'KoalaForms\Logger', 'cleanup' ] );
+				add_action( 'koalaforms_log', [ 'KoalaForms\Logger', 'log' ], 10, 5 );
 				
 				
-				if (is_admin()){
+					if (is_admin()){
 					add_action('admin_init', array(self::$instance,'admin_init'));
 				}
+
 
 				register_activation_hook(__FILE__, array(self::$instance, 'activation'));
                 register_deactivation_hook(__FILE__, array(self::$instance, 'deactivation'));
@@ -50,7 +54,7 @@ if (!class_exists('KoalaForms')) {
 			// Plugin Folder URL.
 			if (!defined('KOALAFORMS_PLUGIN_URL')) {
 				define('KOALAFORMS_PLUGIN_URL', plugin_dir_url(__FILE__));
-				define('KOALAFORMS_VERSION', '1.0.0' );
+				define('KOALAFORMS_VERSION', '1.1.0' );
 			}
 		}
 
@@ -80,7 +84,8 @@ if (!class_exists('KoalaForms')) {
 			new AdminAjax();
 			FormRender::get_instance();
 			Form::create_instance();
-			
+			Analytics::create_instance();
+
 			$this->load_text_domain();
 			remove_post_type_support(AppUtility::SUBMISSION_POST_TYPE, 'editor');
         }
@@ -102,12 +107,16 @@ if (!class_exists('KoalaForms')) {
             } else {
                 PluginOptions::create_default_options();
             }
+            Logger::create_table();
+            if ( ! wp_next_scheduled( 'koalaforms_cleanup_logs' ) ) {
+                wp_schedule_event( time(), 'daily', 'koalaforms_cleanup_logs' );
+            }
             do_action( AppUtility::pluginKey('_installed') ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
         }
         
         // Invoked on Deactivation
         public function deactivation(){
-           
+            wp_clear_scheduled_hook( 'koalaforms_cleanup_logs' );
         }
 	}
 }

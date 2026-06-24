@@ -2,7 +2,7 @@
     <section class="kf-settings-section">
         <div class="kf-settings-section-header">
             <div>
-                <h2 class="kf-settings-section-title">{{ title }}</h2>
+                <div class="kf-settings-section-title">{{ title }}</div>
                 <p v-if="description" class="kf-settings-section-description">
                     {{ description }}
                 </p>

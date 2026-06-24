@@ -139,8 +139,9 @@ class Submission extends Post{
                 }
     
                 $fields_data[$key] = array(
-                    'field' => $form->fields[$key],
-                    'value' => $all_meta[$key][0],
+                    'field'         => $form->fields[$key],
+                    'value'         => $all_meta[$key][0],
+                    'display_value' => SubmissionFormatter::format( $all_meta[$key][0], $form->fields[$key] ),
                 );
             } else {
                 $unprefixed_key = strpos($key, AppUtility::PLUGIN_PREFIX) === 0
@@ -187,7 +188,7 @@ class Submission extends Post{
                 continue;
             }
             $add_field_config = $address_blocks[$add_field_key];
-            $address_items[$add_field_config['attrs']['inputLabel']] = $add_field_value;
+            $address_items[$add_field_config['attrs']['displayLabel']] = $add_field_value;
         }
 
         $address_string = "";
@@ -341,27 +342,69 @@ class Submission extends Post{
         return $columns;
     }
 
-    public function latest_submissions($limit = 5){
-        $limit = is_numeric($limit) ? intval($limit) : 5;
-        $args = array(
+    public function latest_submissions( $args = array() ) {
+        // Back-compat: allow passing a plain integer limit as before.
+        if ( is_numeric( $args ) ) {
+            $args = array( 'per_page' => intval( $args ) );
+        }
+
+        $per_page = isset( $args['per_page'] ) ? intval( $args['per_page'] ) : 20;
+        $paged    = isset( $args['paged'] )    ? max( 1, intval( $args['paged'] ) ) : 1;
+        $form_id  = isset( $args['form_id'] )  ? absint( $args['form_id'] ) : 0;
+        $status   = isset( $args['status'] )   ? sanitize_key( $args['status'] ) : '';
+        $orderby  = isset( $args['orderby'] )  ? sanitize_key( $args['orderby'] ) : 'submitted_on';
+        $order    = isset( $args['order'] ) && 'asc' === strtolower( $args['order'] ) ? 'ASC' : 'DESC';
+
+        $query_args = array(
+            'post_type'      => $this->post_type,
+            'post_status'    => 'any',
+            'posts_per_page' => $per_page < 0 ? -1 : $per_page,
+            'paged'          => $per_page < 0 ? 1 : $paged,
+            'no_found_rows'  => $per_page < 0,
             'orderby'        => 'date',
-            'order'          => 'DESC',
-            'nopaging'       => false,
+            'order'          => $order,
+            'suppress_filters' => false,
         );
 
-        if ($limit < 0) {
-            $args['posts_per_page'] = -1;
-            $args['nopaging'] = true;
-        } else {
-            $args['posts_per_page'] = $limit > 0 ? $limit : 5;
+        // Map UI orderby keys to WP_Query orderby values.
+        if ( 'id' === $orderby ) {
+            $query_args['orderby'] = 'ID';
         }
 
-        $posts = $this->get('', $args);
-        $submissions = array();
-        foreach ($posts as $post) {
-            $submissions[] = $this->get_submission($post->ID);
+        $meta_query = array();
+
+        if ( $form_id ) {
+            $meta_query[] = array(
+                'key'     => AppUtility::meta_key( 'form_id' ),
+                'value'   => (string) $form_id,
+                'compare' => '=',
+                'type'    => 'NUMERIC',
+            );
         }
-        return $submissions;
+
+        if ( $status ) {
+            $meta_query[] = array(
+                'key'     => AppUtility::meta_key( 'submission_status' ),
+                'value'   => $status,
+                'compare' => '=',
+            );
+        }
+
+        if ( ! empty( $meta_query ) ) {
+            $query_args['meta_query'] = $meta_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+        }
+
+        $result = $this->query( $query_args );
+
+        $submissions = array();
+        foreach ( $result['posts'] as $post ) {
+            $submissions[] = $this->get_submission( $post->ID );
+        }
+
+        return array(
+            'items' => $submissions,
+            'total' => $per_page < 0 ? count( $submissions ) : $result['found_posts'],
+        );
     }
 
     public function mark_submission_as_read($post_id){

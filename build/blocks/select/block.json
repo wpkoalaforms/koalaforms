@@ -10,6 +10,10 @@
       "type": "string",
       "default": ""
     },
+    "displayLabel": {
+      "type": "string",
+      "default": ""
+    },
     "name": {
       "type": "string",
       "default": ""
@@ -53,5 +57,12 @@
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "example": {
+    "attributes": {
+      "isPreview": true,
+      "inputLabel": "Dropdown",
+      "previewHTML": "<div style='display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/><circle cx='12' cy='12' r='9'/></svg></span>Dropdown</div><div style='display:flex;align-items:center;justify-content:space-between;height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:0 12px;color:#0f172a;font-size:13px;'><span>Select an option</span><span style='display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;color:#64748b;'><svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg></span></div><div style='display:grid;gap:6px;'><div style='height:34px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>Option one</div><div style='height:34px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>Option two</div></div></div>"
+    }
+  }
 }

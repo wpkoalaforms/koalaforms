@@ -302,6 +302,10 @@ export const populateDefaultAttrs = (attributes, setAttributes) => {
         defaultAttrs.patternError = __('Value does not match with given pattern.', TEXT_DOMAIN);
     }
 
+    if(type === 'Phone' && attributes.mask === null){
+        defaultAttrs.mask = '(###) ###-####';
+    }
+
     // For Long Text area 
     if(rows === null){
         defaultAttrs.rows = 5;

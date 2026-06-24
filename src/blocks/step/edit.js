@@ -27,7 +27,7 @@ const formatStepTitle = (value, fallback) => {
 };
 
 export default function Edit({ attributes, setAttributes, clientId }) {
-    const { inputLabel, nextBtnLabel, prevBtnLabel, previousWidth, nextWidth } = attributes;
+    const { inputLabel, nextBtnLabel, prevBtnLabel, previousWidth, nextWidth, displayLabel } = attributes;
     const { insertBlock } = useDispatch('core/block-editor');
 
     // Managing the collapse/expand state for the block.
@@ -44,7 +44,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
         const stepsList = blocks.filter((block) => block.name === 'kf/step');
         const currentStepIndex = stepsList.findIndex((block) => block.clientId === clientId);
         const currentStep = blockEditor.getBlock(clientId);
-        const getStepTitle = (block, index) => formatStepTitle(block?.attributes?.inputLabel, `${__('Step', TEXT_DOMAIN)} ${index + 1}`);
+        const getStepTitle = (block, index) => formatStepTitle(block?.attributes?.displayLabel || block?.attributes?.inputLabel, `${__('Step', TEXT_DOMAIN)} ${index + 1}`);
 
         return {
             stepIndex: currentStepIndex,
@@ -176,7 +176,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 					<div className={`${PREFIX}-step-card-header`}>
 						<div className={`${PREFIX}-step-card-meta`}>
-							<h3 className={`${PREFIX}-step-card-title`}>{inputLabel}</h3>
+							<h3 className={`${PREFIX}-step-card-title`}>{displayLabel || inputLabel}</h3>
 						</div>
 
 						<div className={`${PREFIX}-step-card-actions`}>

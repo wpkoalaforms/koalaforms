@@ -16,25 +16,28 @@ const props = {
 
 const components = { Form, Element, Columns, FormNavigation , Address, Captcha}
 
-const data = {
-  isLoading: true,
-  successMessage: '',
-  formData: {}, // Global object to store field values
-  channel: {name: 'tt'},
-  formConfig: null, // Stores configuration for current step
-  errorMessage: '',
-  currentIndex: 0,
-  transitionDirection: 'forward',
-  formSchema: [], // Stores all the steps and configuration,
-  submissionNonce: null,
-  captchaDetails: null
-}
-
 export default {
   name: 'FormLoader',
   components,
   props,
-  data() { return data; },
+  data() {
+    return {
+      isLoading: true,
+      successMessage: '',
+      formData: {}, // Object to store field values, scoped to this instance
+      channel: {name: 'tt'},
+      formConfig: null, // Stores configuration for current step
+      errorMessage: '',
+      currentIndex: 0,
+      transitionDirection: 'forward',
+      formSchema: [], // Stores all the steps and configuration,
+      submissionNonce: null,
+      captchaDetails: null,
+      isSubmitting: false,
+      showErrorBanner: false,
+      errorBannerTimer: null,
+    };
+  },
   methods: {
     onCaptchaVerify(token){
       this.formData.recaptcha = token;
@@ -92,8 +95,17 @@ export default {
       this.formData = { ...this.formData, ...newValue, errors: {} };
     },
 
+    flashErrorBanner() {
+      clearTimeout(this.errorBannerTimer);
+      this.showErrorBanner = true;
+      this.errorBannerTimer = setTimeout(() => { this.showErrorBanner = false; }, 4000);
+    },
+
     // Moving to next step
     async handleNextStep() {
+      if (this.isSubmitting) return;
+      this.isSubmitting = true;
+      try {
       this.formData.last_step = this.currentIndex == (this.formSchema.length - 1);
       const [response, errors]  = await this.submitForm();
       if (response.success) {
@@ -102,11 +114,13 @@ export default {
 
         if (Object.entries(errors).length){ // Since there are errors, Do not move forward.
           this.formData.errors = errors;
+          this.flashErrorBanner();
           return;
         }
 
         if (form_errors.length){ // Since there are errors, Do not move forward.
           this.formData.form_errors = form_errors;
+          this.flashErrorBanner();
           return;
         }
 
@@ -128,7 +142,10 @@ export default {
             this.$refs.captcha.triggerExecute();
           }
         }, 1000);
-        
+
+      }
+      } finally {
+        this.isSubmitting = false;
       }
     },
 
@@ -178,7 +195,7 @@ export default {
     },
 
     stepTitle(step, index) {
-      const title = step?.attrs?.inputLabel || ``;
+      const title = step?.attrs?.displayLabel || step?.attrs?.inputLabel || ``;
       return title
         .toString()
         .replace(/_/g, ' ')
@@ -200,6 +217,9 @@ export default {
     await this.loadFormSchema();
     this.isLoading = false;
   },
+  beforeUnmount() {
+    clearTimeout(this.errorBannerTimer);
+  },
   computed: {
     showNav() {
       return this.formConfig.attrs.nextBtnLabel && this.formConfig.attrs.prevBtnLabel;
@@ -212,6 +232,9 @@ export default {
     },
     formError(){
       return this.formData?.errors?.form || this.formData?.errors?.captcha;
+    },
+    errorCount(){
+      return Object.keys(this.formData?.errors || {}).length;
     },
     showCaptcha(){
       return !this.hasNext && this.captchaDetails?.vendor != 'none';

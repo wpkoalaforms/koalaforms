@@ -10,6 +10,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"displayLabel": {
+			"type": "string",
+			"default": ""
+		},
 		"name": {
 			"type": "string",
 			"default": ""
@@ -43,5 +47,12 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"example": {
+		"attributes": {
+			"isPreview": true,
+			"inputLabel": "Step",
+			"previewHTML": "<div style='padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;margin-bottom:14px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'><circle cx='6' cy='12' r='2.2' fill='currentColor'/><circle cx='12' cy='12' r='2.2' fill='currentColor'/><circle cx='18' cy='12' r='2.2' fill='currentColor'/><path d='M8.4 12h1.4M13.4 12h1.4' stroke='currentColor' stroke-width='1.8' stroke-linecap='round'/></svg></span>Step</div><div style='display:grid;grid-template-columns:1fr;gap:10px;'><div style='height:42px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;'></div><div style='height:42px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;'></div><div style='display:flex;justify-content:flex-end;gap:8px;margin-top:6px;'><div style='width:84px;height:36px;border-radius:999px;background:#e2e8f0;'></div><div style='width:84px;height:36px;border-radius:999px;background:#3858e9;'></div></div></div></div>"
+		}
+	}
 }

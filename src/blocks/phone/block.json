@@ -1,0 +1,96 @@
+{
+	"apiVersion": 3,
+	"name": "Phone",
+	"version": "0.1.0",
+	"title": "Phone",
+	"icon": "phone",
+	"description": "A phone number input field with US number masking by default.",
+	"attributes": {
+		"value": {
+			"type": "string",
+			"default": ""
+		},
+		"inputLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"displayLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"required": {
+			"type": "boolean",
+			"default": false
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"minLength": {
+			"type": "number",
+			"default": null
+		},
+		"maxLength": {
+			"type": "number",
+			"default": null
+		},
+		"pattern": {
+			"type": "string",
+			"default": ""
+		},
+		"patternError": {
+			"type": "string",
+			"default": ""
+		},
+		"requiredError": {
+			"type": "string",
+			"default": null
+		},
+		"defaultValue": {
+			"type": "string",
+			"default": ""
+		},
+		"readOnly": {
+			"type": "boolean",
+			"default": false
+		},
+		"mask": {
+			"type": "string",
+			"default": null
+		},
+		"previewHTML": {
+			"type": "string",
+			"default": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.3 1.78.54 2.63a2 2 0 0 1-.45 2.11L8.3 9.36a16 16 0 0 0 6.34 6.34l.9-.9a2 2 0 0 1 2.11-.45c.85.24 1.73.42 2.63.54A2 2 0 0 1 22 16.92Z'/></svg></span>Phone</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>+1 (555) 123-4567</div></div>"
+		},
+		"subtype": {
+			"type": "string",
+			"default": ""
+		},
+		"hidden": {
+			"type": "boolean",
+			"default": false
+		},
+		"unique": {
+			"type": "boolean",
+			"default": false
+		},
+		"uniqueErr": {
+			"type": "string",
+			"default": null
+		},
+		"usermeta": {
+			"type": "string",
+			"default": null
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"example": {
+		"attributes": {
+			"isPreview": true,
+			"inputLabel": "Phone",
+			"previewHTML": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.3 1.78.54 2.63a2 2 0 0 1-.45 2.11L8.3 9.36a16 16 0 0 0 6.34 6.34l.9-.9a2 2 0 0 1 2.11-.45c.85.24 1.73.42 2.63.54A2 2 0 0 1 22 16.92Z'/></svg></span>Phone</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>+1 (555) 123-4567</div></div>"
+		}
+	}
+}

@@ -61,6 +61,8 @@
             :min="min"
             :max="max"
             :step="step"
+            :disabled="disabled"
+            :placeholder="placeholder || undefined"
             @input="$emit('update:modelValue', type === 'number' ? normalizeNumber($event.target.value) : $event.target.value)"
         />
     </div>
@@ -114,6 +116,14 @@ export default {
             type: [Number, String],
             default: null,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        placeholder: {
+            type: String,
+            default: '',
+        },
     },
     emits: ['update:modelValue'],
     methods: {
@@ -163,6 +173,13 @@ export default {
     border-color: var(--kf-brand-primary, #3858e9);
     box-shadow: 0 0 0 3px rgba(56, 88, 233, 0.15);
     outline: none;
+}
+
+.kf-settings-input:disabled {
+    background: rgba(248, 250, 252, 0.8);
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 .kf-settings-textarea {

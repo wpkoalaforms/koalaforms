@@ -219,6 +219,8 @@ class JsonTemplate {
                 return $this->disclosure( $field );
             case 'address':
                 return $this->address( $field );
+            case 'phone':
+                return $this->phone( $field );
             default:
                 return $this->text( $field );
         }
@@ -314,6 +316,12 @@ class JsonTemplate {
         ];
         $html = '<p>' . $content . '</p>';
         return "<!-- wp:{$this->prefix}/disclosure " . $this->encode( $attrs ) . " -->{$html}<!-- /wp:{$this->prefix}/disclosure -->";
+    }
+
+    private function phone( array $f ): string {
+        $attrs = $this->base_attrs( $f ) + [ 'mask' => $f['mask'] ?? '(###) ###-####' ];
+        if ( ! empty( $f['placeholder'] ) ) $attrs['placeholder'] = $f['placeholder'];
+        return $this->self_closing_block( 'phone', $attrs );
     }
 
     private function address( array $f ): string {

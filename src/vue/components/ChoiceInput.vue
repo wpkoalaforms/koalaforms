@@ -1,7 +1,7 @@
 <template>
   <!-- Conditionally render the label if inputLabel is provided -->
-  <label v-if="config.attrs.inputLabel" :for="uniqueId">
-    {{ config.attrs.inputLabel }}
+  <label v-if="fieldLabel" :for="uniqueId">
+    {{ fieldLabel }}
     <span v-if="config.attrs.required" class="required-field-label">*</span>
   </label>
 

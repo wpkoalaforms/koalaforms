@@ -1,6 +1,6 @@
 const util = {
     isInput : (blockName) => {
-            const inputElements = ['kf/text','kf/email','kf/number','kf/url','kf/date','kf/checkbox'];
+            const inputElements = ['kf/text','kf/phone','kf/email','kf/number','kf/url','kf/date','kf/checkbox'];
             return inputElements.includes(blockName);
     },
     isChoiceInput : (blockName) => {
@@ -20,7 +20,8 @@ const util = {
         return inputElements.includes(blockName);
     },
     elementType: (blockName) => {
-        return blockName?.replace("kf/","")?.replace('core/','');
+        const type = blockName?.replace("kf/","")?.replace('core/','');
+        return type === 'phone' ? 'text' : type;
     },
     handleAsync: (promise) => {
         return  promise
@@ -91,6 +92,7 @@ const util = {
         traverse(node);
         return result;
     },
+    getFieldLabel: (attrs) => attrs.displayLabel || attrs.inputLabel || '',
     initializeModelValue: (config, modelValue, hasOptions = false) => {
         if(Array.isArray(modelValue)){
             if(modelValue.length > 0)

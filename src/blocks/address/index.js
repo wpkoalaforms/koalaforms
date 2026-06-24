@@ -12,12 +12,16 @@ import Save from './save';
 /**
  * Custom SVG Icon
  */
-const textFieldBlockIcon  = (
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M560-160v-520H360v-120h520v120H680v520H560Zm-360 0v-320H80v-120h360v120H320v320H200Z"/></svg>
+const addressBlockIcon = (
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+    <path d="M12 21.25s5.25-4.1 5.25-9.23a5.25 5.25 0 1 0-10.5 0C6.75 17.15 12 21.25 12 21.25Z" stroke="#5f6368" strokeWidth="1.9" strokeLinejoin="round"/>
+    <circle cx="12" cy="11.75" r="1.9" fill="#5f6368"/>
+</svg>
 );
 
 
 let addressMetatdata    = commonMetaProcessing({...metadata});
+addressMetatdata.icon = addressBlockIcon;
 /**
  * Block Registration
  */

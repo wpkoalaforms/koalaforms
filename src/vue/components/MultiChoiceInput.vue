@@ -1,8 +1,8 @@
 <template>
 
   <!-- Conditionally render the label if inputLabel is provided -->
-  <label v-if="config.attrs.inputLabel" :for="uniqueId">
-    {{ config.attrs.inputLabel }}
+  <label v-if="fieldLabel" :for="uniqueId">
+    {{ fieldLabel }}
     <span v-if="config.attrs.required" class="required-field-label">*</span>
   </label>
   
@@ -35,9 +35,14 @@
     <div
       v-for="(option, index) in config.attrs.options"
       :key="index"
-      :class="['field-wrapper', config.attrs.className]"
+      :class="[
+        'field-wrapper',
+        'kf-multichoice-option',
+        config.attrs.className
+      ]"
     >
       <input
+        class="kf-multichoice-option__input"
         type="checkbox"
         :id="`checkbox-${config.attrs.name}-${index}`"
         :name="config.attrs.name"
@@ -46,7 +51,12 @@
         :checked="modelValue.includes(option.value)"
         @change="handleUpdate(option.value, $event.target.checked)"
       />
-      <label :for="`checkbox-${config.attrs.name}-${index}`">{{ option.label }}</label>
+      <label
+        class="kf-multichoice-option__label"
+        :for="`checkbox-${config.attrs.name}-${index}`"
+      >
+        {{ option.label }}
+      </label>
     </div>
   </template>
 
@@ -98,5 +108,28 @@
 .kf-radio-card__description {
   font-size: 0.9em;
   color: #555;
+}
+
+.kf-multichoice-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.kf-multichoice-option__input {
+  flex: 0 0 auto;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.kf-multichoice-option__label {
+  margin: 0;
+  cursor: pointer;
+  line-height: 1.4;
 }
 </style>

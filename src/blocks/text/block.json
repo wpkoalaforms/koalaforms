@@ -14,6 +14,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"displayLabel": {
+			"type": "string",
+			"default": ""
+		},
 		"required": {
 			"type": "boolean",
 			"default": false
@@ -60,7 +64,7 @@
 		},
 		"previewHTML": {
 			"type": "string",
-			"default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black'><circle cx='50' cy='50' r='40' stroke-width='3' /></svg>"
+			"default": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:14px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='font-size:12px;font-weight:600;color:#0f172a;'>Text</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>Type your answer...</div></div>"
 		},
 		"subtype": {
 			"type": "string",
@@ -85,5 +89,12 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"example": {
+		"attributes": {
+			"isPreview": true,
+			"inputLabel": "Text",
+			"previewHTML": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:14px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='font-size:12px;font-weight:600;color:#0f172a;'>Text</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>Type your answer...</div></div>"
+		}
+	}
 }

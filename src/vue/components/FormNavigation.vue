@@ -14,9 +14,11 @@
       type="button"
       class="kf-step-action-button kf-step-action-button-primary"
       :style="nextButtonStyle"
+      :disabled="isSubmitting"
       @click="goNext"
     >
-      {{ showNext ? config.nextBtnLabel : 'Submit' }}
+      <span v-if="isSubmitting" class="kf-btn-spinner"></span>
+      <span v-else>{{ showNext ? config.nextBtnLabel : 'Submit' }}</span>
     </button>
   </div>
 </template>
@@ -33,6 +35,10 @@ export default {
       default: false,
     },
     showNext: {
+      type: Boolean,
+      default: false,
+    },
+    isSubmitting: {
       type: Boolean,
       default: false,
     },
@@ -63,3 +69,17 @@ export default {
   },
 };
 </script>
+<style scoped>
+.kf-btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: kf-spin 0.7s linear infinite;
+}
+@keyframes kf-spin {
+  to { transform: rotate(360deg); }
+}
+</style>

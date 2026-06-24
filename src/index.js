@@ -3,6 +3,7 @@
  */
 import './blocks/step/index';
 import './blocks/text/index';
+import './blocks/phone/index';
 import './blocks/date/index';
 import './blocks/number/index';
 import './blocks/email';

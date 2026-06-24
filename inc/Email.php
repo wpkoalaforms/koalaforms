@@ -10,8 +10,14 @@ class Email
     private static $instance = null;
     
     private function __construct()
-    {   
-       add_filter('koalaforms_post_submission', array($this,'post_submission_notifications'),10,3); 
+    {
+       add_filter('koalaforms_post_submission', array($this,'post_submission_notifications'),10,3);
+       add_filter('koalaforms_log_integrations', array($this, 'register_log_integration'));
+    }
+
+    public function register_log_integration($integrations){
+        $integrations['email'] = __('Email', 'koalaforms');
+        return $integrations;
     }
     
     public static function create_instance()
@@ -61,32 +67,34 @@ class Email
 
         $registration_html = '';
 
-        foreach($submission['form_fields'] as $item){
-            $attrs       = $item['field']['attrs'];
-            $field_value = isset($item['value']) ? $item['value'] : '';
-
-            if(is_array($field_value)){
-                $field_value = implode(', ', $field_value);
+        foreach ( $submission['form_fields'] as $item ) {
+            $label       = $item['field']['attrs']['displayLabel'] ?? '';
+            $field_value = $item['display_value'] ?? $item['value'] ?? '';
+            if ( is_array( $field_value ) ) {
+                $field_value = implode( ', ', $field_value );
             }
-
-            $field_value = esc_html($field_value);
-            $message     = str_replace('{{' . $attrs['inputLabel'] . '}}', $field_value, $message);
-            $registration_html .= '<div><strong>' . esc_html($attrs['inputLabel']) . ':</strong> ' . $field_value . '</div><br>';
+            $registration_html .= '<div><strong>' . esc_html( $label ) . ':</strong> ' . esc_html( $field_value ) . '</div><br>';
         }
 
-        // Fix: was = instead of .= which wiped all field data above
-        if (!empty($submission['unique_id'])){
-            $registration_html .= '<div><strong>Unique ID:</strong> ' . esc_html($submission['unique_id']) . '</div><br>';
-            $message            = str_replace('{{UNIQUE_ID}}', esc_html($submission['unique_id']), $message);
+        if ( ! empty( $submission['unique_id'] ) ) {
+            $registration_html .= '<div><strong>Unique ID:</strong> ' . esc_html( $submission['unique_id'] ) . '</div><br>';
         }
 
-        $message = str_replace('{{REGISTRATION_DATA}}', $registration_html, $message);
+        $extra = array(
+            'REGISTRATION_DATA' => $registration_html,
+            'UNIQUE_ID'         => esc_html( $submission['unique_id'] ?? '' ),
+        );
+
+        $message = AppUtility::apply_merge_tags( $message, $submission['form_fields'], $extra, true );
 
         $to = !empty($form->settings['admin_email']) ? $form->settings['admin_email'] : get_option('admin_email');
 
         // Validate to address before sending
         if(empty($to) || !is_email($to)){
-            wp_trigger_error( __FUNCTION__, 'KoalaForms notify_admin: invalid or missing admin email address.', E_USER_NOTICE );
+            Logger::log('email', 'admin_notification', 'Invalid or missing admin email address.', [
+                'form_id' => $form->ID ?? null,
+                'sub_id'  => $submission['ID'] ?? null,
+            ], 'error');
             return;
         }
 
@@ -112,11 +120,19 @@ class Email
         $this->from_name = null;
         remove_filter('wp_mail_from_name', array($this, 'set_email_from_name'));
 
-        if(!$sent){
-            wp_trigger_error( __FUNCTION__, 'KoalaForms notify_admin: wp_mail failed to send to ' . $to, E_USER_NOTICE );
+        $log_context = [
+            'form_id' => $form->ID ?? null,
+            'sub_id'  => $submission['ID'] ?? null,
+            'body'    => $message,
+        ];
+
+        if($sent){
+            Logger::log('email', 'admin_notification', 'Admin notification sent to ' . $to, $log_context, 'info');
+        } else {
+            Logger::log('email', 'admin_notification', 'wp_mail failed to send to ' . $to, $log_context, 'error');
         }
     }
-    
+
     //Send auto reply message to user
     public function auto_reply_user($form, $submission){
         if(!isset($form->settings['auto_reply']) || empty($form->settings['auto_reply'])){
@@ -143,28 +159,23 @@ class Email
 
         $to = null;
 
-        foreach($submission['form_fields'] as $item){
+        foreach ( $submission['form_fields'] as $item ) {
             $attrs       = $item['field']['attrs'];
-            $field_value = isset($item['value']) ? $item['value'] : '';
-
-            if(is_array($field_value)){
-                $field_value = implode(', ', $field_value);
+            $field_value = $item['display_value'] ?? $item['value'] ?? '';
+            if ( is_array( $field_value ) ) {
+                $field_value = implode( ', ', $field_value );
             }
 
-            // Fix: match primary email field to extract recipient address
-            if(!empty($primary_email_field_name)
-                && isset($attrs['name'])
+            if ( ! empty( $primary_email_field_name )
+                && isset( $attrs['name'] )
                 && $attrs['name'] === $primary_email_field_name
-            ){
-                $to = sanitize_email($field_value);
+            ) {
+                $to = sanitize_email( $field_value );
             }
-
-            $message = str_replace('{{' . $attrs['inputLabel'] . '}}', esc_html($field_value), $message);
         }
 
-        if(!empty($submission['unique_id'])){
-            $message = str_replace('{{UNIQUE_ID}}', esc_html($submission['unique_id']), $message);
-        }
+        $extra   = array( 'UNIQUE_ID' => esc_html( $submission['unique_id'] ?? '' ) );
+        $message = AppUtility::apply_merge_tags( $message, $submission['form_fields'], $extra, true );
 
         // Fix: fall back to logged-in user email if no email field matched
         if(empty($to) || !is_email($to)){
@@ -172,7 +183,10 @@ class Email
                 $current_user = wp_get_current_user();
                 $to = $current_user->user_email;
             } else {
-                wp_trigger_error( __FUNCTION__, 'KoalaForms auto_reply_user: could not determine recipient email — no primary email field matched and user is not logged in.', E_USER_NOTICE );
+                Logger::log('email', 'auto_reply', 'Could not determine recipient email — no primary email field matched and user is not logged in.', [
+                    'form_id' => $form->ID ?? null,
+                    'sub_id'  => $submission['ID'] ?? null,
+                ], 'error');
                 return;
             }
         }
@@ -183,8 +197,16 @@ class Email
         $sent = wp_mail($to, $subject, $message);
         remove_filter('wp_mail_content_type', array($this, 'set_html_content_type'));
 
-        if(!$sent){
-            wp_trigger_error( __FUNCTION__, 'KoalaForms auto_reply_user: wp_mail failed to send to ' . $to, E_USER_NOTICE );
+        $log_context = [
+            'form_id' => $form->ID ?? null,
+            'sub_id'  => $submission['ID'] ?? null,
+            'body'    => $message,
+        ];
+
+        if($sent){
+            Logger::log('email', 'auto_reply', 'Auto-reply sent to ' . $to, $log_context, 'info');
+        } else {
+            Logger::log('email', 'auto_reply', 'wp_mail failed to send to ' . $to, $log_context, 'error');
         }
     }
 

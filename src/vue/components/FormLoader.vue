@@ -69,12 +69,19 @@
 
         <Captcha v-if="showCaptcha" :config="captchaDetails" @verified="onCaptchaVerify" ref="captcha" @expired="onCaptchaExpiry"/>
 
+        <Transition name="kf-fade">
+          <div v-if="showErrorBanner && errorCount" class="kf-field-error kf-error-banner" role="alert">
+            {{ errorCount === 1 ? 'There is 1 field that needs attention above.' : `There are ${errorCount} fields that need attention above.` }}
+          </div>
+        </Transition>
+
         <div v-if="formError" class="kf-field-error">
           {{formError}}
         </div>
-        <FormNavigation :config="formConfig.attrs" 
+        <FormNavigation :config="formConfig.attrs"
                         :show-previous="hasPrevious" :show-next="hasNext"
-                        @navigate-next="handleNextStep" 
+                        :is-submitting="isSubmitting"
+                        @navigate-next="handleNextStep"
                         @navigate-previous="handlePreviousStep"></FormNavigation>
 
         

@@ -10,13 +10,17 @@
 			"type": "string",
 			"default": null
 		},
+		"displayLabel": {
+			"type": "string",
+			"default": ""
+		},
 		"name": {
 			"type": "string",
 			"default": ""
 		},
 		"previewHTML": {
 			"type": "string",
-			"default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black'><circle cx='50' cy='50' r='40' stroke-width='3' /></svg>"
+			"default": "<div style='display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 21.25s5.25-4.1 5.25-9.23a5.25 5.25 0 1 0-10.5 0C6.75 17.15 12 21.25 12 21.25Z'/><circle cx='12' cy='11.75' r='1.9' fill='currentColor' stroke='none'/></svg></span>Address</div><div style='display:grid;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div></div></div></div>"
 		},
 		"hiddenAddressFields": {
 			"type": "array",
@@ -25,5 +29,12 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"example": {
+		"attributes": {
+			"isPreview": true,
+			"inputLabel": "Address",
+			"previewHTML": "<div style='display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s6-4.35 6-10.25A6 6 0 1 0 6 11.75C6 17.65 12 22 12 22Z'/><circle cx='12' cy='11' r='2.25' fill='currentColor' stroke='none'/></svg></span>Address</div><div style='display:grid;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div></div><div style='display:grid;grid-template-columns:1fr 1fr;gap:8px;'><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div><div style='height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;'></div></div></div></div>"
+		}
+	}
 }

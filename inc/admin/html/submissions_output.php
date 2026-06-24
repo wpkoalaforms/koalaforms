@@ -5,142 +5,47 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 $sub_model = Submission::create_instance();
-$submissions = $sub_model->latest_submissions(-1);
 
-$search_term = isset($_GET['s']) ? sanitize_text_field(wp_unslash($_GET['s'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$form_filter = isset($_GET['form_filter']) ? absint($_GET['form_filter']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$status_filter = isset($_GET['status']) ? sanitize_key(wp_unslash($_GET['status'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$orderby = isset($_GET['orderby']) ? sanitize_key(wp_unslash($_GET['orderby'])) : 'submitted_on'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$order = isset($_GET['order']) ? strtolower(sanitize_key(wp_unslash($_GET['order']))) : 'desc'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$order = 'asc' === $order ? 'asc' : 'desc';
+$form_filter   = isset($_GET['kf_form_id']) ? absint($_GET['kf_form_id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$status_filter = isset($_GET['status'])      ? sanitize_key(wp_unslash($_GET['status'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$orderby       = isset($_GET['orderby'])     ? sanitize_key(wp_unslash($_GET['orderby'])) : 'submitted_on'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$order         = isset($_GET['order'])       ? strtolower(sanitize_key(wp_unslash($_GET['order']))) : 'desc'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$order         = 'asc' === $order ? 'asc' : 'desc';
+$current_page  = isset($_GET['paged'])       ? max(1, absint($_GET['paged'])) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-$filtered_submissions = array();
-foreach ($submissions as $submission) {
-    if ($form_filter && absint($submission['form_id']) !== $form_filter) {
-        continue;
-    }
+$per_page = 20;
 
-    $status = !empty($submission['submission_status']) ? sanitize_key($submission['submission_status']) : 'unread';
-    if ($status_filter && $status_filter !== $status) {
-        continue;
-    }
+$result               = $sub_model->latest_submissions(array(
+    'per_page' => $per_page,
+    'paged'    => $current_page,
+    'form_id'  => $form_filter,
+    'status'   => $status_filter,
+    'orderby'  => $orderby,
+    'order'    => $order,
+));
+$filtered_submissions = $result['items'];
+$total_submissions    = $result['total'];
 
-    if ('' !== $search_term) {
-        $haystack = array(
-            (string) (!empty($submission['ID']) ? $submission['ID'] : ''),
-            (string) (!empty($submission['form_name']) ? $submission['form_name'] : ''),
-            (string) (!empty($submission['browser']) ? $submission['browser'] : ''),
-            (string) (!empty($submission['device']) ? $submission['device'] : ''),
-            (string) (!empty($submission['unique_id']) ? $submission['unique_id'] : ''),
-            (string) (!empty($submission['submission_date']) ? $submission['submission_date'] : ''),
-        );
+$total_pages = (int) ceil($total_submissions / $per_page);
 
-        if (!empty($submission['user_id'])) {
-            $user = get_userdata(absint($submission['user_id']));
-            if (!empty($user)) {
-                $haystack[] = $user->display_name;
-                $haystack[] = $user->user_email;
-            }
-        }
+// Counts for the status tabs — lightweight query, no meta hydration.
+$all_result    = $sub_model->latest_submissions(array('per_page' => 1, 'paged' => 1));
+$submission_count = $all_result['total'];
+$unread_result    = $sub_model->latest_submissions(array('per_page' => 1, 'paged' => 1, 'status' => 'unread'));
+$unread_count     = $unread_result['total'];
 
-        if (!empty($submission['form_fields']) && is_array($submission['form_fields'])) {
-            foreach ($submission['form_fields'] as $field) {
-                if (!empty($field['field']['attrs']['inputLabel'])) {
-                    $haystack[] = $field['field']['attrs']['inputLabel'];
-                }
-                if (isset($field['value'])) {
-                    $field_value = is_scalar($field['value']) ? (string) $field['value'] : wp_json_encode($field['value']);
-                    $haystack[] = $field_value;
-                }
-            }
-        }
-
-        $matched = false;
-        foreach ($haystack as $value) {
-            if ('' !== $value && false !== stripos($value, $search_term)) {
-                $matched = true;
-                break;
-            }
-        }
-
-        if (!$matched) {
-            continue;
-        }
-    }
-
-    $filtered_submissions[] = $submission;
-}
-
-$sorters = array(
-    'id' => function($a, $b) use ($order) {
-        $result = absint($a['ID']) <=> absint($b['ID']);
-        return 'asc' === $order ? $result : -$result;
-    },
-    'form_name' => function($a, $b) use ($order) {
-        $result = strcasecmp((string) $a['form_name'], (string) $b['form_name']);
-        return 'asc' === $order ? $result : -$result;
-    },
-    'status' => function($a, $b) use ($order) {
-        $a_status = !empty($a['submission_status']) ? sanitize_key($a['submission_status']) : 'unread';
-        $b_status = !empty($b['submission_status']) ? sanitize_key($b['submission_status']) : 'unread';
-        $result = strcasecmp($a_status, $b_status);
-        return 'asc' === $order ? $result : -$result;
-    },
-    'first_field' => function($a, $b) use ($order) {
-        $a_first = '';
-        $b_first = '';
-        foreach (array($a, $b) as $index => $submission_row) {
-            $preview = '';
-            if (!empty($submission_row['form_fields']) && is_array($submission_row['form_fields'])) {
-                $first_field = reset($submission_row['form_fields']);
-                if (is_array($first_field)) {
-                    $first_field_label = !empty($first_field['field']['attrs']['inputLabel']) ? $first_field['field']['attrs']['inputLabel'] : '';
-                    $first_field_value = isset($first_field['value']) ? (is_scalar($first_field['value']) ? (string) $first_field['value'] : wp_json_encode($first_field['value'])) : '';
-                    $preview = trim($first_field_label . ' ' . wp_trim_words(wp_strip_all_tags($first_field_value), 10, '…'));
-                }
-            }
-            if (0 === $index) {
-                $a_first = $preview;
-            } else {
-                $b_first = $preview;
-            }
-        }
-        $result = strcasecmp($a_first, $b_first);
-        return 'asc' === $order ? $result : -$result;
-    },
-    'submitted_on' => function($a, $b) use ($order) {
-        $a_time = !empty($a['submission_date']) ? strtotime($a['submission_date']) : 0;
-        $b_time = !empty($b['submission_date']) ? strtotime($b['submission_date']) : 0;
-        $result = $a_time <=> $b_time;
-        return 'asc' === $order ? $result : -$result;
-    },
-);
-
-if (isset($sorters[$orderby])) {
-    usort($filtered_submissions, $sorters[$orderby]);
-}
-
-$sort_url = function($column) use ($search_term, $form_filter, $status_filter, $orderby, $order) {
+$sort_url = function($column) use ($form_filter, $status_filter, $orderby, $order) {
     $next_order = ($orderby === $column && 'asc' === $order) ? 'desc' : 'asc';
     return add_query_arg(array_filter(array(
-        'page' => 'koalaforms-submissions',
-        's' => '' !== $search_term ? $search_term : null,
-        'form_filter' => $form_filter ? $form_filter : null,
-        'status' => '' !== $status_filter ? $status_filter : null,
-        'orderby' => $column,
-        'order' => $next_order,
+        'page'        => 'koalaforms-submissions',
+        'kf_form_id' => $form_filter ? $form_filter : null,
+        'status'      => '' !== $status_filter ? $status_filter : null,
+        'orderby'     => $column,
+        'order'       => $next_order,
     ), static function($value) {
         return null !== $value && '' !== $value;
     }), admin_url('admin.php'));
 };
-
-$submission_count = count($submissions);
-$unread_count = 0;
-foreach ($submissions as $submission) {
-    if (empty($submission['submission_status']) || 'read' !== $submission['submission_status']) {
-        $unread_count++;
-    }
-}
 
 $form_model = Form::create_instance();
 $forms = $form_model->get('', array(
@@ -166,7 +71,7 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
 
     <ul class="subsubsub">
         <li class="all">
-            <a href="<?php echo esc_url(admin_url('admin.php?page=koalaforms-submissions')); ?>" class="<?php echo empty($search_term) && empty($form_filter) && empty($status_filter) ? 'current' : ''; ?>" aria-current="<?php echo empty($search_term) && empty($form_filter) && empty($status_filter) ? 'page' : 'false'; ?>">
+            <a href="<?php echo esc_url(admin_url('admin.php?page=koalaforms-submissions')); ?>" class="<?php echo empty($form_filter) && empty($status_filter) ? 'current' : ''; ?>" aria-current="<?php echo empty($form_filter) && empty($status_filter) ? 'page' : 'false'; ?>">
                 <?php echo esc_html__('All', 'koalaforms'); ?> <span class="count">(<?php echo esc_html($submission_count); ?>)</span>
             </a>
             |
@@ -178,13 +83,13 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
         </li>
     </ul>
 
-    <form method="get">
+    <form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>">
         <input type="hidden" name="page" value="koalaforms-submissions" />
 
         <div class="tablenav top">
             <div class="alignleft actions">
                 <label for="filter-by-form" class="screen-reader-text"><?php echo esc_html__('Filter by form', 'koalaforms'); ?></label>
-                <select name="form_filter" id="filter-by-form">
+                <select name="kf_form_id" id="filter-by-form">
                     <option value=""><?php echo esc_html__('All Form Entries', 'koalaforms'); ?></option>
                     <?php foreach ($forms as $form) : ?>
                         <option value="<?php echo esc_attr($form->ID); ?>" <?php selected($form_filter, $form->ID); ?>>
@@ -194,13 +99,6 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                 </select>
                 <?php submit_button(__('Filter', 'koalaforms'), 'secondary', '', false); ?>
             </div>
-
-            <h2 class="screen-reader-text"><?php echo esc_html__('Search Submissions', 'koalaforms'); ?></h2>
-            <p class="search-box">
-                <label class="screen-reader-text" for="submission-search-input"><?php echo esc_html__('Search Submissions', 'koalaforms'); ?></label>
-                <input type="search" id="submission-search-input" name="s" value="<?php echo esc_attr($search_term); ?>" />
-                <?php submit_button(__('Search', 'koalaforms'), 'button', '', false, array('id' => 'search-submit')); ?>
-            </p>
         </div>
 
         <table class="wp-list-table widefat fixed striped table-view-list posts">
@@ -227,12 +125,7 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                             <span class="sorting-indicator <?php echo $is_sorted_status ? esc_attr($order) : ''; ?>"></span>
                         </a>
                     </th>
-                    <th scope="col" class="manage-column <?php echo $is_sorted_first_field ? 'sorted ' . esc_attr($order) : 'sortable'; ?>" <?php echo $is_sorted_first_field ? 'aria-sort="' . esc_attr('asc' === $order ? 'ascending' : 'descending') . '"' : ''; ?>>
-                        <a href="<?php echo esc_url($sort_url('first_field')); ?>">
-                            <span><?php echo esc_html__('First Field', 'koalaforms'); ?></span>
-                            <span class="sorting-indicator <?php echo $is_sorted_first_field ? esc_attr($order) : ''; ?>"></span>
-                        </a>
-                    </th>
+                    
                     <th scope="col" class="manage-column <?php echo $is_sorted_submitted_on ? 'sorted ' . esc_attr($order) : 'sortable'; ?>" <?php echo $is_sorted_submitted_on ? 'aria-sort="' . esc_attr('asc' === $order ? 'ascending' : 'descending') . '"' : ''; ?>>
                         <a href="<?php echo esc_url($sort_url('submitted_on')); ?>">
                             <span><?php echo esc_html__('Submitted On', 'koalaforms'); ?></span>
@@ -252,7 +145,7 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                         if (!empty($submission['form_fields']) && is_array($submission['form_fields'])) {
                             $first_field = reset($submission['form_fields']);
                             if (is_array($first_field)) {
-                                $first_field_label = !empty($first_field['field']['attrs']['inputLabel']) ? $first_field['field']['attrs']['inputLabel'] : '';
+                                $first_field_label = $first_field['field']['attrs']['displayLabel'] ?? '';
                                 $first_field_value = isset($first_field['value']) ? (is_scalar($first_field['value']) ? (string) $first_field['value'] : wp_json_encode($first_field['value'])) : '';
                             }
                         }
@@ -282,11 +175,7 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
                                     <?php echo esc_html($status_label); ?>
                                 </span>
                             </td>
-                            <td data-colname="<?php echo esc_attr__('First Field', 'koalaforms'); ?>">
-                                <span class="kf-first-field-preview">
-                                    <?php echo !empty($first_field_preview) ? esc_html($first_field_preview) : esc_html__('No field preview available', 'koalaforms'); ?>
-                                </span>
-                            </td>
+                            
                             <td data-colname="<?php echo esc_attr__('Submitted On', 'koalaforms'); ?>">
                                 <?php echo !empty($submission['submission_date']) ? esc_html($submission['submission_date']) : esc_html__('—', 'koalaforms'); ?>
                             </td>
@@ -302,6 +191,32 @@ $is_sorted_submitted_on = 'submitted_on' === $orderby;
             </tbody>
         </table>
 
-        
+        <div class="tablenav bottom">
+            <div class="tablenav-pages">
+                <span class="displaying-num">
+                    <?php
+                    printf(
+                        /* translators: %s: number of submissions */
+                        esc_html(_n('%s item', '%s items', $total_submissions, 'koalaforms')),
+                        esc_html(number_format_i18n($total_submissions))
+                    );
+                    ?>
+                </span>
+                <?php if ($total_pages > 1) : ?>
+                    <span class="pagination-links">
+                        <?php
+                        echo wp_kses_post(paginate_links(array(
+                            'base'      => add_query_arg('paged', '%#%'),
+                            'format'    => '',
+                            'prev_text' => __('&laquo;', 'koalaforms'),
+                            'next_text' => __('&raquo;', 'koalaforms'),
+                            'total'     => $total_pages,
+                            'current'   => $current_page,
+                        )));
+                        ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+        </div>
     </form>
 </div>

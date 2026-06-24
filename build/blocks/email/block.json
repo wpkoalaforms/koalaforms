@@ -14,6 +14,10 @@
       "type": "string",
       "default": ""
     },
+    "displayLabel": {
+      "type": "string",
+      "default": ""
+    },
     "required": {
       "type": "boolean",
       "default": false
@@ -62,5 +66,12 @@
   "textdomain": "koalaforms",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "example": {
+    "attributes": {
+      "isPreview": true,
+      "inputLabel": "Email",
+      "previewHTML": "<div style='display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='currentColor'><path d='M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z'/></svg></span>Email</div><div style='height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;display:flex;align-items:center;padding:0 12px;color:#94a3b8;font-size:13px;'>name@example.com</div></div>"
+    }
+  }
 }

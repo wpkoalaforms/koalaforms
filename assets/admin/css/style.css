@@ -5120,3 +5120,192 @@ table.kf-setting-table-main th {
 }
 
 /*** Submission Stage related CSS End ***/
+/*** Submission sidebar meta box positioning ***/
+.post-type-koalaforms-subs #postbox-container-1,
+.post-type-koalaforms-subs #postbox-container-2 {
+	top: 32px;
+}
+
+/*** Submission Info Panel ***/
+.kf-sub-info-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+.kf-sub-info-row {
+	display: flex;
+	flex-direction: column;
+	padding: 9px 0;
+	border-bottom: 1px solid #f0f0f0;
+	font-size: 12px;
+}
+.kf-sub-info-row:last-child { border-bottom: none; }
+.kf-sub-info-label {
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .4px;
+	color: #8c8f94;
+	margin-bottom: 2px;
+}
+.kf-sub-info-value {
+	color: #1d2327;
+	font-size: 12px;
+	word-break: break-word;
+}
+.kf-sub-info-mono {
+	font-family: monospace;
+	font-size: 11px;
+	color: #50575e;
+}
+.kf-sub-date-abs {
+	display: block;
+}
+.kf-sub-date-rel {
+	display: block;
+	font-size: 11px;
+	color: #8c8f94;
+	margin-top: 1px;
+}
+
+/*** Submission Stage History Timeline ***/
+.kf-sub-stage-history {
+	margin-top: 16px;
+}
+.kf-sub-section-heading {
+	margin: 0 0 10px;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .4px;
+	color: #8c8f94;
+}
+.kf-sub-timeline {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.kf-sub-timeline-item {
+	display: flex;
+	gap: 10px;
+	padding-bottom: 14px;
+	position: relative;
+	font-size: 12px;
+}
+.kf-sub-timeline-item:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 14px;
+	bottom: 0;
+	width: 1px;
+	background: #e0e0e0;
+}
+.kf-sub-timeline-dot {
+	flex-shrink: 0;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	background: #c3c4c7;
+	border: 2px solid #fff;
+	outline: 1px solid #c3c4c7;
+	margin-top: 3px;
+}
+.kf-sub-timeline-item.is-latest .kf-sub-timeline-dot {
+	background: #0176d3;
+	outline-color: #0176d3;
+}
+.kf-sub-timeline-body {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+.kf-sub-stage-badge {
+	display: inline-block;
+	background: #f0f6fc;
+	color: #0176d3;
+	border: 1px solid #c8dff5;
+	font-size: 10px;
+	font-weight: 700;
+	padding: 2px 7px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	letter-spacing: .3px;
+	align-self: flex-start;
+}
+.kf-sub-timeline-item.is-latest .kf-sub-stage-badge {
+	background: #0176d3;
+	color: #fff;
+	border-color: #0176d3;
+}
+.kf-sub-timeline-meta {
+	color: #50575e;
+	font-size: 11px;
+}
+.kf-sub-timeline-note {
+	color: #787c82;
+	font-size: 11px;
+	font-style: italic;
+}
+
+/*** Submission Detail Toolbar ***/
+.kf-sub-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+	gap: 12px;
+}
+.kf-sub-back-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 12px;
+	color: #50575e;
+	text-decoration: none;
+	padding: 5px 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 3px;
+	background: #fff;
+	transition: border-color .15s, color .15s;
+}
+.kf-sub-back-btn:hover {
+	color: #0176d3;
+	border-color: #0176d3;
+}
+
+/*** Submission Fields Table ***/
+.kf-sub-fields-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+.kf-sub-fields-table thead th {
+	padding: 9px 12px;
+	text-align: left;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .4px;
+	color: #8c8f94;
+	border-bottom: 2px solid #f0f0f0;
+}
+.kf-sub-fields-table tbody tr {
+	border-bottom: 1px solid #f6f7f7;
+}
+.kf-sub-fields-table tbody tr:nth-child(even) {
+	background: #f9f9f9;
+}
+.kf-sub-fields-table tbody tr:last-child {
+	border-bottom: none;
+}
+.kf-sub-fields-table tbody td {
+	padding: 10px 12px;
+	vertical-align: top;
+}
+.kf-sub-field-label {
+	font-weight: 600;
+	color: #1d2327;
+	width: 35%;
+	white-space: nowrap;
+}

@@ -234,6 +234,9 @@ class Form extends Post{
 
     // Returns form with field configurations
     public function get_form($id) {
+        static $cache = [];
+        if (isset($cache[$id])) return $cache[$id];
+
         $form = $this->get($id);
 
         // Return null if form does not exist.
@@ -242,7 +245,7 @@ class Form extends Post{
         }
 
         // Getting field configuration
-        $form->_field_config        = AppUtility::get_meta($form->ID, '_field_config', true);
+        $form->_field_config        = self::populate_display_labels( (array) AppUtility::get_meta($form->ID, '_field_config', true) );
         $form->settings             = AppUtility::get_meta($form->ID, 'form_settings', true);
 
         foreach (AppUtility::FORM_PROPS as $key => $prop) {
@@ -275,6 +278,7 @@ class Form extends Post{
         }
         $form->fields = $fields;
 
+        $cache[$id] = $form;
         return $form;
     }
 
@@ -520,6 +524,36 @@ class Form extends Post{
     
         return $result;
 
+    }
+
+    /**
+     * Recursively walks a field-config block tree and fills in displayLabel
+     * from inputLabel wherever displayLabel is absent or empty.
+     * Called once at form-load time so all downstream code can read displayLabel directly.
+     */
+    public static function populate_display_labels( array $blocks ): array {
+        foreach ( $blocks as &$block ) {
+            if ( isset( $block['attrs'] ) ) {
+                if ( empty( $block['attrs']['displayLabel'] ) && ! empty( $block['attrs']['inputLabel'] ) ) {
+                    $block['attrs']['displayLabel'] = $block['attrs']['inputLabel'];
+                }
+            }
+            if ( ! empty( $block['innerBlocks'] ) ) {
+                $block['innerBlocks'] = self::populate_display_labels( $block['innerBlocks'] );
+            }
+        }
+        return $blocks;
+    }
+
+    /**
+     * Returns the resolved display label for a block attrs array.
+     * Uses displayLabel when set, falls back to inputLabel.
+     */
+    public static function get_field_label( array $attrs ): string {
+        if ( ! empty( $attrs['displayLabel'] ) ) {
+            return $attrs['displayLabel'];
+        }
+        return $attrs['inputLabel'] ?? '';
     }
 
     private function sanitize_data($value, $field_config){

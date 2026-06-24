@@ -15,13 +15,16 @@ export const capitalizeWords = (str) => {
       .join(' '); // Join the words back into a single string
 }
 
+export const sanitizeInputLabel = (value) => value.replace(/[^\p{L}\p{N}_ ]/gu, '');
+
 // Labels object should be extended easily with new label messages
 export const LABELS = {
     // Existing labels
     nameErr: __('The name field cannot be empty. Please provide a valid name.', TEXT_DOMAIN),
     duplicateNameErr: __('Duplicate name detected! Please use a unique name.', TEXT_DOMAIN),
-    nameHelp: __('The unique identifier for the element. It cannot contain spaces and must be unique in the form.', TEXT_DOMAIN),
-    labelHelp: __('Display label for the control.', TEXT_DOMAIN),
+    nameHelp: __('It is a system generated ID and is used internally to uniquely identify the element.', TEXT_DOMAIN),
+    labelHelp: __('Shown only in the form builder to identify this field. Only letters, numbers, spaces, and underscores allowed.', TEXT_DOMAIN),
+    displayLabelHelp: __('Displayed on the frontend form. If left empty, the field Name will be used.', TEXT_DOMAIN),
     placeholderHelp: __('Display placeholder text in empty fields. Placeholder text is not applicable if masking is enabled.', TEXT_DOMAIN),
     minTextHelp: __('The minimum number of characters user must enter.', TEXT_DOMAIN),
     maxTextHelp: __('The maximum number of characters user can enter.', TEXT_DOMAIN),

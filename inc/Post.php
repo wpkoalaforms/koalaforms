@@ -33,6 +33,19 @@ abstract class Post
             }
 	}
         
+    // Paginated query — returns posts and total found row count.
+    public function query($args = array()) {
+        $defaults = array(
+            'post_type'        => $this->post_type,
+            'suppress_filters' => false,
+        );
+        $query = new \WP_Query(wp_parse_args($args, $defaults));
+        return array(
+            'posts'       => $query->posts,
+            'found_posts' => (int) $query->found_posts,
+        );
+    }
+
     // Delete WP_Post.
 	public function delete($ids=array()) {
             if (!is_array($ids)) {

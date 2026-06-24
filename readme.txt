@@ -3,7 +3,7 @@ Contributors:      wpkoalaforms
 Tags:              form, contact form, gutenberg, block, form builder
 Requires at least: 6.4
 Tested up to:      7.0
-Stable tag:        1.0.0
+Stable tag:        1.1.0
 Requires PHP:      7.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -83,6 +83,10 @@ All bundled third-party libraries are GPL-compatible:
 * vue-recaptcha — MIT License — https://github.com/DanSnow/vue-recaptcha
 * DOMPurify — MPL-2.0 / Apache-2.0 — https://github.com/cure53/DOMPurify
 * uuid — MIT License — https://github.com/uuidjs/uuid
+* Chart.js v4.5.1 — MIT License — https://www.chartjs.org
+* @kurkle/color v0.3.4 — MIT License — https://github.com/kurkle/color#readme
+* @vue/runtime-dom v3.5.13 — MIT License — https://github.com/vuejs/core
+* @vue/shared v3.5.13 — MIT License — https://github.com/vuejs/core
 
 == Development ==
 
@@ -121,9 +125,22 @@ This plugin optionally integrates with Google reCAPTCHA to help prevent spam for
 
 1. The Koala Forms dashboard — manage all your forms in one place.
 2. Building a form in the Gutenberg block editor — drag, drop, and publish.
-3. Frontend form rendering — clean and responsive on any theme.
 
 == Changelog ==
 
+= 1.1.0 =
+* Analytics — submission chart added to the form analytics page
+* Address field is now collapsible in the block editor
+* Bug fix — multiple forms on the same page now load and submit independently
+* Help text improvements and general UI cleanup across the admin
+* Display Label added — lets you set a user-facing label separate from the unique field name
+* Custom hooks added to support add-on integrations
+
 = 1.0.0 =
 * Initial release
+* Gutenberg block-based form builder — text, email, number, URL, date, dropdown, multi-select, radio, checkbox, textarea, address, and disclosure fields
+* Multi-step forms with step navigation
+* Input masking for fields like phone numbers
+* Form submissions stored in the database and viewable in the admin panel
+* Google reCAPTCHA support
+* Email notifications on submission

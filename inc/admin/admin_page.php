@@ -20,12 +20,14 @@ class AdminPage{
             case 'koalaforms-settings': return $this->settings();
             case 'koalaforms-tools': return $this->tools();
             case 'koalaforms-submissions': return $this->submissions();
+            case 'koalaforms-logs':      return $this->logs();
+            case 'koalaforms-analytics': return $this->analytics();
         }
     }
 
     public function assets(){
         $page = isset($_GET['page']) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        if ('koalaforms-dashboard' !== $page && 'koalaforms-settings' !== $page) {
+        if ('koalaforms-dashboard' !== $page && 'koalaforms-settings' !== $page && 'koalaforms-analytics' !== $page) {
             wp_enqueue_script('koalaforms-admin-js');
         }
         wp_enqueue_style('koalaforms-admin-style');
@@ -50,9 +52,10 @@ class AdminPage{
 
     public function settings(){
         // Check if form is submitted
-        if (isset($_POST['koalaforms_save_settings']) && check_admin_referer('koalaforms_settings_nonce', 'koalaforms_nonce')) {
+        if (isset($_POST['koalaforms_save_settings']) && current_user_can('manage_options') && check_admin_referer('koalaforms_settings_nonce', 'koalaforms_nonce')) {
             // Process form submission
             $this->save_global_settings();
+            do_action('koalaforms_settings_save', $_POST);
         }
         $this->enqueue_settings_app();
         include 'html/settings_output.php';
@@ -78,10 +81,14 @@ class AdminPage{
                 'hcaptcha_threshold' => $options['hcaptcha_threshold'] ?? '0.5',
                 'cloudfare_site_key' => $options['cloudfare_site_key'] ?? '',
                 'cloudfare_secret_key' => $options['cloudfare_secret_key'] ?? '',
+                'logging_enabled' => isset( $options['logging_enabled'] ) ? (bool) $options['logging_enabled'] : false,
+                'log_level' => $options['log_level'] ?? 'all',
+                'log_retention_days' => $options['log_retention_days'] ?? '30',
             ),
             'captchaOptions' => Captcha::active_captcha_options(),
         );
 
+        $payload = apply_filters('koalaforms_settings_payload', $payload);
         wp_enqueue_script('koalaforms-admin-settings');
         wp_localize_script('koalaforms-admin-settings', 'koalaformsSettingsData', $payload);
     }
@@ -132,7 +139,7 @@ class AdminPage{
         $submission_counts = wp_count_posts(AppUtility::SUBMISSION_POST_TYPE);
         $total_submissions = !empty($submission_counts->publish) ? absint($submission_counts->publish) : 0;
         $recent_submissions = $submission_model->latest_submissions();
-        $last_submission_date = !empty($recent_submissions[0]['submission_date']) ? $recent_submissions[0]['submission_date'] : '';
+        $last_submission_date = !empty($recent_submissions['items'][0]['submission_date']) ? $recent_submissions['items'][0]['submission_date'] : '';
         $recent_submission_week_query = new \WP_Query(array(
             'post_type'        => AppUtility::SUBMISSION_POST_TYPE,
             'post_status'      => 'publish',
@@ -286,7 +293,7 @@ class AdminPage{
                     'id' => !empty($submission['ID']) ? absint($submission['ID']) : 0,
                     'formName' => !empty($submission['form_name']) ? $submission['form_name'] : __('Unknown form', 'koalaforms'),
                     'userName' => !empty($user) ? $user->display_name : __('Guest', 'koalaforms'),
-                    'browser' => !empty($submission['browser']) ? $submission['browser'] : __('Unknown browser', 'koalaforms'),
+                    'browser' => !empty($submission[AppUtility::meta_key('browser')]) ? $submission[AppUtility::meta_key('browser')] : __('Unknown browser', 'koalaforms'),
                     'date' => !empty($submission['submission_date']) ? $submission['submission_date'] : '',
                 );
             }
@@ -318,7 +325,7 @@ class AdminPage{
         $hero_actions = array(
             array('label' => __('Create New Form', 'koalaforms'), 'url' => admin_url('post-new.php?post_type=' . AppUtility::FORM_POST_TYPE), 'type' => 'primary'),
             array('label' => __('View All Forms', 'koalaforms'), 'url' => admin_url('edit.php?post_type=' . AppUtility::FORM_POST_TYPE), 'type' => 'secondary'),
-            array('label' => __('Open Submissions', 'koalaforms'), 'url' => admin_url('edit.php?post_type=' . AppUtility::SUBMISSION_POST_TYPE), 'type' => 'secondary'),
+            array('label' => __('Open Submissions', 'koalaforms'), 'url' => admin_url('admin.php?page=koalaforms-submissions'), 'type' => 'secondary'),
             array('label' => __('Global Settings', 'koalaforms'), 'url' => admin_url('admin.php?page=koalaforms-settings'), 'type' => 'secondary'),
         );
 
@@ -380,6 +387,18 @@ class AdminPage{
         $settings['cloudfare_site_key'] = sanitize_text_field($post['cloudfare_site_key'] ?? '');
         $settings['cloudfare_secret_key'] = sanitize_text_field($post['cloudfare_secret_key'] ?? '');
 
+        $settings['logging_enabled'] = ! empty( $post['logging_enabled'] ) ? 1 : 0;
+
+        $allowed_levels = [ 'all', 'error' ];
+        $settings['log_level'] = in_array( $post['log_level'] ?? 'all', $allowed_levels, true )
+            ? $post['log_level']
+            : 'all';
+
+        $allowed_retention = [ '7', '30', '90', '0' ];
+        $settings['log_retention_days'] = in_array( $post['log_retention_days'] ?? '30', $allowed_retention, true )
+            ? $post['log_retention_days']
+            : '30';
+
         AppUtility::update_global_options($settings);
     }
 
@@ -401,12 +420,126 @@ class AdminPage{
     }
     
 
+    public function analytics() {
+        $this->enqueue_analytics_app();
+        include 'html/analytics_output.php';
+    }
+
+    private function enqueue_analytics_app() {
+        $payload = $this->prepare_analytics_payload();
+        wp_enqueue_script( 'koalaforms-admin-analytics' );
+        wp_localize_script( 'koalaforms-admin-analytics', 'koalaformsAnalyticsData', $payload );
+    }
+
+    private function prepare_analytics_payload() {
+        $form_model = Form::create_instance();
+        $all_forms  = $form_model->get_forms();
+
+        $forms_payload = [];
+        if ( ! empty( $all_forms ) ) {
+            foreach ( $all_forms as $raw_form ) {
+                $form = $form_model->get_form( $raw_form->ID );
+                if ( ! $form ) continue;
+                $forms_payload[] = [
+                    'id'          => absint( $form->ID ),
+                    'title'       => $form->post_title ?: __( 'Untitled form', 'koalaforms' ),
+                    'fields'      => $this->extract_fields_for_analytics( $form ),
+                    'savedCharts' => Analytics::get_saved_config( $form->ID ),
+                ];
+            }
+        }
+
+        return [
+            'nonce'   => wp_create_nonce( 'koalaforms_analytics_nonce' ),
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'forms'   => $forms_payload,
+        ];
+    }
+
+    private function extract_fields_for_analytics( $form ) {
+        $input_types = array_map(
+            fn( $t ) => AppUtility::PREFIX . '/' . strtolower( $t ),
+            AppUtility::INPUT_BLOCK_TYPES
+        );
+
+        $fields = [];
+        foreach ( (array) $form->fields as $field_key => $block ) {
+            if ( ! in_array( $block['blockName'], $input_types, true ) ) {
+                continue;
+            }
+            $fields[] = [
+                'key'   => $field_key,
+                'label' => $block['attrs']['inputLabel'] ?? $field_key,
+                'type'  => $block['blockName'],
+            ];
+        }
+        return $fields;
+    }
+
     public function submissions(){
         include 'html/submissions_output.php';
     }
 
     public function tools(){
         include 'html/tools_output.php';
+    }
+
+    public function logs(): void {
+        if ( ! current_user_can( 'manage_options' ) ) return;
+
+        $integrations = apply_filters( 'koalaforms_log_integrations', [] );
+        if ( empty( $integrations ) ) return;
+
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended
+        $integration = isset( $_GET['integration'] )
+            ? sanitize_key( $_GET['integration'] )
+            : array_key_first( $integrations );
+        // phpcs:enable
+
+        if ( ! array_key_exists( $integration, $integrations ) ) {
+            $integration = array_key_first( $integrations );
+        }
+
+        $notice = null;
+
+        // Bulk delete from list table form
+        $action = '';
+        if ( isset( $_POST['action'] ) && $_POST['action'] !== '-1' ) {
+            $action = sanitize_key( $_POST['action'] );
+        } elseif ( isset( $_POST['action2'] ) && $_POST['action2'] !== '-1' ) {
+            $action = sanitize_key( $_POST['action2'] );
+        }
+
+        if ( $action === 'delete' && check_admin_referer( 'bulk-logs' ) ) {
+            $ids = array_map( 'absint', (array) ( $_POST['log_ids'] ?? [] ) );
+            Logger::delete_by_ids( $ids );
+            $notice = [ 'type' => 'success', 'message' => __( 'Selected log entries deleted.', 'koalaforms' ) ];
+        }
+
+        // Single row delete via GET link
+        if (
+            isset( $_GET['kf_log_action'] ) &&
+            $_GET['kf_log_action'] === 'delete_row' &&
+            isset( $_GET['log_id'] ) &&
+            wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ?? '' ), 'kf_delete_log_' . absint( $_GET['log_id'] ) )
+        ) {
+            Logger::delete_by_ids( [ absint( $_GET['log_id'] ) ] );
+            $notice = [ 'type' => 'success', 'message' => __( 'Log entry deleted.', 'koalaforms' ) ];
+        }
+
+        // Clear all logs for integration
+        if (
+            isset( $_POST['kf_clear_logs'] ) &&
+            check_admin_referer( 'kf_clear_logs', 'kf_clear_logs_nonce' )
+        ) {
+            Logger::clear( sanitize_key( $_POST['integration'] ?? $integration ) );
+            $notice = [ 'type' => 'success', 'message' => __( 'All logs cleared.', 'koalaforms' ) ];
+        }
+
+        $list_table = new LogsListTable( $integration );
+        $list_table->prepare_items();
+
+        include 'html/logs_output.php';
     }
 }
 

@@ -4,9 +4,9 @@
 
    <div v-if="isDisclosure">
       <input 
-         type="checkbox" 
-         id="uniqueId" 
-         name="config.attrs.name" 
+         type="checkbox"
+         :id="uniqueId"
+         :name="config.attrs.name"
          :value="modelValue"
          :checked="modelValue"
          @input="handleUpdate">

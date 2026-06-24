@@ -1,4 +1,4 @@
-import { Modal, ToggleControl, TextControl, Button } from '@wordpress/components';
+import { Modal, ToggleControl, TextControl, Button, Slot } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { PREFIX, TEXT_DOMAIN, LABELS } from '../../utility';
@@ -140,6 +140,11 @@ const NotificationSettingsModal = ({ formSettings, handleMetaChange, closeModal 
                         </div>
                     </div>
                 )}
+
+                <Slot
+                    name="koalaforms-notification-extra"
+                    fillProps={{ formSettings, handleMetaChange }}
+                />
 
                 <div className={`${PREFIX}-modal-actions`}>
                     <Button

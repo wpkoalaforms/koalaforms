@@ -1,14 +1,13 @@
 <template>
   <!-- Conditionally render the label if inputLabel is provided -->
-  <label v-if="config.attrs.inputLabel" :for="uniqueId">
-    {{ config.attrs.inputLabel }}
+  <label v-if="fieldLabel" :for="uniqueId">
+    {{ fieldLabel }}
 
     <span v-if="config.attrs.required" class="required-field-label">*</span>
   </label>
 
   <!-- Conditionally render the text field -->
   <div :class="['kf-block-wrap kf-form-field', config.attrs.className]"> 
-    
     <input
       v-if="config.attrs.mask"
       :id="uniqueId"
@@ -32,8 +31,8 @@
       v-else-if="type=='checkbox'"
       type="checkbox" 
       :checked="modelValue"
-      id="uniqueId" 
-      name="config.attrs.name" 
+      :id="uniqueId"
+      :name="config.attrs.name"
       :value="modelValue"
       @input="handleCB" />
 

@@ -1,10 +1,30 @@
 /*************** HelpText for Gutenber Settings******************/
+.kf-readonly-field input[type="text"] {
+    background-color: #f0f0f0;
+    color: #757575;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .kf-setting {
-    /*
+    margin-bottom: 12px;
+}
+
+.kf-field-header {
     display: flex;
     align-items: center;
-    gap: 5px;
-    */
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.kf-field-header .components-base-control__label {
+    margin-bottom: 0;
+}
+
+.kf-cb-setting {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .kf-help-icon {
@@ -234,8 +254,8 @@ color: #000;
     margin-bottom: 0px;
 }
 
-.post-type-koalaforms-forms.block-editor-page .components-tooltip{
-    max-width: 100px;
+.post-type-koalaforms-forms.block-editor-page .components-tooltip {
+    max-width: 240px;
 }
 
 /*-- Editor Page Shell --*/
@@ -688,4 +708,14 @@ body.post-type-koalaforms-forms .block-editor-block-list__layout.is-root-contain
 .kf-address-container:hover,
 .kf-address-container.is-selected {
     border-color: #007cba;
+}
+
+.kf-address-common-wrap {
+    position: relative;
+}
+
+.kf-address-collapse-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

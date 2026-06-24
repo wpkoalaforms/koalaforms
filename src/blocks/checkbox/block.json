@@ -10,6 +10,10 @@
 			"type": "string",
 			"default": null
 		},
+		"displayLabel": {
+			"type": "string",
+			"default": ""
+		},
 		"name": {
 			"type": "string",
 			"default": ""
@@ -33,5 +37,12 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"example": {
+		"attributes": {
+			"isPreview": true,
+			"inputLabel": "Checkbox",
+			"previewHTML": "<div style='display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #d0d5dd;border-radius:16px;background:#fff;box-shadow:0 10px 20px rgba(15,23,42,0.08);'><div style='display:flex;align-items:center;gap:10px;color:#0f172a;font-size:14px;font-weight:600;'><span style='display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#eef2ff;color:#3858e9;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m20 6-11 11-5-5'/><rect x='3' y='3' width='18' height='18' rx='2'/></svg></span>Checkbox</div><div style='display:flex;align-items:center;gap:10px;height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:0 12px;color:#0f172a;font-size:13px;'><span style='display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;background:#3858e9;color:#fff;flex:0 0 auto;'><svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='m20 6-11 11-5-5'/></svg></span><span>I agree to the terms</span></div></div>"
+		}
+	}
 }

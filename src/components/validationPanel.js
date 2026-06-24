@@ -3,15 +3,25 @@ import { TextControl, PanelBody, Tooltip, CheckboxControl } from '@wordpress/com
 
 const { __ } = wp.i18n;
 
+const FieldLabel = ({ label, help }) => (
+    <div className={`${PREFIX}-field-header`}>
+        <span className="components-base-control__label">{label}</span>
+        {help && (
+            <Tooltip text={help} delay={300}>
+                <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+            </Tooltip>
+        )}
+    </div>
+);
+
 const ValidationPanel = ({ setAttributes, attributes }) => {
     const { required, maxDate, minDate, requiredError, dateFormat, minLength, maxLength,
-            pattern, patternError, mask, isAge, minAge, maxAge, ageValidationMessage,min,max,
+            pattern, patternError, mask, isAge, minAge, maxAge, ageValidationMessage, min, max,
             unique, uniqueErr
          } = attributes;
 
     return (
         <>
-            {/* Validation Options Section */}
             <PanelBody title={__('Validations', TEXT_DOMAIN)} initialOpen={false}>
 
                 {"required" in attributes && (
@@ -21,24 +31,20 @@ const ValidationPanel = ({ setAttributes, attributes }) => {
                             checked={required}
                             onChange={(isChecked) => setAttributes({ required: isChecked })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.reqErrHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.reqErrHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
+                        <Tooltip text={LABELS.reqErrHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
                         </Tooltip>
-                        */}
                     </div>
                 )}
 
                 {required && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Required Error Message', TEXT_DOMAIN)} help={LABELS.reqErrMessageHelp} />
                         <TextControl
-                            label={__('Required Error Message', TEXT_DOMAIN)}
+                            label=""
                             value={requiredError}
                             onChange={(value) => setAttributes({ requiredError: value })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.reqErrMessageHelp, TEXT_DOMAIN)}</span>
-
                     </div>
                 )}
 
@@ -49,220 +55,194 @@ const ValidationPanel = ({ setAttributes, attributes }) => {
                             checked={unique}
                             onChange={(isChecked) => setAttributes({ unique: isChecked })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.uniqueHelp, TEXT_DOMAIN)}</span>
+                        <Tooltip text={LABELS.uniqueHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+                        </Tooltip>
                     </div>
                 )}
 
                 {unique && (
-                    <div className={`${PREFIX}-setting ${PREFIX}-cb-setting`}>
+                    <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Unique Error Message', TEXT_DOMAIN)} help={LABELS.uniqueErrHelp} />
                         <TextControl
-                            label={__('Unique Error Message', TEXT_DOMAIN)}
+                            label=""
                             value={uniqueErr}
-                            onChange={(value) => setAttributes({ uniqueErr: value})}
+                            onChange={(value) => setAttributes({ uniqueErr: value })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.uniqueErrHelp, TEXT_DOMAIN)}</span>
                     </div>
                 )}
 
                 {"minDate" in attributes && (
                     <div className={`${PREFIX}-setting`}>
-                        <label htmlFor="min-date">
-                            {__('Minimum Date', TEXT_DOMAIN)}
-                        </label>
+                        <FieldLabel label={__('Minimum Date', TEXT_DOMAIN)} help={LABELS.minDateHelp} />
                         <input
                             type="date"
                             id="min-date"
                             value={minDate}
                             onChange={(event) => setAttributes({ minDate: event.target.value })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.minDateHelp, TEXT_DOMAIN)}</span>
                     </div>
                 )}
 
                 {"maxDate" in attributes && (
                     <div className={`${PREFIX}-setting ${PREFIX}-date-setting`}>
-                        <label htmlFor="max-date">
-                            {__('Maximum Date', TEXT_DOMAIN)}
-                        </label>
+                        <FieldLabel label={__('Maximum Date', TEXT_DOMAIN)} help={LABELS.maxDateHelp} />
                         <input
                             type="date"
                             id="max-date"
                             value={maxDate}
                             onChange={(event) => setAttributes({ maxDate: event.target.value })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.maxDateHelp, TEXT_DOMAIN)}</span>
                     </div>
                 )}
 
                 {"isAge" in attributes && (
-                    <div className={`${PREFIX}-setting ${PREFIX}-date-setting`}>
+                    <div className={`${PREFIX}-setting ${PREFIX}-date-setting ${PREFIX}-cb-setting`}>
                         <CheckboxControl
                             label={__('Treat as Age Field', TEXT_DOMAIN)}
                             checked={isAge}
                             onChange={(isChecked) => setAttributes({ isAge: isChecked })}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.ageHelp, TEXT_DOMAIN)}</span>
+                        <Tooltip text={LABELS.ageHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+                        </Tooltip>
                     </div>
                 )}
 
                 {isAge && (
                     <>
                         <div className={`${PREFIX}-setting`}>
-                            <TextControl
+                            <FieldLabel
                                 label={__('Minimum Age', TEXT_DOMAIN)}
+                                help={__('Set the minimum age allowed. Leave blank for no minimum.', TEXT_DOMAIN)}
+                            />
+                            <TextControl
+                                label=""
                                 value={minAge}
                                 onChange={(value) => {
                                     const parsedValue = parseInt(value, 10);
-                                    setAttributes({ minAge: isNaN(parsedValue) ? '' : parsedValue })
-                                }
-                                }
+                                    setAttributes({ minAge: isNaN(parsedValue) ? '' : parsedValue });
+                                }}
                             />
-                            <span className={`${PREFIX}-field-help-text`}>{__('Set the minimum age allowed. Leave blank for no minimum.', TEXT_DOMAIN)}</span>
                         </div>
 
                         <div className={`${PREFIX}-setting`}>
-                            <TextControl
+                            <FieldLabel
                                 label={__('Maximum Age', TEXT_DOMAIN)}
+                                help={__('Set the maximum age allowed. Leave blank for no maximum.', TEXT_DOMAIN)}
+                            />
+                            <TextControl
+                                label=""
                                 value={maxAge}
                                 onChange={(value) => {
                                     const parsedValue = parseInt(value, 10);
-                                    setAttributes({ maxAge: isNaN(parsedValue) ? '' : parsedValue })
-                                }
-                                }
+                                    setAttributes({ maxAge: isNaN(parsedValue) ? '' : parsedValue });
+                                }}
                             />
-
-                            <span className={`${PREFIX}-field-help-text`}>{__('Set the maximum age allowed. Leave blank for no maximum.', TEXT_DOMAIN)}</span>
                         </div>
 
                         <div className={`${PREFIX}-setting`}>
-                            <TextControl
+                            <FieldLabel
                                 label={__('Validation Message', TEXT_DOMAIN)}
+                                help={__('Custom error message when the age does not meet the requirement.', TEXT_DOMAIN)}
+                            />
+                            <TextControl
+                                label=""
                                 value={ageValidationMessage}
                                 onChange={(value) => setAttributes({ ageValidationMessage: value })}
-
                             />
-
-                            <span className={`${PREFIX}-field-help-text`}>{__('Custom error message when the age does not meet the requirement.', TEXT_DOMAIN)}</span>
                         </div>
                     </>
                 )}
 
-
                 {"minLength" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Minimum Length', TEXT_DOMAIN)} help={LABELS.minTextHelp} />
                         <TextControl
-                            label={__('Minimum Length', TEXT_DOMAIN)}
+                            label=""
                             value={minLength}
                             onChange={(value) => {
                                 const parsedValue = parseInt(value, 10);
                                 setAttributes({ minLength: isNaN(parsedValue) ? '' : parsedValue });
-                            }} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.minTextHelp, TEXT_DOMAIN)}</span>
+                            }}
+                        />
                     </div>
                 )}
 
                 {"maxLength" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Maximum Length', TEXT_DOMAIN)} help={LABELS.maxTextHelp} />
                         <TextControl
-                            label={__('Maximum Length', TEXT_DOMAIN)}
+                            label=""
                             value={maxLength}
                             onChange={(value) => {
                                 const parsedValue = parseInt(value, 10);
                                 setAttributes({ maxLength: isNaN(parsedValue) ? '' : parsedValue });
-                            }} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.maxTextHelp, TEXT_DOMAIN)}</span>
+                            }}
+                        />
                     </div>
                 )}
 
                 {"min" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Minimum', TEXT_DOMAIN)} help={LABELS.minNumberHelp} />
                         <TextControl
-                            label={__('Minimum', TEXT_DOMAIN)}
+                            label=""
                             value={min}
                             onChange={(value) => {
                                 const parsedValue = parseInt(value, 10);
                                 setAttributes({ min: isNaN(parsedValue) ? '' : parsedValue });
-                            }} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.minNumberHelp, TEXT_DOMAIN)}</span>
+                            }}
+                        />
                     </div>
                 )}
 
                 {"max" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Maximum', TEXT_DOMAIN)} help={LABELS.maxNumberHelp} />
                         <TextControl
-                            label={__('Maximum', TEXT_DOMAIN)}
+                            label=""
                             value={max}
                             onChange={(value) => {
                                 const parsedValue = parseInt(value, 10);
                                 setAttributes({ max: isNaN(parsedValue) ? '' : parsedValue });
-                            }} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.maxNumberHelp, TEXT_DOMAIN)}</span>
+                            }}
+                        />
                     </div>
                 )}
-
-                {/*"format" in attributes && (
-                    <div className={`${PREFIX}-setting ${PREFIX}-date-setting`}>
-                        <TextControl
-                            label={__('Format', TEXT_DOMAIN)}
-                            value={dateFormat}
-                            onChange={(value) => setAttributes({ dateFormat: value })} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.dateFormatHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.dateFormatHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        }
-
-                    </div>
-                )*/}
 
                 {"mask" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Mask', TEXT_DOMAIN)} help={LABELS.maskHelp} />
                         <TextControl
-                            label={__('Mask', TEXT_DOMAIN)}
+                            label=""
                             value={mask}
-                            onChange={(value) => setAttributes({ mask: value })} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.maskHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.maskHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ mask: value })}
+                        />
                     </div>
                 )}
 
                 {"pattern" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Pattern', TEXT_DOMAIN)} help={LABELS.patternHelp} />
                         <TextControl
-                            label={__('Pattern', TEXT_DOMAIN)}
+                            label=""
                             value={pattern}
-                            onChange={(value) => setAttributes({ pattern: value })} />
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.patternHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.patternHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ pattern: value })}
+                        />
                     </div>
                 )}
-
 
                 {"pattern" in attributes && (
                     <div className={`${PREFIX}-setting`}>
+                        <FieldLabel label={__('Pattern Error Message', TEXT_DOMAIN)} help={LABELS.patternErrHelp} />
                         <TextControl
-                            label={__('Pattern Error Message', TEXT_DOMAIN)}
+                            label=""
                             value={patternError}
-                            onChange={(value) => setAttributes({ patternError: value })} />
-
-                        <span className={`${PREFIX}-field-help-text`}>{__(LABELS.patternErrHelp, TEXT_DOMAIN)}</span>
-                        {/** 
-                        <Tooltip text={__(LABELS.patternErrHelp, TEXT_DOMAIN)}>
-                            <span className={`${PREFIX}-help-icon`}>?</span>
-                        </Tooltip>
-                        */}
+                            onChange={(value) => setAttributes({ patternError: value })}
+                        />
                     </div>
                 )}
-
 
             </PanelBody>
         </>

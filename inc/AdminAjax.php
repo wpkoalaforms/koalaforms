@@ -23,9 +23,15 @@ class AdminAjax{
         // Actions to fetch state list
         add_action('wp_ajax_koalaforms_get_states', array($this, 'get_states'));
         add_action('wp_ajax_nopriv_koalaforms_get_states', array($this, 'get_states'));
+
     }
 
     public function create_form(){
+        if (!current_user_can('manage_options')) {
+            echo json_encode(['status' => 'error', 'message' => __('You are not allowed to create forms.', 'koalaforms')]);
+            wp_die();
+        }
+
         // Verify the nonce passed in the form
         if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'koalaforms_create_form')) {
             echo json_encode(['status' => 'error', 'message' => __('Invalid Security nonce.', 'koalaforms')]);

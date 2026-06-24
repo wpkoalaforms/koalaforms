@@ -37,8 +37,33 @@ class RegisterTypes{
             'access_denied_msg' => 'You are not authorised to access this form.',
         );
 
+        /**
+         * Filters the default form settings applied to a newly created form.
+         *
+         * @param array $defaults Default form settings.
+         * @param int   $post_id  ID of the form post being created.
+         */
+        $defaults = apply_filters('koalaforms_form_default_settings', $defaults, $post_id);
+
         $settings = array_merge($defaults, $settings);
         AppUtility::update_meta($post_id, 'form_settings', $settings);
+    }
+
+    // Capability map that restricts a CPT to administrators only, regardless of post author/status.
+    private function admin_only_capabilities(){
+        return array(
+            'edit_posts'             => 'manage_options',
+            'edit_others_posts'      => 'manage_options',
+            'edit_published_posts'   => 'manage_options',
+            'edit_private_posts'     => 'manage_options',
+            'delete_posts'           => 'manage_options',
+            'delete_others_posts'    => 'manage_options',
+            'delete_published_posts' => 'manage_options',
+            'delete_private_posts'   => 'manage_options',
+            'publish_posts'          => 'manage_options',
+            'read_private_posts'     => 'manage_options',
+            'create_posts'           => 'manage_options',
+        );
     }
 
     private function register_form_cpt(){
@@ -69,22 +94,26 @@ class RegisterTypes{
                     'show_in_rest'=>true,
                     'show_in_menu'=>'koalaforms-overview',
                     'supports' => array('title', 'editor', 'custom-fields'),
+                    'map_meta_cap' => true,
+                    'capabilities' => $this->admin_only_capabilities(),
                 );
 
         // Register the post type for Forms
         register_post_type(AppUtility::FORM_POST_TYPE, $args);
 
+        $form_props = apply_filters( 'koalaforms_form_props', AppUtility::FORM_PROPS );
+
         register_post_meta(AppUtility::FORM_POST_TYPE, AppUtility::meta_key('form_settings'), array(
             'show_in_rest' => array(
                 'schema' => array(
                     'type'       => 'object',  // Allow object type
-                    'properties' => AppUtility::FORM_PROPS,
+                    'properties' => $form_props,
                 ),
             ),
             'type'         => 'object',
             'single'       => true,
             'auth_callback' => function() {
-                return current_user_can('edit_posts');
+                return current_user_can('manage_options');
             }
         ));
     }
@@ -149,7 +178,7 @@ class RegisterTypes{
                     'query_var' => false,
                     'can_export' => false,
                     'show_in_rest'=>true,
-                    'capabilities' => array('create_posts' => false),
+                    'capabilities' => $this->admin_only_capabilities(),
                     'show_in_menu'=>false,
                     'supports' => array('custom-fields'),
                     'map_meta_cap' => true

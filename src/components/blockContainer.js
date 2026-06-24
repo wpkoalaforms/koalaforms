@@ -7,7 +7,7 @@ import ValidationPanel from '../components/validationPanel';
 import GeneralPanel from '../components/generalPanel';
 
 const BlockContainer = ({ blockProps, attributes, clientId, setAttributes, children }) => {
-    const { type, isPreview, previewHTML, inputLabel } = attributes;
+    const { type, isPreview, previewHTML, inputLabel, displayLabel } = attributes;
     const localBlockProps = { className: `${PREFIX}-block-preview`, };
 
     blockProps = { ...blockProps, ...localBlockProps };
@@ -52,8 +52,8 @@ const BlockContainer = ({ blockProps, attributes, clientId, setAttributes, child
 
             <div className={`${PREFIX}-block-wrap ${PREFIX}-editor-field-wrap ${PREFIX}-${type.toLowerCase()}-common-wrap`}>
                 <label className={`${PREFIX}-editor-field-label`}>
-                    {inputLabel}
-                    {attributes.required && inputLabel && (
+                    {displayLabel || inputLabel}
+                    {attributes.required && (displayLabel || inputLabel) && (
                         <span className={`${PREFIX}-required-marker`}> *</span>
                     )}
                 </label>

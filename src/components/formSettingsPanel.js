@@ -3,9 +3,9 @@ import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEntityProp } from '@wordpress/core-data';
 import { store as editorStore } from '@wordpress/editor';
-import { TextControl, ToggleControl, TextareaControl, SelectControl, Button, PanelBody } from '@wordpress/components';
+import { TextControl, ToggleControl, TextareaControl, SelectControl, Button, PanelBody, Tooltip } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { PREFIX, TEXT_DOMAIN, LABELS } from '../utility';
 import { openModal, closeModal, isModalOpen } from './form/modalUtils';
 import GeneralSettingsModal from './form/generalSettingsModal';
@@ -56,11 +56,28 @@ const buildInputOptions = (blocks, allowedTypes) => {
     return [...DEFAULT_SELECT_OPTION, ...blockOptions];
 };
 
+const FieldLabel = ({ label, help }) => (
+    <div className={`${PREFIX}-field-header`}>
+        <span className="components-base-control__label">{label}</span>
+        {help && (
+            <Tooltip text={help} delay={300}>
+                <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+            </Tooltip>
+        )}
+    </div>
+);
+
 const FormSettingPanel = () => {
     const [openModals, setOpenModals] = useState(new Set());
     const { removeEditorPanel } = useDispatch(editorStore);
     const [meta, setMeta] = useEntityProp('postType', 'koalaforms-forms', 'meta');
     const formSettings = meta?.koalaforms_form_settings || {};
+
+    // Tracks the latest meta synchronously so back-to-back handleMetaChange calls
+    // (e.g. renaming the default stage updates both `stage` and `default_stage`)
+    // each build on the previous call instead of a stale `meta` from this render.
+    const metaRef = useRef(meta);
+    metaRef.current = meta;
 
     const inputEmailOptions = useSelect((select) => {
         const blocks = select('core/block-editor').getBlocks();
@@ -86,7 +103,7 @@ const FormSettingPanel = () => {
         },
         {
             key: MODAL_TYPES.NOTIFICATION_SETTINGS,
-            title: __('Email Notifications', TEXT_DOMAIN),
+            title: __('Notifications', TEXT_DOMAIN),
         },
         {
             key: MODAL_TYPES.RESTRICTION_SETTINGS,
@@ -96,13 +113,15 @@ const FormSettingPanel = () => {
 
     const isRegistrationForm = formSettings.type === 'registration';
     const handleMetaChange = (field, value) => {
-        setMeta({
-            ...meta,
+        const nextMeta = {
+            ...metaRef.current,
             koalaforms_form_settings: {
-                ...formSettings,
+                ...metaRef.current?.koalaforms_form_settings,
                 [field]: value,
             },
-        });
+        };
+        metaRef.current = nextMeta;
+        setMeta(nextMeta);
     };
 
     useEffect(() => {
@@ -115,35 +134,35 @@ const FormSettingPanel = () => {
         <>
             <PluginDocumentSettingPanel name="form-settings" title={__('Form Settings', TEXT_DOMAIN)}>
                 <PanelBody title={__('Basic Settings', TEXT_DOMAIN)} initialOpen={true}>
-                    <div className={`${PREFIX}-setting ${PREFIX}-general-setting-panel ${PREFIX}-cb-setting`}>
+                    <div className={`${PREFIX}-setting ${PREFIX}-general-setting-panel`}>
+                        <FieldLabel label={__('Form Type', TEXT_DOMAIN)} help={LABELS.formTypeHelp} />
                         <SelectControl
-                            label={__('Form Type', TEXT_DOMAIN)}
+                            label=""
                             value={formSettings.type}
                             options={FORM_TYPES}
                             onChange={(value) => handleMetaChange('type', value)}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{LABELS.formTypeHelp}</span>
                     </div>
 
                     <div className={`${PREFIX}-setting ${PREFIX}-general-setting-panel`}>
+                        <FieldLabel label={__('Primary Email Field', TEXT_DOMAIN)} help={LABELS.primaryFieldHelp} />
                         <SelectControl
-                            label={__('Primary Email Field', TEXT_DOMAIN)}
+                            label=""
                             value={formSettings.primary_email_field || ''}
                             options={inputEmailOptions}
                             onChange={(value) => handleMetaChange('primary_email_field', value)}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{LABELS.primaryFieldHelp}</span>
                     </div>
 
                     {isRegistrationForm && (
                         <div className={`${PREFIX}-setting ${PREFIX}-general-setting-panel`}>
+                            <FieldLabel label={__('Username Field', TEXT_DOMAIN)} help={LABELS.usernameFieldHelp} />
                             <SelectControl
-                                label={__('Username Field', TEXT_DOMAIN)}
+                                label=""
                                 value={formSettings.username_field || ''}
                                 options={inputUsernameOptions}
                                 onChange={(value) => handleMetaChange('username_field', value)}
                             />
-                            <span className={`${PREFIX}-field-help-text`}>{LABELS.usernameFieldHelp}</span>
                         </div>
                     )}
 
@@ -153,19 +172,19 @@ const FormSettingPanel = () => {
                             checked={formSettings.is_active || false}
                             onChange={(value) => handleMetaChange('is_active', value)}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{LABELS.isActiveHelp}</span>
+                        <Tooltip text={LABELS.isActiveHelp} delay={300}>
+                            <span className={`${PREFIX}-help-icon`} tabIndex={0}>?</span>
+                        </Tooltip>
                     </div>
 
-                    
                     <div className={`${PREFIX}-setting ${PREFIX}-general-setting-panel`}>
+                        <FieldLabel label={__('Inactive Form Message', TEXT_DOMAIN)} help={LABELS.inactiveMessageHelp} />
                         <TextareaControl
-                            label={__('Inactive Form Message', TEXT_DOMAIN)}
+                            label=""
                             value={formSettings.inactive_message || ''}
                             onChange={(value) => handleMetaChange('inactive_message', value)}
                             maxLength={500}
-                            help={__('Displayed when the form is disabled.', TEXT_DOMAIN)}
                         />
-                        <span className={`${PREFIX}-field-help-text`}>{LABELS.inactiveMessageHelp}</span>
                     </div>
                 </PanelBody>
 

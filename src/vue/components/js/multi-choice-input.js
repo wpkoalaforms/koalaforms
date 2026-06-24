@@ -38,6 +38,9 @@ export default {
         }
     },
     computed:{
+        fieldLabel() {
+            return util.getFieldLabel(this.config.attrs);
+        },
         type(){
             return util.elementType(this.config.blockName);
         },

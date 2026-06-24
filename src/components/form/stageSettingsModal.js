@@ -10,15 +10,13 @@ const StageSettingsModal = ({ formSettings, handleMetaChange, closeModal }) => {
 
     const [defaultStage, setDefaultStage] = useState(formSettings.default_stage);
 
+    // Only sets the stages list itself. Callers that know the default stage is
+    // affected (renamed or removed) are responsible for updating it themselves —
+    // this avoids re-deriving "is the default still present?" from state that
+    // may already be stale by the time this runs.
     const updateStages = (updated) => {
         setStages(updated);
         handleMetaChange('stage', updated);
-
-        // If the default stage was removed, clear it
-        if (!updated.includes(defaultStage)) {
-            setDefaultStage('');
-            handleMetaChange('default_stage', '');
-        }
     };
 
     const addStage = () => {
@@ -27,7 +25,7 @@ const StageSettingsModal = ({ formSettings, handleMetaChange, closeModal }) => {
 
     const updateStage = (index, value) => {
         const updated = stages.map((s, i) => (i === index ? value : s));
-        // If the renamed stage was the default, update the default to the new value
+        // If the renamed stage was the default, the default's name moves with it.
         if (stages[index] === defaultStage) {
             setDefaultStage(value);
             handleMetaChange('default_stage', value);
@@ -41,6 +39,10 @@ const StageSettingsModal = ({ formSettings, handleMetaChange, closeModal }) => {
             __('This is the default stage. New submissions will have no stage assigned until you set a new default. Remove it anyway?', TEXT_DOMAIN)
         )) {
             return;
+        }
+        if (isDefault) {
+            setDefaultStage('');
+            handleMetaChange('default_stage', '');
         }
         updateStages(stages.filter((_, i) => i !== index));
     };

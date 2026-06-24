@@ -44,7 +44,8 @@ module.exports = [
   {
     entry: {
       'dashboard-bundle': './src/vue/admin-dashboard-app.js',
-      'settings-bundle': './src/vue/admin-settings-app.js',
+      'settings-bundle':  './src/vue/admin-settings-app.js',
+      'analytics-bundle': './src/vue/admin-analytics-app.js',
     },
     output: {
       filename: '[name].js',

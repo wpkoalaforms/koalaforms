@@ -13,7 +13,7 @@ jQuery('.kf-nav-tabs li a').on('click', function(){
 
 // General Modal Functions
 
-$.fn.openPopup = function (settings, editData = null) {
+$.fn.koalaformsOpenPopup = function (settings, editData = null) {
     var modal = $(this);
 
     // Merge user settings with defaults
@@ -39,7 +39,7 @@ $.fn.openPopup = function (settings, editData = null) {
     }
 };
 
-$.fn.closePopup = function (settings) {
+$.fn.koalaformsClosePopup = function (settings) {
     var modal = $(this);
 
     // Merge user settings with defaults
@@ -64,7 +64,7 @@ $.fn.closePopup = function (settings) {
 $(document).on('click', '.kf-open-modal', function () {
     var modalId = $(this).data('id');
     var anim = $(this).data('animation') || 'kf-modal-';
-    $('#' + modalId).openPopup({ anim: anim });
+    $('#' + modalId).koalaformsOpenPopup({ anim: anim });
 
     $('body').addClass('kf-modal-open-body');
 });
@@ -73,7 +73,7 @@ $(document).on('click', '.kf-open-modal', function () {
 $(document).on('click', '.kf-close-popup', function () {
     var modalId = $(this).data('id');
     var anim = $(this).data('animation') || 'kf-modal-';
-    $('#' + modalId).closePopup({ anim: anim });
+    $('#' + modalId).koalaformsClosePopup({ anim: anim });
 
     $('body').removeClass('kf-modal-open-body');
 });
@@ -146,7 +146,7 @@ window.koalaformsSelectStage = function (el) {
     applyStepStyles(steps, pendingIdx);
 
     $('#koalaforms_stage_note_input').val('');
-    $('#kf-stage-note-modal').openPopup({ anim: 'kf-modal-' }, {
+    $('#kf-stage-note-modal').koalaformsOpenPopup({ anim: 'kf-modal-' }, {
         title: (typeof koalaformsStageData !== 'undefined' ? koalaformsStageData.movingTo : 'Moving to') + ': ' + el.getAttribute('data-stage')
     });
     $('body').addClass('kf-modal-open-body');
@@ -161,7 +161,7 @@ function revert() {
 }
 
 function closeModal() {
-    $('#kf-stage-note-modal').closePopup({ anim: 'kf-modal-' });
+    $('#kf-stage-note-modal').koalaformsClosePopup({ anim: 'kf-modal-' });
     $('body').removeClass('kf-modal-open-body');
 }
 

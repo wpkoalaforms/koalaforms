@@ -42,21 +42,21 @@ class AdminLoader{
             'dashicons-feedback'
         );
 
-         add_submenu_page(
-            'koalaforms-overview',
-            __( 'Submissions', 'koalaforms'),
-            __( 'Submissions', 'koalaforms'),
-            'manage_options',
-            'koalaforms-submissions',
-            array( $this, 'admin_page' )
-        );
-
         add_submenu_page(
             'koalaforms-overview',
             __( 'Dashboard', 'koalaforms'),
             __( 'Dashboard', 'koalaforms'),
             'manage_options',
             'koalaforms-dashboard',
+            array( $this, 'admin_page' )
+        );
+
+        add_submenu_page(
+            'koalaforms-overview',
+            __( 'Submissions', 'koalaforms'),
+            __( 'Submissions', 'koalaforms'),
+            'manage_options',
+            'koalaforms-submissions',
             array( $this, 'admin_page' )
         );
 
@@ -69,17 +69,23 @@ class AdminLoader{
             array( $this, 'admin_page' )
         );
 
-       
+        add_submenu_page(
+            'koalaforms-overview',
+            __( 'Analytics', 'koalaforms'),
+            __( 'Analytics', 'koalaforms'),
+            'manage_options',
+            'koalaforms-analytics',
+            array( $this, 'admin_page' )
+        );
 
-        
-        // add_submenu_page(
-        //     'koalaforms-overview',
-        //     __( 'Help', 'koalaforms'),
-        //     __( 'Help', 'koalaforms'),
-        //     'manage_options',
-        //     'koalaforms-help',
-        //     array($this, 'admin_page')
-        // );
+        add_submenu_page(
+            'koalaforms-overview',
+            __( 'Logs', 'koalaforms' ),
+            __( 'Logs', 'koalaforms' ),
+            'manage_options',
+            'koalaforms-logs',
+            array( $this, 'admin_page' )
+        );
 
         remove_submenu_page('koalaforms-overview', 'koalaforms-overview');
 
@@ -110,12 +116,16 @@ class AdminLoader{
         wp_register_script('koalaforms-admin-js', KOALAFORMS_PLUGIN_URL.'assets/admin/js/admin.js', array('jquery'), KOALAFORMS_VERSION, true);
         wp_register_script('koalaforms-admin-dashboard', KOALAFORMS_PLUGIN_URL . 'assets/admin/js/dashboard-bundle.js', array(), KOALAFORMS_VERSION, true);
         wp_register_script('koalaforms-admin-settings', KOALAFORMS_PLUGIN_URL . 'assets/admin/js/settings-bundle.js', array(), KOALAFORMS_VERSION, true);
+        wp_register_script('koalaforms-admin-analytics', KOALAFORMS_PLUGIN_URL . 'assets/admin/js/analytics-bundle.js', array(), KOALAFORMS_VERSION, true);
         wp_register_style('koalaforms-admin-style',KOALAFORMS_PLUGIN_URL.'assets/admin/css/style.css', array(), KOALAFORMS_VERSION);
         
         $screen = get_current_screen();
         if ($screen && $screen->post_type === AppUtility::SUBMISSION_POST_TYPE) {
             wp_enqueue_script('koalaforms-admin-js');
             wp_enqueue_style('koalaforms-admin-style');
+
+            // Allow Pro add-ons to enqueue their own scripts on the submission screen.
+            do_action( 'koalaforms_submission_enqueue_scripts' );
         }
 
         $roles = $wp_roles->get_names();
@@ -172,33 +182,8 @@ class AdminLoader{
 
     }
 
-    public function submission_meta_box_callback($post){
-        $submission_model = Submission::create_instance();
-        $submission_model->mark_submission_as_read($post->ID);
-        $submission    = $submission_model->get_submission($post->ID);
-        $form_id       = AppUtility::get_meta($post->ID, 'form_id', true);
-        $form_model    = Form::create_instance();
-        $form          = $form_model->get_form($form_id);
-        $stage         = ($form !== null && !empty($form->settings['stage']) && is_array($form->settings['stage']))
-                            ? $form->settings['stage']
-                            : [];
-        $current_stage = AppUtility::get_meta($post->ID, 'submission_stage', true);
-
-        $stage_list = [];
-        foreach ($stage as $s) {
-            $label = is_string($s) ? trim($s) : (isset($s['label']) ? trim($s['label']) : '');
-            if ($label !== '') $stage_list[] = $label;
-        }
-        $current_index = array_search($current_stage, $stage_list, true);
-
-        wp_localize_script('koalaforms-admin-js', 'koalaformsStageData', [
-            'confirmedIdx' => ($current_index !== false) ? (int) $current_index : -1,
-            'movingTo'     => __('Moving to', 'koalaforms'),
-            'saving'       => __('Saving...', 'koalaforms'),
-        ]);
-
-        include('admin/html/submission_entry_stage_output.php');
-        include('admin/html/submission_output.php');
+    public function submission_meta_box_callback( $post ) {
+        ( new SubmissionMetaBox( $post ) )->render();
     }
 
     public function submission_info_meta_box_callback($post){

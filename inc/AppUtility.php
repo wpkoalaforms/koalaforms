@@ -160,7 +160,7 @@ class AppUtility {
      * Add new field block types here only. Do NOT duplicate this list in blockHelper.js.
      */
     const INPUT_BLOCK_TYPES = [
-        'Text', 'Date', 'Number', 'Checkbox', 'Radio', 'MultiSelect',
+        'Text', 'Date', 'Phone' ,'Number', 'Checkbox', 'Radio', 'MultiSelect',
         'Email', 'URL', 'Select', 'Textarea', 'Disclosure', 'Address',
     ];
 
@@ -204,6 +204,19 @@ class AppUtility {
 
     public static function add_meta($post_id, $key, $value) {
         return add_post_meta($post_id, self::meta_key($key), $value);
+    }
+
+    // Public API for add-ons — use these instead of get_meta/update_meta/delete_meta directly.
+    public static function get_form_meta( $form_id, $key ) {
+        return self::get_meta( $form_id, $key, true );
+    }
+
+    public static function update_form_meta( $form_id, $key, $value ) {
+        return self::update_meta( $form_id, $key, $value );
+    }
+
+    public static function delete_form_meta( $form_id, $key ) {
+        return self::delete_meta( $form_id, $key );
     }
 
     /* Validates post save conditions to ensure safe and correct saving of post data.
@@ -258,6 +271,22 @@ class AppUtility {
         update_option(self::PLUGIN_PREFIX.'settings', wp_parse_args($new_settings, $existing_settings));
     }
 
+    // Public API for add-ons — use these instead of get_global_options/update_global_options directly.
+    public static function get_global_option( $key, $default = '' ) {
+        $options = self::get_global_options();
+        return $options[ $key ] ?? $default;
+    }
+
+    public static function update_global_option( $key, $value ) {
+        self::update_global_options( array( $key => $value ) );
+    }
+
+    public static function delete_global_option( $key ) {
+        $options = self::get_global_options();
+        unset( $options[ $key ] );
+        update_option( self::PLUGIN_PREFIX . 'settings', $options );
+    }
+
     /**
      * Calculate age from a date string.
      *
@@ -286,6 +315,36 @@ class AppUtility {
      * @param string $date Date string (preferably in 'Y-m-d' format).
      * @return bool|null Returns true if date is in the past, false if not, or null if invalid.
      */
+    /**
+     * Replace {{Label}} merge tags in a template string with submitted field values.
+     *
+     * Matches by inputLabel (the human-readable field label shown in the editor).
+     * Pass $extra for special tokens like UNIQUE_ID or REGISTRATION_DATA.
+     * Set $escape_html = true when the output will be rendered as HTML (e.g. emails).
+     */
+    public static function apply_merge_tags( string $template, array $form_fields, array $extra = [], bool $escape_html = false ): string {
+        foreach ( $form_fields as $item ) {
+            $label = $item['field']['attrs']['inputLabel'] ?? '';
+            if ( $label === '' ) continue;
+
+            $value = $item['display_value'] ?? $item['value'] ?? '';
+            if ( is_array( $value ) ) {
+                $value = implode( ', ', $value );
+            }
+            if ( $escape_html ) {
+                $value = esc_html( $value );
+            }
+
+            $template = str_replace( '{{' . $label . '}}', $value, $template );
+        }
+
+        foreach ( $extra as $key => $value ) {
+            $template = str_replace( '{{' . $key . '}}', $value, $template );
+        }
+
+        return $template;
+    }
+
     public static function is_past_date($date) {
         if (empty($date)) {
             return null;
